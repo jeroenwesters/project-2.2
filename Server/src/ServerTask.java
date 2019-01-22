@@ -3,6 +3,7 @@ import model.Measurement;
 
 import javax.xml.crypto.Data;
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
@@ -34,13 +35,15 @@ public class ServerTask extends Thread {
 //            3,  // temp
 //    };
 
+    // Use previous data if no data is avaible.
     private final int use_previous[] = {
-            0,
-            1,
-            2,
-            13,
+            0,  // Station number
+            1,  // Date
+            2,  // Time
+            13, // Wind direction
     };
 
+    // Temperature index, (To know if we need to calculate average or extrapolate)
     private final int temp_id = 3;
 
 
@@ -77,17 +80,13 @@ public class ServerTask extends Thread {
 
 
 
-
-
-
             // Infinite loop to prevent thread from stopping
             while(true){
 
                 //System.out.println(stationData[0][0][0]);
 
-                // Read line
+                // Read line (input)
                 input = reader.readLine(); // remove spaces
-                //System.out.println("CUR LINE: " + input);
 
                 // No input
                 if(input == null){
@@ -149,7 +148,7 @@ public class ServerTask extends Thread {
                     }else{
                         // Convert string (to get variable)
                         //String[] data = parser.ParseData(input);
-                        String data = parser.ParseData(input); // Change the 1 !!!
+                        String data = parser.ParseData(input);
                         //System.out.println(data);
 
 
@@ -168,8 +167,9 @@ public class ServerTask extends Thread {
 
                             if(usePrevious){
                                 // Todo: get old value
-                                data = "My OLD VALUE";
+                                //data = "My OLD VALUE";
                                 data = CorrectMissingData(stationData, currentStation, currentMeasurement, currentBacklog);
+
 
                             }else{
                                 // Todo: calculate avarage
@@ -276,7 +276,7 @@ public class ServerTask extends Thread {
 
         // Check if the old value was NULL or EMPTY
         if(data[station][measurement][prevValueIndex] == null || data[station][measurement][prevValueIndex].equals("")){
-            // If true, cant process this!
+            // If true, the value = null or empty string!
             return true;
         }else{
             // Check if the new vaue is within the OFFSET threshold
@@ -288,6 +288,11 @@ public class ServerTask extends Thread {
 
             //New value
             float curValue = Float.parseFloat(newValue);
+
+            if(curValue < 5 && curValue > -5){
+                // Todo: handle other offset
+                System.out.println("Value:  " + curValue);
+            }
 
             //Old value
             float oldValue = Float.parseFloat(data[station][measurement][prevValueIndex]);
@@ -316,7 +321,7 @@ public class ServerTask extends Thread {
 
         if(station >= 0){
             System.out.println("This!");
-            return  "";
+            return  "0";
         }
 
         //String value = data[station][measurement][dataIndex] = input;
@@ -334,6 +339,7 @@ public class ServerTask extends Thread {
 
         for (int sd = 0; sd < data.length; sd++){
             System.out.println();
+            System.out.println();
             System.out.print(sd);
             System.out.print(": ");
 
@@ -344,7 +350,7 @@ public class ServerTask extends Thread {
             }
         }
 
-        return null;
+        return "";
     }
 
 
@@ -361,27 +367,7 @@ public class ServerTask extends Thread {
             }
         }
 
-            /*
 
-            EXAMPLE DATA!
-
-
-             */
-
-            /* int station = "STN"; // station nummer
-            date = "DATE"; // datum
-            time = "TIME"; // tijd
-            float temp = "TEMP"; // temperatuur
-            float dewp = "DEWP"; // dauwpunt
-            float stp = "STP"; // luchtdruk op stationniveau
-            float slp = "SLP"; // luchtdruk op zee niveau
-            float visib = "VISIB"; // Zichtbaarheid in kilometers
-            float wdsp = "WDSP"; // windsnelheid in km/h
-            float prcp = "PRCP"; // neerslag in CM
-            float sndp = "SNDP"; // sneel in cm
-            int frshtt = "FRSHTT"; // gebeurtinissen (binair weergegeven)
-            float cldc = "CLDC"; // bewolking in procenten
-            int wnddir = "WNDDIR"; // windrichting in graden 0 - 359 */
 
     }
 }
