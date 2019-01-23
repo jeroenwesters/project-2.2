@@ -106,6 +106,8 @@ public class ServerTask extends Thread {
 
                 }else if (input.equals("</WEATHERDATA>")){
                     // End of file
+
+
                     timer.Stop();
 
                     // Add new value to our backlog
@@ -152,24 +154,26 @@ public class ServerTask extends Thread {
                             // No data, check if we can use previous data:
                             for(int d = 0; d < use_previous.length; d++){
                                 if(currentMeasurement == use_previous[d]){
-                                    // Todo:
+                                    // Array containts this id, so we need to use our previous data!
                                     usePrevious = true;
                                     break;
                                 }
                             }
 
-                            // If these variables can't be calculated!
+                            // If true, these variables can't be calculated!
                             if(usePrevious){
                                 // Get previous index!
                                 int backlog = currentBacklog - 1;
 
+                                // If backlog is in range
                                 if(backlog < 0){
                                     // Go back to the last index of the backlog!
                                     backlog = max_backlog -1;
                                 }
 
-                                System.out.println("using: " + backlog);
+                                // Assign the data from the backlog
                                 data = stationData[currentStation][currentMeasurement][backlog];
+                                // Debug
                                 System.out.println("New data: " + input + "  " + data);
 
 
@@ -185,13 +189,11 @@ public class ServerTask extends Thread {
                                 data = "0";
                             }
 
-                        }
+                        } if(currentMeasurement == temp_id){
+                            //System.out.println("It's a temperature thats not NULL!!!");
 
+                            // Todo: check 20% max difference!
 
-                        if(currentMeasurement == temp_id){
-                            //System.out.println("Temperature data: " + data);
-
-                            // Todo: Check for max 20% difference
                             // Previous data:
                             int prev = currentBacklog - 1;
                             if(prev < 0){
@@ -217,24 +219,9 @@ public class ServerTask extends Thread {
 
                         }
 
-                        //System.out.println(stationData[currentStation][currentMeasurement][currentBacklog]);
+                        // Add measurement data
                         measurementData.add(data);
 
-                        // Todo: Remove those lines, DEBUGGING PURPOSES
-                        if(currentMeasurement == 3 && currentStation == 100){
-                            //break;
-                            //System.out.println(currentMeasurement + "Getting data from array: " + stationData[currentStation][currentMeasurement][currentMeasurement]);
-                            //System.out.println(" ");
-                            //System.out.print("Backlog Values: ");
-                            // Get temperature!!
-                            for(int cb = 0; cb < stationData[currentStation][temp_id].length; cb++){
-                                //System.out.println(currentMeasurement + "Getting data from array: " + stationData[currentStation][currentMeasurement][cb]);
-
-
-                                 System.out.print(stationData[currentStation][temp_id][cb] + ", " );
-                            }
-
-                        }
 
 
 
@@ -313,8 +300,12 @@ public class ServerTask extends Thread {
         return false;
     }
 
-    /*
-    Corrects missing data
+    /**
+     * Extrapolates missing data
+     * @param data List of all data
+     * @param station current station index
+     * @param measurement current measurement index
+     * @param dataIndex current data index
      */
     private String CorrectMissingData(String data[][][], int station, int measurement, int dataIndex){
 
@@ -361,12 +352,9 @@ public class ServerTask extends Thread {
             if(data[i].equals("")){
                 for (int x = 0; x < 1000; x++){
                     System.out.println("MISSING VARIABLE ");
-
                 }
             }
         }
-
-
 
     }
 }
