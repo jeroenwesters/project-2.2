@@ -28,10 +28,6 @@ public class XMLParser {
 
         if(m.find())
         {
-            //System.out.println("FOUND MATCH:" + m.group(2));
-            //return m.group(2); // Return value by index
-
-
             // Prepare result
             //result[0] = m.group("tag");     // Assign tag
             return m.group("value");   // Assign value
