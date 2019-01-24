@@ -6,19 +6,30 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.List;
 
 public class FileWriter {
 
-    List<String> binaryMeasurements;
+    int heapSize;
+    int amount;
 
-    public FileWriter() {
-
+    public FileWriter(int heapSize) {
+        this.heapSize = heapSize;
     }
 
     public void addMeasurement(Measurement measurement) {
-        Thread writerThread = new Thread(new ConvertMeasurement(measurement));
+        ConvertMeasurement convertedMeasurement = new ConvertMeasurement(measurement, data -> {
+            try {
+                FileOutputStream fos = null;
+                fos = new FileOutputStream("measurement" + measurement.getDate().toString() + "-" + measurement.getTime().toString().replace(":", "-") + ".bin", true);
+                fos.write(data);
+                fos.close();
+                fos.flush();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Thread writerThread = new Thread(convertedMeasurement);
         writerThread.run();
     }
 }
@@ -27,12 +38,14 @@ class ConvertMeasurement implements Runnable {
 
     private Measurement measurement;
     private byte[] array;
+    private ConvertedListener listener;
 
-    public ConvertMeasurement(Measurement measurement) {
+    public ConvertMeasurement(Measurement measurement, ConvertedListener listener) {
         this.measurement = measurement;
+        this.listener = listener;
     }
 
-    public void run() {
+    public synchronized void run() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
         try {
             outputStream.write(float2ByteArray(measurement.getStationNumber()));
@@ -55,17 +68,21 @@ class ConvertMeasurement implements Runnable {
             outputStream.write(float2ByteArray(measurement.getWindDirection()));
 
             array = outputStream.toByteArray();
-            FileOutputStream fos = new FileOutputStream("measurement" + measurement.getDate().toString() + ".bin", false);
-            fos.write(array);
-            fos.close();
+            listener.onConverted(array);
+
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
-    public static byte [] float2ByteArray (float value)
+    private static byte [] float2ByteArray (float value)
     {
         return ByteBuffer.allocate(4).putFloat(value).array();
+    }
+
+    public byte[] getData() {
+        return array;
     }
 }

@@ -1,4 +1,5 @@
 import database.Database;
+import filesystem.FileWriter;
 import model.Measurement;
 
 import javax.xml.crypto.Data;
@@ -23,6 +24,7 @@ public class ServerTask extends Thread {
 
     private Socket socket = null;;
     private XMLParser parser = null;
+    private FileWriter writer;
 
 
     // Multidimensional array containing stations, measurements and data
@@ -48,9 +50,10 @@ public class ServerTask extends Thread {
      * Constructor
      * @param socket
      */
-    public ServerTask(Socket socket) {
+    public ServerTask(Socket socket, FileWriter writer) {
         parser = new XMLParser();
         this.socket = socket;
+        this.writer = writer;
 
         // Fill array
         for (String[][] x : stationData) {
@@ -122,6 +125,7 @@ public class ServerTask extends Thread {
 
                 if(!isReading){
                     // Look for Measurement start
+
                     if(input.equals("<MEASUREMENT>")){
                         // Clear measurements!
                         measurementData.clear();
@@ -139,9 +143,7 @@ public class ServerTask extends Thread {
                         // Measurement reading!
                         isReading = false;
 
-                        // Todo: remove database stuff!
-                        // Database.instance.insertMeasurement(Measurement.fromData(measurementData));
-
+                        this.writer.addMeasurement(Measurement.fromData(measurementData));
 
                     }else{
                         // Convert string (to get variable)
@@ -218,23 +220,19 @@ public class ServerTask extends Thread {
                             stationData[currentStation][currentMeasurement][currentBacklog] = data;
 
                         }
-
                         // Add measurement data
                         measurementData.add(data);
-
-
-
-
                         // Increment current data
                         currentMeasurement++;
                     }
                 }
-
                 input = "";
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.out.println("Error handling client ");
-        } finally {
+        }
+        finally {
             try {
                 //System.out.println("Closing socket");
 
