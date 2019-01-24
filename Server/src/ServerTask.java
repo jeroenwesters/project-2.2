@@ -3,10 +3,12 @@ import model.Measurement;
 
 import javax.xml.crypto.Data;
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -15,9 +17,9 @@ import java.util.List;
 public class ServerTask extends Thread {
 
     // Generator settings (amount of stations and measurements)
-    private final int amount_stations = 10;
-    private  final int amount_measurements = 14;
-    private  final int max_backlog = 30; // Amount of saved values
+    private final int amount_stations = 10;         // in each <weatherdata>
+    private  final int amount_measurements = 14;    // in each <measurement>
+    private  final int max_backlog = 30;            // Amount of saved values (for calculations and corrections)
 
     private Socket socket = null;;
     private XMLParser parser = null;
@@ -30,17 +32,15 @@ public class ServerTask extends Thread {
     int currentBacklog = 0;
 
 
-//    int values_avarage[] = {
-//            3,  // temp
-//    };
-
+    // Use previous data if no data is avaible. (Can't be calculated!)
     private final int use_previous[] = {
-            0,
-            1,
-            2,
-            13,
+            0,  // Station number
+            1,  // Date
+            2,  // Time
+            11, // FRSHTT (events, binary)
     };
 
+    // Temperature index, (To know if we need to calculate average or extrapolate)
     private final int temp_id = 3;
 
 
@@ -52,8 +52,12 @@ public class ServerTask extends Thread {
         parser = new XMLParser();
         this.socket = socket;
 
-        //System.out.println(String.format("New thread started"));
-
+        // Fill array
+        for (String[][] x : stationData) {
+            for (String[] y : x) {
+                Arrays.fill(y, "0");
+            }
+        }
     }
 
 
@@ -68,54 +72,51 @@ public class ServerTask extends Thread {
             // Create data container
             List<String> measurementData = new ArrayList<>();
 
-            boolean fileStart = false;
             boolean isReading = false;
-
-            long startTime = 0;
 
             String input = "";
 
 
-
-
-
+            Timer timer = new Timer();
 
             // Infinite loop to prevent thread from stopping
             while(true){
 
-                //System.out.println(stationData[0][0][0]);
+                // Read line (input)
+                input = reader.readLine();
 
-                // Read line
-                input = reader.readLine(); // remove spaces
-                //System.out.println("CUR LINE: " + input);
-
-                // No input
+                // If there is no input, cancel
                 if(input == null){
                     System.out.println("No input received, canceling");
                     break;
                 }
 
-                // Remove spaces
+                // Remove spaces from the input
                 input = input.replaceAll("\\s","");
+
 
                 // Check if the file starts or ends!
                 if(input.equals("<WEATHERDATA>")){
-                    startTime = System.nanoTime();
-                    fileStart = true;
+
+                    // Set current station index to 0
                     currentStation = 0;
 
+                    // Start debug timer
+                    timer.Start("weatherdata");
 
                 }else if (input.equals("</WEATHERDATA>")){
                     // End of file
-                    fileStart = false;
-                    stopTimer("Measurement", startTime);
+
+
+                    timer.Stop();
+
+                    // Add new value to our backlog
                     currentBacklog++;
 
+                    // If we have reached the end of the backlog, start over!
                     if(currentBacklog >= max_backlog){
                         currentBacklog = 0;
                     }
-                }else{
-
                 }
 
 
@@ -131,27 +132,20 @@ public class ServerTask extends Thread {
                 }else if(isReading ){
                     // If it is the end of a measurement
                     if(input.equals("</MEASUREMENT>")){
+                        // Continue to next station, reset measurement index
                         currentStation++;
                         currentMeasurement = 0;
 
-
-                        // Done reading!
+                        // Measurement reading!
                         isReading = false;
 
-                        //System.out.println("Done reading");
+                        // Todo: remove database stuff!
+                        // Database.instance.insertMeasurement(Measurement.fromData(measurementData));
 
-                        // Give data to !?
 
-
-                        Database.instance.insertMeasurement(Measurement.fromData(measurementData));
-
-                        //m.print();
                     }else{
                         // Convert string (to get variable)
-                        //String[] data = parser.ParseData(input);
-                        String data = parser.ParseData(input); // Change the 1 !!!
-                        //System.out.println(data);
-
+                        String data = parser.ParseData(input);
 
                         // Check for zero value
                         if(data.equals("")){
@@ -160,30 +154,46 @@ public class ServerTask extends Thread {
                             // No data, check if we can use previous data:
                             for(int d = 0; d < use_previous.length; d++){
                                 if(currentMeasurement == use_previous[d]){
-                                    // Todo:
-                                    // use previous data
+                                    // Array containts this id, so we need to use our previous data!
                                     usePrevious = true;
+                                    break;
                                 }
                             }
 
+                            // If true, these variables can't be calculated!
                             if(usePrevious){
-                                // Todo: get old value
-                                data = "My OLD VALUE";
-                                data = CorrectMissingData(stationData, currentStation, currentMeasurement, currentBacklog);
+                                // Get previous index!
+                                int backlog = currentBacklog - 1;
+
+                                // If backlog is in range
+                                if(backlog < 0){
+                                    // Go back to the last index of the backlog!
+                                    backlog = max_backlog -1;
+                                }
+
+                                // Assign the data from the backlog
+                                data = stationData[currentStation][currentMeasurement][backlog];
+                                // Debug
+                                System.out.println("New data: " + input + "  " + data);
+
+
+
 
                             }else{
-                                // Todo: calculate avarage
+                                // Todo: EXTRAPOLATE!
+                                System.out.println("EXTRAPOLATE data: " + input + "  -  " + data);
+
+
+                                //data = CorrectMissingData(stationData, currentStation, currentMeasurement, currentBacklog);
                                 // data = "My AVARAGE VALUE";
                                 data = "0";
                             }
 
-                        }
+                        } if(currentMeasurement == temp_id){
+                            //System.out.println("It's a temperature thats not NULL!!!");
 
+                            // Todo: check 20% max difference!
 
-                        if(currentMeasurement == temp_id){
-                            //System.out.println("Temperature data: " + data);
-
-                            // Todo: Check for max 20% difference
                             // Previous data:
                             int prev = currentBacklog - 1;
                             if(prev < 0){
@@ -209,24 +219,9 @@ public class ServerTask extends Thread {
 
                         }
 
-                        //System.out.println(stationData[currentStation][currentMeasurement][currentBacklog]);
+                        // Add measurement data
                         measurementData.add(data);
 
-                        // Todo: Remove those lines, DEBUGGING PURPOSES
-                        if(currentMeasurement == 3 && currentStation == 100){
-                            //break;
-                            //System.out.println(currentMeasurement + "Getting data from array: " + stationData[currentStation][currentMeasurement][currentMeasurement]);
-                            System.out.println(" ");
-                            System.out.print("Backlog Values: ");
-                            // Get temperature!!
-                            for(int cb = 0; cb < stationData[currentStation][temp_id].length; cb++){
-                                //System.out.println(currentMeasurement + "Getting data from array: " + stationData[currentStation][currentMeasurement][cb]);
-
-
-                                 System.out.print(stationData[currentStation][temp_id][cb] + ", " );
-                            }
-
-                        }
 
 
 
@@ -251,15 +246,6 @@ public class ServerTask extends Thread {
     }
 
 
-    private void stopTimer(String desc, long startTime){
-        long stopTime = (System.nanoTime() - startTime);
-
-        double sec = (double)stopTime / 1000000000;
-
-        System.out.println(String.format("%s timer stopped after: %f seconds", desc, sec));
-    }
-
-
     /**
      * Validate data
      * Checks if new data is within offset range (in %)
@@ -276,7 +262,7 @@ public class ServerTask extends Thread {
 
         // Check if the old value was NULL or EMPTY
         if(data[station][measurement][prevValueIndex] == null || data[station][measurement][prevValueIndex].equals("")){
-            // If true, cant process this!
+            // If true, the value = null or empty string!
             return true;
         }else{
             // Check if the new vaue is within the OFFSET threshold
@@ -288,6 +274,11 @@ public class ServerTask extends Thread {
 
             //New value
             float curValue = Float.parseFloat(newValue);
+
+            if(curValue < 5 && curValue > -5){
+                // Todo: handle other offset
+               // System.out.println("Value:  " + curValue);
+            }
 
             //Old value
             float oldValue = Float.parseFloat(data[station][measurement][prevValueIndex]);
@@ -309,14 +300,18 @@ public class ServerTask extends Thread {
         return false;
     }
 
-    /*
-    Corrects missing data
+    /**
+     * Extrapolates missing data
+     * @param data List of all data
+     * @param station current station index
+     * @param measurement current measurement index
+     * @param dataIndex current data index
      */
     private String CorrectMissingData(String data[][][], int station, int measurement, int dataIndex){
 
         if(station >= 0){
-            System.out.println("This!");
-            return  "";
+           // System.out.println("This!");
+            return  "0";
         }
 
         //String value = data[station][measurement][dataIndex] = input;
@@ -334,6 +329,7 @@ public class ServerTask extends Thread {
 
         for (int sd = 0; sd < data.length; sd++){
             System.out.println();
+            System.out.println();
             System.out.print(sd);
             System.out.print(": ");
 
@@ -344,7 +340,7 @@ public class ServerTask extends Thread {
             }
         }
 
-        return null;
+        return "";
     }
 
 
@@ -356,32 +352,9 @@ public class ServerTask extends Thread {
             if(data[i].equals("")){
                 for (int x = 0; x < 1000; x++){
                     System.out.println("MISSING VARIABLE ");
-
                 }
             }
         }
-
-            /*
-
-            EXAMPLE DATA!
-
-
-             */
-
-            /* int station = "STN"; // station nummer
-            date = "DATE"; // datum
-            time = "TIME"; // tijd
-            float temp = "TEMP"; // temperatuur
-            float dewp = "DEWP"; // dauwpunt
-            float stp = "STP"; // luchtdruk op stationniveau
-            float slp = "SLP"; // luchtdruk op zee niveau
-            float visib = "VISIB"; // Zichtbaarheid in kilometers
-            float wdsp = "WDSP"; // windsnelheid in km/h
-            float prcp = "PRCP"; // neerslag in CM
-            float sndp = "SNDP"; // sneel in cm
-            int frshtt = "FRSHTT"; // gebeurtinissen (binair weergegeven)
-            float cldc = "CLDC"; // bewolking in procenten
-            int wnddir = "WNDDIR"; // windrichting in graden 0 - 359 */
 
     }
 }
