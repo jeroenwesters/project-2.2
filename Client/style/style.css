@@ -1,0 +1,43 @@
+div.footer {
+  width:100%;
+  position:absolute;
+  bottom:0;
+}
+
+div.body {
+  width: 80%;;
+  margin-left: 12%;
+  border:1px solid black;
+}
+
+div.center {
+  width: 200px;
+  margin: auto;
+  display: inline-block;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+}
+
+div.header {
+    width: 100%;
+    align-items: center;
+    margin:auto;
+}
+
+div.left {
+  width: 10%;
+  float: left;
+  margin-left: 10px;
+  border:1px solid black;
+}
+
+div.right {
+  width: 6%;
+  float: right;
+  margin-right: 10px;
+  border:1px solid black;
+}

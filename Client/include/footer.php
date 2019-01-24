@@ -1,5 +1,5 @@
-</div><!--closes body div-->
-<div class="footer"> <!-- opens div for the footer-->
+</div>
+<div class="footer">
 
 <!-- Show copyright icon and php for the year-->
   <p align="center"> &copy;
@@ -12,7 +12,6 @@
   ?>
   Project 2.2 </p>
 
-</div> <!-- closes div for footer-->
-
-</body> <!-- close body-->
-</html> <!-- close html -->
+</div>
+</body>
+</html>
