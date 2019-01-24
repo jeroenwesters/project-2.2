@@ -1,5 +1,9 @@
 # Ignore
 
-/Server/.idea
-/Server/out
-/Server/.project
+/Server/.idea/*
+/Server/out/*
+/Server/.project/*
+Server/Server\.iml
+out/
+.idea/
+*.bin
