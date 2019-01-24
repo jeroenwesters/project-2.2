@@ -1,7 +1,7 @@
-<?php
-require 'header.php';
-
-?>
+<?php require "config.php"?>
+<link rel="stylesheet" type="text/css" href="style.css">
+</div>
+<div class="center">
 <html>
 <body>
   <form action = "login.php" method = "POST">
@@ -15,29 +15,40 @@ require 'header.php';
           <td><input type = "password" name="password"/></td>
         </tr>
         <tr>
-          <td><input type = "reset" name = "reset" value = "Leegmaken"></td>
-          <td><input type = "submit" value = "Stuur"></td>
+          <td></td>
+          <td><input type = "submit" value = "Login"></td>
         </tr>
       </table>
-    </form>
-
+  </form>
+</body>
+</html>
 <?php
-  $user1 = array("user1", "password1");
-  $user1[0] = "user";
-  $user1[1] = "password";
+  session_start();
   if(isset($_POST['password']))
   {
-    $username = $_POST['username'];//convert filled in username to a string
-  	$password = $_POST['password'];//convert filled in password to a string
+    $username = escapeTrimString($conn, $_POST['username']); //make a string of the username
+  	$password = $_POST['password']; //make a string of the password
 
-    if($username == $user1[0])
+    $query = "	SELECT username, password, admin
+  				    FROM users
+  				    WHERE username = '$username'"; //put the sql query in a string
+
+  	$result = getData($conn,$query); //put the result of the query in a variable
+
+    if (count($result) > 0) //Check if the username is stored in the database
     {
-      if($password == $user1[1])
+      $hash = $result[0]["password"]; //puts the password in a hash
+      if($password == $hash) //if the password is correct
       {
-        header("Location: webpage.php");
+        //Set the session variables
+        $_SESSION['loggedIn'] = true;
+        $_SESSION['currentuser'] = $result[0]["username"];
+        $_SESSION['admin'] = $result[0]["admin"];
+
+        header("Location: webpage.php");  //redirect the user to the webpage
       }
       else {
-        echo "<br>Wachtwoord incorrect<br>";
+      echo "<br>Wachtwoord incorrect<br>";
       }
     }
     else{
@@ -45,5 +56,6 @@ require 'header.php';
     }
   }
   require 'footer.php';
-
  ?>
+</div>
+<div class="body">
