@@ -1,5 +1,5 @@
-<?php require "config.php"?>
-<link rel="stylesheet" type="text/css" href="style.css">
+<?php require "include/config.php"?>
+<link rel="stylesheet" type="text/css" href="style/style.css">
 </div>
 <div class="center">
 <html>
@@ -55,7 +55,7 @@
       echo "<br>Gebruikersnaam incorrect<br>";
     }
   }
-  require 'footer.php';
+  require 'include/footer.php';
  ?>
 </div>
 <div class="body">

@@ -1,7 +1,7 @@
 <!doctype html> <!-- open html-->
 <html lang="en">
 <head>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="style/style.css">
 </head>
 
 <body>
@@ -24,4 +24,4 @@ if($_SESSION['loggedIn'] != true){
 }
  ?>
 
-<div class="body"> 
+<div class="body">

@@ -1,8 +1,8 @@
 <?php
-    require 'header.php';
+    require 'include/header.php';
 
     echo "this is view3!";
 
-    require 'footer.php';
+    require 'include/footer.php';
 
 ?>

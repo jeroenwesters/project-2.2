@@ -1,5 +1,5 @@
 <?php
-    require 'header.php';
+    require 'include/header.php';
 
     echo "you are in an admin panel right now";
     if($_SESSION['admin'] != 1){ //check if the user is an admin
@@ -40,6 +40,6 @@ Create a new account:
 <br>
 
 <?php
-    require 'footer.php';
+    require 'include/footer.php';
 
 ?>

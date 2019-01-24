@@ -1,0 +1,1 @@
+CREATE TABLE `oneit`.`users` ( `userid` INT(11) NOT NULL AUTO_INCREMENT , `username` VARCHAR(50) NOT NULL , `password` VARCHAR(50) NOT NULL , `admin` BOOLEAN NOT NULL , PRIMARY KEY (`userid`)) ENGINE = InnoDB;
