@@ -29,7 +29,7 @@
     $username = escapeTrimString($conn, $_POST['username']); //make a string of the username
   	$password = $_POST['password']; //make a string of the password
 
-    $query = "	SELECT username, password, admin
+    $query = "SELECT username, password, admin
   				    FROM users
   				    WHERE username = '$username'"; //put the sql query in a string
 

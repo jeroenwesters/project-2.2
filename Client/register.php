@@ -27,9 +27,9 @@
       $result = doQuery($conn, $query);
       $sqlerror = $conn->error;
       if(strlen($sqlerror) < 1){
-        echo "Registratie voltooid";
+        echo "Registration complete";
       }
-      if(strtok($sqlerror, " ") == "Duplicate"){
+      else if(strtok($sqlerror, " ") == "Duplicate"){
         echo "This username has already been taken";
       }
       else{
@@ -38,5 +38,5 @@
       }
     }
   }
-  echo "<br><a href='admin.php'>Terug naar de admin pagina";
+  echo "<br><a href='admin.php'>Back to the admin panel";
  ?>
