@@ -186,6 +186,22 @@ public class Measurement {
         return result.toString();
     }
 
+    public static float calculateTemp(List<Measurement> measurements) {
+        float temp = measurements.get(0).getTemperature();
+        if(measurements.size() > 1) {
+            float bT = measurements.get(0).getTemperature();
+            float eT = measurements.get(measurements.size() - 1).getTemperature();
+
+            float x = eT - bT;
+            temp = (x / (measurements.size() - 1) + eT);
+            System.out.println(String.format("begin: %.1f   -----   end: %.1f     extra: %.3f", bT, eT, temp));
+        }
+        else {
+            System.out.println(String.format("begin: %.1f   -----   end: %.1f     extra: %.1f", temp, temp, temp));
+        }
+        return temp;
+    }
+
     public void print() {
         System.out.println(this.toString());
     }

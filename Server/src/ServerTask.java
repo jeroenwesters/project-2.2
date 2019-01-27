@@ -78,6 +78,8 @@ public class ServerTask extends Thread {
             boolean isReading = false;
 
             String input = "";
+            int currentSecond = -1;
+            int savePerSecond = 10;
 
 
             Timer timer = new Timer();
@@ -142,9 +144,13 @@ public class ServerTask extends Thread {
 
                         // Measurement reading!
                         isReading = false;
-
-                        this.writer.addMeasurement(Measurement.fromData(measurementData));
-
+                        Measurement measurement = Measurement.fromData(measurementData);
+                        if(currentSecond != measurement.getTime().getSeconds()) {
+                            currentSecond = measurement.getTime().getSeconds();
+                        }
+                        if(currentSecond % savePerSecond == 0) {
+                            this.writer.addMeasurement(measurement);
+                        }
                     }else{
                         // Convert string (to get variable)
                         String data = parser.ParseData(input);

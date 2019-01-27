@@ -3,6 +3,7 @@ package filesystem;
 import model.Measurement;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -19,8 +20,12 @@ public class FileWriter {
     public void addMeasurement(Measurement measurement) {
         ConvertMeasurement convertedMeasurement = new ConvertMeasurement(measurement, data -> {
             try {
+                String filePath = "Measurements/" + (measurement.getDate().getYear() + 1900) + "/" + (measurement.getDate().getMonth() + 1) +  "/" + measurement.getDate().getDate() + "/" + measurement.getTime().getHours() + "/" + measurement.getTime().getMinutes() + "/" + measurement.getTime().getSeconds() + "/";
+                File measurementFile = new File(filePath + "measurement.bin");
+                measurementFile.getParentFile().mkdirs();
+                measurementFile.createNewFile();
                 FileOutputStream fos = null;
-                fos = new FileOutputStream("measurement" + measurement.getDate().toString() + "-" + measurement.getTime().toString().replace(":", "-") + ".bin", true);
+                fos = new FileOutputStream(measurementFile, true);
                 fos.write(data);
                 fos.close();
                 fos.flush();
@@ -74,7 +79,6 @@ class ConvertMeasurement implements Runnable {
         catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private static byte [] float2ByteArray (float value)
