@@ -5,23 +5,88 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
+/**
+ * @author      Emiel van Essen <emiel@teaspoongames.com>
+ * @version     1.1
+ * @since       1.0
+ */
 public class Measurement {
 
+    /**
+     * Station ID.
+     */
     private int stationNumber;
+
+    /**
+     * Date of the measurement.
+     */
     private Date date;
+
+    /**
+     * Time of the measurement.
+     */
     private Time time;
+
+    /**
+     * Temperature in degree Celsius.
+     */
     private float temperature;
+
+    /**
+     * Dew point in degree Celsius.
+     */
     private float dewPoint;
+
+    /**
+     * Air pressure on station level.
+     */
     private float stp;
+
+    /**
+     * Air pressure on sea level.
+     */
     private float slp;
+
+    /**
+     * Visibility in kilometers.
+     */
     private float visibility;
+
+    /**
+     * Wind speed in Km/H.
+     */
     private float windSpeed;
+
+    /**
+     * Precipitate in centimeters.
+     */
     private float precipitate;
+
+    /**
+     * Fallen snow in centimeters.
+     */
     private float snow;
+
+    /**
+     * Binary representation of Freezing / Rain / Snow / Hail / Thunder / Tornado
+     */
     private int frshtt;
+
+    /**
+     * Cloudiness in percentages.
+     */
     private float cloudsPercentage;
+
+    /**
+     * Wind direction in degrees.
+     */
     private int windDirection;
 
+    /**
+     * Constructor.
+     * <p>
+     * Sets all the values of the class.
+     */
     public Measurement(int stationNumber, Date date, Time time, float temperature, float dewPoint, float stp,
                        float slp, float visibility, float windSpeed, float precipitate, float snow, int frshtt,
                        float cloudsPercentage, int windDirection) {
@@ -41,6 +106,12 @@ public class Measurement {
         this.windDirection = windDirection;
     }
 
+    /**
+     * Converts list of strings to all the variables of the measurement, effectively creating a measurements class
+     *
+     * @param data The measurement data in string array form.
+     * @return the new and filled Measurement class.
+     */
     public static Measurement fromData(List<String> data) {
         return new Measurement(Integer.parseInt(data.get(0)),
                 Date.valueOf(data.get(1)), Time.valueOf(data.get(2)),
@@ -52,118 +123,109 @@ public class Measurement {
                 Integer.parseInt(data.get(13)));
     }
 
+    /**
+     * @return Station number.
+     */
     public int getStationNumber() {
         return stationNumber;
     }
 
-    public void setStationNumber(int stationNumber) {
-        this.stationNumber = stationNumber;
-    }
-
+    /**
+     * @return Date.
+     */
     public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
+    /**
+     * @return Time.
+     */
     public Time getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
+    /**
+     * @return Temperature.
+     */
     public float getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(float temperature) {
-        this.temperature = temperature;
-    }
-
+    /**
+     * @return Dew point.
+     */
     public float getDewPoint() {
         return dewPoint;
     }
 
-    public void setDewPoint(float dewPoint) {
-        this.dewPoint = dewPoint;
-    }
-
+    /**
+     * @return Air pressure on station level.
+     */
     public float getStp() {
         return stp;
     }
 
-    public void setStp(float stp) {
-        this.stp = stp;
-    }
-
+    /**
+     * @return Air pressure on sea level.
+     */
     public float getSlp() {
         return slp;
     }
 
-    public void setSlp(float slp) {
-        this.slp = slp;
-    }
-
+    /**
+     * @return Visibility.
+     */
     public float getVisibility() {
         return visibility;
     }
 
-    public void setVisibility(float visibility) {
-        this.visibility = visibility;
-    }
-
+    /**
+     * @return Wind Speed.
+     */
     public float getWindSpeed() {
         return windSpeed;
     }
 
-    public void setWindSpeed(float windSpeed) {
-        this.windSpeed = windSpeed;
-    }
-
+    /**
+     * @return Precipitate.
+     */
     public float getPrecipitate() {
         return precipitate;
     }
 
-    public void setPrecipitate(float precipitate) {
-        this.precipitate = precipitate;
-    }
-
+    /**
+     * @return Snow amount.
+     */
     public float getSnow() {
         return snow;
     }
 
-    public void setSnow(float snow) {
-        this.snow = snow;
-    }
-
+    /**
+     * @return Freezing / Rain / Snow / Hail / Thunder / Tornado in binary.
+     */
     public int getFrshtt() {
         return frshtt;
     }
 
-    public void setFrshtt(int frshtt) {
-        this.frshtt = frshtt;
-    }
-
+    /**
+     * @return Cloud percentage.
+     */
     public float getCloudsPercentage() {
         return cloudsPercentage;
     }
 
-    public void setCloudsPercentage(float cloudsPercentage) {
-        this.cloudsPercentage = cloudsPercentage;
-    }
-
+    /**
+     * @return Wind direction.
+     */
     public int getWindDirection() {
         return windDirection;
     }
 
-    public void setWindDirection(int windDirection) {
-        this.windDirection = windDirection;
-    }
-
+    /**
+     * Converts measurement to string so it can be logged easily.
+     *
+     * @return multiline string with all variables.
+     */
     public String toString() {
         StringBuilder result = new StringBuilder();
         String newLine = System.getProperty("line.separator");
@@ -186,6 +248,12 @@ public class Measurement {
         return result.toString();
     }
 
+    /**
+     * Extrapolates temperature based on previous measurements.
+     *
+     * @param measurements array of previous measurements which contain a valid temperature.
+     * @return the extrapolated temperature.
+     */
     public static float calculateTemp(List<Measurement> measurements) {
         float temp = measurements.get(0).getTemperature();
         if(measurements.size() > 1) {
@@ -202,6 +270,9 @@ public class Measurement {
         return temp;
     }
 
+    /**
+     * Prints all values of class.
+     */
     public void print() {
         System.out.println(this.toString());
     }

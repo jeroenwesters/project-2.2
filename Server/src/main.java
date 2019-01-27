@@ -1,12 +1,9 @@
-import database.Database;
 import filesystem.FileWriter;
-import model.Measurement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Server program, for retrieving, converting and storing weather data
+ * @author      Emiel van Essen <emiel@teaspoongames.com>
+ * @version     1.1
+ * @since       1.0
  */
 public class main {
 
@@ -15,7 +12,7 @@ public class main {
      */
     public static void main(String[] args) throws Exception {
         // Create server
-        FileWriter writer = new FileWriter(100);
+        FileWriter writer = new FileWriter(2);
 //        List<String> data = new ArrayList<>();
 //        data.add("118550");
 //        data.add("2018-12-20");
