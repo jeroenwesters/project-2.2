@@ -54,15 +54,20 @@ public class FileWriter {
 
         ConvertMeasurement convertedMeasurement = new ConvertMeasurement(measurement, data -> {
             try {
-                if(!currentTime.equals(measurement.getTime().toString())) {
-                    currentTime = measurement.getTime().toString();
-                    amount = 0;
+                if(heapSize < 0) {
                     heapId = 0;
                 }
-                amount++;
-                if(amount > heapSize) {
-                    amount = 1;
-                    heapId++;
+                else {
+                    if (!currentTime.equals(measurement.getTime().toString())) {
+                        currentTime = measurement.getTime().toString();
+                        amount = 0;
+                        heapId = 0;
+                    }
+                    amount++;
+                    if (amount > heapSize) {
+                        amount = 1;
+                        heapId++;
+                    }
                 }
                 String filePath = "Measurements/" + (measurement.getDate().getYear() + 1900) + "/" + (measurement.getDate().getMonth() + 1) +  "/" + measurement.getDate().getDate() + "/" + measurement.getTime().getHours() + "/" + measurement.getTime().getMinutes() + "/" + measurement.getTime().getSeconds() + "/";
                 File measurementFile = new File(filePath + "measurementheap_" + heapId + ".bin");

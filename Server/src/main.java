@@ -12,7 +12,7 @@ public class main {
      */
     public static void main(String[] args) throws Exception {
         // Create server
-        FileWriter writer = new FileWriter(2);
+        FileWriter writer = new FileWriter(-1);
 //        List<String> data = new ArrayList<>();
 //        data.add("118550");
 //        data.add("2018-12-20");
