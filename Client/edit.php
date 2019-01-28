@@ -8,7 +8,6 @@
   }
   if(isset($_GET['id'])){
     $_SESSION['userid'] = substr($_GET['id'],1,-1);
-    echo $_SESSION['userid'];
     $userid = $_SESSION['userid'];
     $query = "SELECT * FROM users WHERE `userid` = '$userid'";
     $result = $conn->query($query);
