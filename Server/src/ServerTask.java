@@ -47,6 +47,8 @@ public class ServerTask extends Thread {
 
     private boolean isStarted = false;
     private boolean isMeasuring = false;
+    private boolean writeData = false;
+    private int writeSec = 10;
 
     /**
      * Constructor
@@ -128,6 +130,7 @@ public class ServerTask extends Thread {
                     isMeasuring = false;
                     currentMeasurement= 0;
 
+                    currentStation++;
                     // Increase index
                 }else{
                     // Process data
@@ -142,9 +145,12 @@ public class ServerTask extends Thread {
             // Stop reading weatherdata / reset
             if(input.equals("</WEATHERDATA>")){
                 isStarted = false;
-                currentStation++;
                 currentMeasurement = 0;
                 currentBacklog++;
+
+                if(writeData){
+                    exportData();
+                }
 
                 // Reset backlog index
                 if(currentBacklog >= max_backlog){
@@ -157,6 +163,7 @@ public class ServerTask extends Thread {
             isStarted = true;
             // System.out.println("Start processing");
             timeout = 0;
+            currentStation = 0;
         }
     }
 
@@ -171,6 +178,15 @@ public class ServerTask extends Thread {
                 }else if(input.contains(":")){
                     String res[] = input.split(":");
                     processArray(res);
+
+                    if(!writeData){
+                        int time =(int)stationData[currentStation][currentMeasurement-1][currentBacklog];
+
+                        if(time == writeSec){
+                            writeData = true;
+                            System.out.println("SAVING ON TIME: " + time);
+                        }
+                    }
                 }
             }else{
                 //System.out.println(currentMeasurement);
@@ -203,7 +219,7 @@ public class ServerTask extends Thread {
         currentMeasurement++;
     }
 
-    public String ParseData(String input){
+    private String ParseData(String input){
 
         Matcher m = regex.matcher(input);
 
@@ -217,5 +233,10 @@ public class ServerTask extends Thread {
         }
         // Missing
         return "";
+    }
+
+
+    private void exportData(){
+        writeData = false;
     }
 }
