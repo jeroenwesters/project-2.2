@@ -25,7 +25,7 @@ public class ServerTask extends Thread {
     Pattern regex = Pattern.compile("(>)(?<value>.*)(<)", Pattern.MULTILINE);
 
     // Multidimensional array containing stations, measurements and data
-    float stationData[][][] = new float[amount_stations][amount_measurements][max_backlog];
+    float stationData[][][] = new float[max_backlog][amount_stations][amount_measurements];
     int currentStation = 0;
     int currentMeasurement = 0;
     int currentBacklog = 0;
@@ -180,7 +180,7 @@ public class ServerTask extends Thread {
                     processArray(res);
 
                     if(!writeData){
-                        int time =(int)stationData[currentStation][currentMeasurement-1][currentBacklog];
+                        int time =(int)stationData[currentBacklog][currentStation][currentMeasurement-1];
 
                         if(time == writeSec){
                             writeData = true;
@@ -209,10 +209,10 @@ public class ServerTask extends Thread {
     private  void processInput(float data){
         // If not temp, append to history
         if(currentMeasurement != temp_id){
-            stationData[currentStation][currentMeasurement][currentBacklog] = data;
+            stationData[currentBacklog][currentStation][currentMeasurement] = data;
         }else{
             // Valide with 20% offset
-            stationData[currentStation][currentMeasurement][currentBacklog] = data;
+            stationData[currentBacklog][currentStation][currentMeasurement] = data;
         }
 
         //System.out.println(currentMeasurement);
@@ -238,5 +238,8 @@ public class ServerTask extends Thread {
 
     private void exportData(){
         writeData = false;
+
+        // Parse to method instead of assign
+        
     }
 }
