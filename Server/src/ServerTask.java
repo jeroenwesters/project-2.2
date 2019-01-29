@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // Handles server functions
 public class ServerTask extends Thread {
@@ -20,9 +22,10 @@ public class ServerTask extends Thread {
     private Socket socket = null;;
     private XMLParser parser = null;
     private FileWriter writer;
+    Pattern regex = Pattern.compile("(>)(?<value>.*)(<)", Pattern.MULTILINE);
 
     // Multidimensional array containing stations, measurements and data
-    String stationData[][][] = new String[amount_stations][amount_measurements][max_backlog];
+    float stationData[][][] = new float[amount_stations][amount_measurements][max_backlog];
     int currentStation = 0;
     int currentMeasurement = 0;
     int currentBacklog = 0;
@@ -55,9 +58,9 @@ public class ServerTask extends Thread {
         this.writer = writer;
 
         // Fill array
-        for (String[][] x : stationData) {
-            for (String[] y : x) {
-                Arrays.fill(y, "0");
+        for (float[][] x : stationData) {
+            for (float[] y : x) {
+                Arrays.fill(y, 0);
             }
         }
     }
@@ -91,8 +94,7 @@ public class ServerTask extends Thread {
                 if(input != null){
                     // Remove spaces from the input
                     input = input.replaceAll("\\s","");
-
-                    handleInput(input);
+                    checkInput(input);
                 }else{
                     timeout++;
                     if(timeout >= maxTimeout){
@@ -116,7 +118,7 @@ public class ServerTask extends Thread {
         }
     }
 
-    private void handleInput(String input){
+    private void checkInput(String input){
         // Are we started?
         if(isStarted){
             // Are we measuring
@@ -124,9 +126,12 @@ public class ServerTask extends Thread {
                 // If it's the end a measurement stop
                 if(input.equals("</MEASUREMENT>")){
                     isMeasuring = false;
+                    currentMeasurement= 0;
+
+                    // Increase index
                 }else{
                     // Process data
-                   // System.out.println("Reading data");
+                   handleInput(input);
                 }
 
             }else if(input.equals("<MEASUREMENT>")){
@@ -137,13 +142,75 @@ public class ServerTask extends Thread {
             // Stop reading weatherdata / reset
             if(input.equals("</WEATHERDATA>")){
                 isStarted = false;
+                currentStation++;
+                currentMeasurement = 0;
+                currentBacklog++;
+
+                // Reset backlog index
+                if(currentBacklog >= max_backlog){
+                    currentBacklog = 0;
+                }
             }else{
 
             }
         }else if(input.equals("<WEATHERDATA>")){
             isStarted = true;
-           // System.out.println("Start processing");
+            // System.out.println("Start processing");
             timeout = 0;
         }
+    }
+
+    private void handleInput(String input){
+        input = ParseData(input);
+
+        if(!input.equals("")){
+            if(currentMeasurement == 1 || currentMeasurement == 4){
+                if(input.contains("-")){
+                    String res[] = input.split("-");
+                    processArray(res);
+                }else if(input.contains(":")){
+                    String res[] = input.split(":");
+                    processArray(res);
+                }
+            }else{
+                //System.out.println(currentMeasurement);
+                // Parse value
+                processInput(Float.parseFloat(input));
+            }
+
+
+        }else{
+            //System.out.println("Null data, check old values / extrapolate!");
+        }
+    }
+
+    private void processArray(String data[]){
+        for(int x = 0; x < data.length; x++){
+            processInput(Float.parseFloat(data[x]));
+        }
+    }
+
+    private  void processInput(float data){
+        // If it's temperature ID then check 20% offset
+        // else append data to backlog
+
+        stationData[currentStation][currentMeasurement][currentBacklog] = data;
+
+        currentMeasurement++;
+    }
+
+    public String ParseData(String input){
+
+        Matcher m = regex.matcher(input);
+
+        if(m.find())
+        {
+            // Prepare result
+            //result[0] = m.group("tag");     // Assign tag
+            return m.group("value");   // Assign value
+
+        }
+        // Missing
+        return "";
     }
 }
