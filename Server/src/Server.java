@@ -43,7 +43,7 @@ public class Server {
     /**
      * Start thread
      */
-    public void run(FileWriter writer) throws IOException {
+    public void run() throws IOException {
 
         System.out.println(String.format("Server running on port: %d, with max: %d clients", socket_port, maxAllowedClients));
 
@@ -66,7 +66,7 @@ public class Server {
                 }
 
                 // Create thread with it's socket as parameter!
-                ServerTask s_task = new ServerTask(socket, writer);
+                ServerTask s_task = new ServerTask(socket);
                 // Run thread
                 s_task.start();
 

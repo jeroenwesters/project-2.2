@@ -12,7 +12,6 @@ public class main {
      */
     public static void main(String[] args) throws Exception {
         // Create server
-        FileWriter writer = new FileWriter(-1);
 //        List<String> data = new ArrayList<>();
 //        data.add("118550");
 //        data.add("2018-12-20");
@@ -51,6 +50,6 @@ public class main {
 
         Server server = new Server(800); // 10 clients
         // Run server (Could make a thread of it)
-        server.run(writer);
+        server.run();
     }
 }

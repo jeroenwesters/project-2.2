@@ -21,7 +21,6 @@ public class ServerTask extends Thread {
 
     private Socket socket = null;;
     private XMLParser parser = null;
-    private FileWriter writer;
     Pattern regex = Pattern.compile("(>)(?<value>.*)(<)", Pattern.MULTILINE);
 
     // Multidimensional array containing stations, measurements and data
@@ -56,10 +55,9 @@ public class ServerTask extends Thread {
      * Constructor
      * @param socket
      */
-    public ServerTask(Socket socket, FileWriter writer) {
+    public ServerTask(Socket socket) {
         parser = new XMLParser();
         this.socket = socket;
-        this.writer = writer;
 
         // Fill array
         for (float[][] x : stationData) {
@@ -187,7 +185,7 @@ public class ServerTask extends Thread {
                         if(time % writeSec == 0){
                             writeData = true;
                             writeBacklog = currentBacklog;
-                            System.out.println("SAVING ON TIME: " + time);
+                            //System.out.println("SAVING ON TIME: " + time);
                         }
                     }
                 }
@@ -240,11 +238,8 @@ public class ServerTask extends Thread {
 
 
     private void exportData(){
+        //TODO: De data word niet 1x verzonden, maar bij bijv 100x, worden alle 1000 metingen verstuurd x 100x.. verder werkt het prima
         writeData = false;
-
-        for(int s = 0; s < stationData[currentBacklog].length; s++){
-            writer.addMeasurement(stationData[writeBacklog][s]);
-        }
-
+        FileWriter.addMeasurements(stationData[writeBacklog]);
     }
 }
