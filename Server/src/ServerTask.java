@@ -50,6 +50,8 @@ public class ServerTask extends Thread {
     private boolean writeData = false;
     private int writeSec = 10;
 
+    private int writeBacklog = 0;
+
     /**
      * Constructor
      * @param socket
@@ -182,8 +184,9 @@ public class ServerTask extends Thread {
                     if(!writeData){
                         int time =(int)stationData[currentBacklog][currentStation][currentMeasurement-1];
 
-                        if(time == writeSec){
+                        if(time % writeSec == 0){
                             writeData = true;
+                            writeBacklog = currentBacklog;
                             System.out.println("SAVING ON TIME: " + time);
                         }
                     }
@@ -240,8 +243,8 @@ public class ServerTask extends Thread {
         writeData = false;
 
         for(int s = 0; s < stationData[currentBacklog].length; s++){
-            // Parse to method instead of assign
-            writer.addMeasurement(stationData[currentBacklog][s]);
+            writer.addMeasurement(stationData[writeBacklog][s]);
         }
+
     }
 }

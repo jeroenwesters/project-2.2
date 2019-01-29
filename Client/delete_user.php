@@ -12,6 +12,8 @@
   else{
     echo "An sql error has occured:";
     echo $sqlerror;
+    echo "<br><a href='admin.php'>Back to the admin panel";
+
   }
 
  ?>
