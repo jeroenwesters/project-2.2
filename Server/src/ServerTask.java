@@ -1,18 +1,13 @@
-import database.Database;
 import filesystem.FileWriter;
 import model.Measurement;
 
-import javax.xml.crypto.Data;
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-
 
 // Handles server functions
 public class ServerTask extends Thread {
@@ -26,13 +21,11 @@ public class ServerTask extends Thread {
     private XMLParser parser = null;
     private FileWriter writer;
 
-
     // Multidimensional array containing stations, measurements and data
     String stationData[][][] = new String[amount_stations][amount_measurements][max_backlog];
     int currentStation = 0;
     int currentMeasurement = 0;
     int currentBacklog = 0;
-
 
     // Use previous data if no data is avaible. (Can't be calculated!)
     private final int use_previous[] = {
