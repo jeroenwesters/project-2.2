@@ -239,7 +239,9 @@ public class ServerTask extends Thread {
     private void exportData(){
         writeData = false;
 
-        // Parse to method instead of assign
-        
+        for(int s = 0; s < stationData[currentBacklog].length; s++){
+            // Parse to method instead of assign
+            writer.addMeasurement(stationData[currentBacklog][s]);
+        }
     }
 }
