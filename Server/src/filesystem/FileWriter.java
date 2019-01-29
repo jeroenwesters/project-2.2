@@ -115,23 +115,8 @@ public class FileWriter {
     public void addMeasurement(float[] measurement) {
         byte[] data = convertToByteArray(measurement);
         try {
-            if(heapSize < 0) {
-                heapId = 0;
-            }
-            else {
-                if ((int)measurement[6] != currentTime) {
-                    currentTime = (int)measurement[6];
-                    amount = 0;
-                    heapId = 0;
-                }
-                amount++;
-                if (amount > heapSize) {
-                    amount = 1;
-                    heapId++;
-                }
-            }
-            String filePath = "/mnt/private/Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/" + (int)measurement[6] + "/";
-            File measurementFile = new File(filePath + "measurementheap_" + heapId + ".bin");
+            String filePath = "/mnt/private/Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/";
+            File measurementFile = new File(filePath + "measurement_" + (int)measurement[6] + ".bin");
             measurementFile.getParentFile().mkdirs();
             FileOutputStream fos = new FileOutputStream(measurementFile, true);
             fos.write(data);
