@@ -146,7 +146,7 @@ public class FileWriter {
     private byte[] convertToByteArray(float[] measurement) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
-            for (int i = 0; i < 18; i++) {
+            for (int i = 0; i < measurement.length; i++) {
                 outputStream.write(float2ByteArray(measurement[i]));
             }
 
