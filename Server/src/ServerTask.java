@@ -49,6 +49,9 @@ public class ServerTask extends Thread {
     private int timeout = 0;
     private int maxTimeout = 0;
 
+    private boolean isStarted = false;
+    private boolean isMeasuring = false;
+
     /**
      * Constructor
      * @param socket
@@ -91,8 +94,21 @@ public class ServerTask extends Thread {
                 // Read line (input)
                 input = reader.readLine();
 
-                // If there is no input, cancel
+
                 if(input != null){
+                    // Remove spaces from the input
+                    input = input.replaceAll("\\s","");
+
+                    handleInput(input);
+                }else{
+                    System.out.println("NuLL data input");
+                }
+
+                // If not null.
+                // else timout
+
+                // If there is no input, cancel
+                if(input == null && input != null){
                     timeout = 0;
 
                     // Remove spaces from the input
@@ -227,7 +243,6 @@ public class ServerTask extends Thread {
                         }
                     }
                     input = "";
-
                 }else{
                     timeout++;
 
@@ -235,8 +250,6 @@ public class ServerTask extends Thread {
                         break;
                     }
                 }
-
-
             }
         }
         catch (IOException e) {
@@ -250,6 +263,38 @@ public class ServerTask extends Thread {
             } catch (IOException e) {
                 System.out.println("Couldn't close socket");
             }
+        }
+    }
+
+    private void handleInput(String input){
+        // Are we started?
+        if(isStarted){
+            // Are we measuring
+            if(isMeasuring){
+                if(input.equals("</MEASUREMENT>")){
+                    isMeasuring = false;
+                }else{
+                    // Process data
+                    System.out.println("Reading data");
+                }
+
+            }else if(input.equals("<MEASUREMENT>")){
+                isMeasuring = true;
+            }
+
+
+            // Stop reading weatherdata / reset
+            if(input.equals("</WEATHERDATA>")){
+                isStarted = false;
+                System.out.println("Processed data");
+
+            }else{
+
+            }
+        }else if(input.equals("<WEATHERDATA>")){
+            isStarted = true;
+            System.out.println("Start processing");
+
         }
     }
 
