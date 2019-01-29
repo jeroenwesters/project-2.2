@@ -69,7 +69,8 @@ public class FileWriter {
                         heapId++;
                     }
                 }
-                String filePath = "Measurements/" + (measurement.getDate().getYear() + 1900) + "/" + (measurement.getDate().getMonth() + 1) +  "/" + measurement.getDate().getDate() + "/" + measurement.getTime().getHours() + "/" + measurement.getTime().getMinutes() + "/" + measurement.getTime().getSeconds() + "/";
+                //String filePath = "Measurements/" + (measurement.getDate().getYear() + 1900) + "/" + (measurement.getDate().getMonth() + 1) +  "/" + measurement.getDate().getDate() + "/" + measurement.getTime().getHours() + "/" + measurement.getTime().getMinutes() + "/" + measurement.getTime().getSeconds() + "/";
+                String filePath = "/mnt/private/Measurements/" + (measurement.getDate().getYear() + 1900) + "/" + (measurement.getDate().getMonth() + 1) +  "/" + measurement.getDate().getDate() + "/" + measurement.getTime().getHours() + "/" + measurement.getTime().getMinutes() + "/" + measurement.getTime().getSeconds() + "/";
                 File measurementFile = new File(filePath + "measurementheap_" + heapId + ".bin");
                 measurementFile.getParentFile().mkdirs();
                 FileOutputStream fos = new FileOutputStream(measurementFile, true);
