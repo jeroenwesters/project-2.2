@@ -1,23 +1,34 @@
 <!doctype html> <!-- open html-->
+<?php
+  // require all necessary files
+  require "config.php";
+  // require 'menu.php';
+  require 'session.php';
+  // require 'right.php';
+
+ ?>
 <html lang="en">
 <head>
   <link rel="stylesheet" type="text/css" href="style/style.css">
 </head>
-
 <body>
-<div class="header">
-  <a href="webpage.php"></a>
+  <ul>
+    <li><a href='webpage.php'><img src='pictures/vectorpaint2.svg' width="80px"></a></li> 
+    <li><a href='webpage.php'>Home</a></li>
+    <li><a href='view1.php'>View 1</a></li>
+    <li><a href='view2.php'>View 2</a></li>
+    <li><a href='view3.php'>View 3</a></li>
+    <li style="float:right"><a class="active" href="logout.php">Logout</a></li>
+    <li style="float:right"><a href="account.php">Account</a></li>
+    <?php
+      if($_SESSION['admin'] == 1){ //only display the admin panel when the user has admin rights
+        echo "<li style='float:right'><a href='admin.php'>Admin Panel</a></li>";
+      }
+     ?>
+  </ul>
+</body>
 
-  <p align="left">OneIT, project 2.2</p>
-</div>
 <?php
-
-// require all necessary files
-require "config.php";
-require 'menu.php';
-require 'session.php';
-require 'right.php';
-
 // check if the user is logged in
 if($_SESSION['loggedIn'] != true){
   header("Location: login.php");//if the user is not logged in, redirect the user to the login page
