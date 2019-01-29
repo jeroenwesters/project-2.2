@@ -112,6 +112,52 @@ public class FileWriter {
         return null;
     }
 
+    public void addMeasurement(float[] measurement) {
+        byte[] data = convertToByteArray(measurement);
+        try {
+            if(heapSize < 0) {
+                heapId = 0;
+            }
+            else {
+                if ((int)measurement[6] != currentTime) {
+                    currentTime = (int)measurement[6];
+                    amount = 0;
+                    heapId = 0;
+                }
+                amount++;
+                if (amount > heapSize) {
+                    amount = 1;
+                    heapId++;
+                }
+            }
+            String filePath = "/mnt/private/Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/" + (int)measurement[6] + "/";
+            File measurementFile = new File(filePath + "measurementheap_" + heapId + ".bin");
+            measurementFile.getParentFile().mkdirs();
+            FileOutputStream fos = new FileOutputStream(measurementFile, true);
+            fos.write(data);
+            fos.close();
+            fos.flush();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private byte[] convertToByteArray(float[] measurement) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            for (float item : measurement) {
+                outputStream.write(float2ByteArray(item));
+            }
+
+            return outputStream.toByteArray();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private static byte [] float2ByteArray (float value)
     {
         return ByteBuffer.allocate(4).putFloat(value).array();
