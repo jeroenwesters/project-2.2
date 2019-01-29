@@ -33,7 +33,7 @@ public class FileWriter {
     /**
      * Current timestamp
      */
-    private String currentTime = "";
+    private int currentTime = -1;
 
     /**
      * Constructor.
@@ -51,80 +51,38 @@ public class FileWriter {
      * @param measurement The measurement to be added.
      */
     public void addMeasurement(Measurement measurement) {
-
-        ConvertMeasurement convertedMeasurement = new ConvertMeasurement(measurement, data -> {
-            try {
-                if(heapSize < 0) {
+        byte[] data = convertToByteArray(measurement);
+        try {
+            if(heapSize < 0) {
+                heapId = 0;
+            }
+            else {
+                if (measurement.getTime().getSeconds() != currentTime) {
+                    currentTime = measurement.getTime().getSeconds();
+                    amount = 0;
                     heapId = 0;
                 }
-                else {
-                    if (!currentTime.equals(measurement.getTime().toString())) {
-                        currentTime = measurement.getTime().toString();
-                        amount = 0;
-                        heapId = 0;
-                    }
-                    amount++;
-                    if (amount > heapSize) {
-                        amount = 1;
-                        heapId++;
-                    }
+                amount++;
+                if (amount > heapSize) {
+                    amount = 1;
+                    heapId++;
                 }
-                String filePath = "Measurements/" + (measurement.getDate().getYear() + 1900) + "/" + (measurement.getDate().getMonth() + 1) +  "/" + measurement.getDate().getDate() + "/" + measurement.getTime().getHours() + "/" + measurement.getTime().getMinutes() + "/" + measurement.getTime().getSeconds() + "/";
-                File measurementFile = new File(filePath + "measurementheap_" + heapId + ".bin");
-                measurementFile.getParentFile().mkdirs();
-                FileOutputStream fos = new FileOutputStream(measurementFile, true);
-                fos.write(data);
-                fos.close();
-                fos.flush();
             }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        Thread writerThread = new Thread(convertedMeasurement);
-        writerThread.run();
-    }
-}
-
-/**
- * @author      Emiel van Essen <emiel@teaspoongames.com>
- * @version     1.1
- * @since       1.0
- */
-class ConvertMeasurement implements Runnable {
-
-    /**
-     * The measurement to be converted.
-     */
-    private Measurement measurement;
-
-    /**
-     * The result of the conversion.
-     */
-    private byte[] array;
-
-    /**
-     * The callback for the completion.
-     */
-    private ConvertedListener listener;
-
-    /**
-     * Constructor.
-     * @param measurement The measurement to be converted.
-     * @param listener The callback for the completion.
-     */
-    public ConvertMeasurement(Measurement measurement, ConvertedListener listener) {
-        this.measurement = measurement;
-        this.listener = listener;
+            //String filePath = "Measurements/" + (measurement.getDate().getYear() + 1900) + "/" + (measurement.getDate().getMonth() + 1) +  "/" + measurement.getDate().getDate() + "/" + measurement.getTime().getHours() + "/" + measurement.getTime().getMinutes() + "/" + measurement.getTime().getSeconds() + "/";
+            String filePath = "/mnt/private/Measurements/" + (measurement.getDate().getYear() + 1900) + "/" + (measurement.getDate().getMonth() + 1) +  "/" + measurement.getDate().getDate() + "/" + measurement.getTime().getHours() + "/" + measurement.getTime().getMinutes() + "/" + measurement.getTime().getSeconds() + "/";
+            File measurementFile = new File(filePath + "measurementheap_" + heapId + ".bin");
+            measurementFile.getParentFile().mkdirs();
+            FileOutputStream fos = new FileOutputStream(measurementFile, true);
+            fos.write(data);
+            fos.close();
+            fos.flush();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * Converts measurement to byte array.
-     * <p>
-     * Converts every value of the measurement to 32-bit float and puts the 4 bytes in a byte Array.
-     * Passes the result in the callback
-     */
-    public synchronized void run() {
+    private byte[] convertToByteArray(Measurement measurement) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             outputStream.write(float2ByteArray(measurement.getStationNumber()));
@@ -146,38 +104,62 @@ class ConvertMeasurement implements Runnable {
             outputStream.write(float2ByteArray(measurement.getCloudsPercentage()));
             outputStream.write(float2ByteArray(measurement.getWindDirection()));
 
-            array = outputStream.toByteArray();
-            listener.onConverted(array);
+            return outputStream.toByteArray();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    public void addMeasurement(float[] measurement) {
+        byte[] data = convertToByteArray(measurement);
+        try {
+            if(heapSize < 0) {
+                heapId = 0;
+            }
+            else {
+                if ((int)measurement[6] != currentTime) {
+                    currentTime = (int)measurement[6];
+                    amount = 0;
+                    heapId = 0;
+                }
+                amount++;
+                if (amount > heapSize) {
+                    amount = 1;
+                    heapId++;
+                }
+            }
+            String filePath = "/mnt/private/Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/" + (int)measurement[6] + "/";
+            File measurementFile = new File(filePath + "measurementheap_" + heapId + ".bin");
+            measurementFile.getParentFile().mkdirs();
+            FileOutputStream fos = new FileOutputStream(measurementFile, true);
+            fos.write(data);
+            fos.close();
+            fos.flush();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Converts float value to byte array of 4 bytes.
-     * @return The byte array
-     */
+    private byte[] convertToByteArray(float[] measurement) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            for (int i = 0; i < measurement.length; i++) {
+                outputStream.write(float2ByteArray(measurement[i]));
+            }
+
+            return outputStream.toByteArray();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private static byte [] float2ByteArray (float value)
     {
         return ByteBuffer.allocate(4).putFloat(value).array();
-    }
-
-    /**
-     * Converts int value to byte array of 4 bytes.
-     * @return The byte array
-     */
-    private static byte [] int2ByteArray (int value)
-    {
-        return ByteBuffer.allocate(4).putInt(value).array();
-    }
-
-    /**
-     * Gets the data
-     * @return The byte array
-     */
-    public byte[] getData() {
-        return array;
     }
 }

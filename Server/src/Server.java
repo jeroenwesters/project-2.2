@@ -56,25 +56,20 @@ public class Server {
             // Keep searching!
             while (true) {
 
-                // Check if we have reached the maximum amount of clients.
-                if(clientCount < maxAllowedClients){
-                    Socket socket = listener.accept();
+            // Check if we have reached the maximum amount of clients.
+                Socket socket = listener.accept();
 
-                    AddClient();
-                    // Debug line, to see how many clients there are
-                    if(clientCount % 100 == 0){
-                        System.out.println(String.format("Client count: >= %d", clientCount));
-                    }
-
-                    // Create thread with it's socket as parameter!
-                    ServerTask s_task = new ServerTask(socket, writer);
-                    // Run thread
-                    s_task.start();
-
-                }else{
-                    // Debug the amount
-                    // System.out.println("Client count is now: " + clientCount);
+                AddClient();
+                // Debug line, to see how many clients there are
+                if(clientCount % 100 == 0){
+                    System.out.println(String.format("Client count: >= %d", clientCount));
                 }
+
+                // Create thread with it's socket as parameter!
+                ServerTask s_task = new ServerTask(socket, writer);
+                // Run thread
+                s_task.start();
+
             }
         }
         finally {
