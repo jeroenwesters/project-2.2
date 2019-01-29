@@ -16,7 +16,7 @@ public class ServerTask extends Thread {
 
     // Generator settings (amount of stations and measurements)
     private final int amount_stations = 10;         // in each <weatherdata>
-    private  final int amount_measurements = 14;    // in each <measurement>
+    private  final int amount_measurements = 18;    // in each <measurement>
     private  final int max_backlog = 30;            // Amount of saved values (for calculations and corrections)
 
     private Socket socket = null;;
@@ -39,7 +39,7 @@ public class ServerTask extends Thread {
     };
 
     // Temperature index, (To know if we need to calculate average or extrapolate)
-    private final int temp_id = 3;
+    private final int temp_id = 7;
 
 
     private int timeout = 0;
@@ -47,6 +47,8 @@ public class ServerTask extends Thread {
 
     private boolean isStarted = false;
     private boolean isMeasuring = false;
+    private boolean writeData = false;
+    private int writeSec = 10;
 
     /**
      * Constructor
@@ -128,6 +130,7 @@ public class ServerTask extends Thread {
                     isMeasuring = false;
                     currentMeasurement= 0;
 
+                    currentStation++;
                     // Increase index
                 }else{
                     // Process data
@@ -142,9 +145,12 @@ public class ServerTask extends Thread {
             // Stop reading weatherdata / reset
             if(input.equals("</WEATHERDATA>")){
                 isStarted = false;
-                currentStation++;
                 currentMeasurement = 0;
                 currentBacklog++;
+
+                if(writeData){
+                    exportData();
+                }
 
                 // Reset backlog index
                 if(currentBacklog >= max_backlog){
@@ -157,6 +163,7 @@ public class ServerTask extends Thread {
             isStarted = true;
             // System.out.println("Start processing");
             timeout = 0;
+            currentStation = 0;
         }
     }
 
@@ -171,6 +178,15 @@ public class ServerTask extends Thread {
                 }else if(input.contains(":")){
                     String res[] = input.split(":");
                     processArray(res);
+
+                    if(!writeData){
+                        int time =(int)stationData[currentStation][currentMeasurement-1][currentBacklog];
+
+                        if(time == writeSec){
+                            writeData = true;
+                            System.out.println("SAVING ON TIME: " + time);
+                        }
+                    }
                 }
             }else{
                 //System.out.println(currentMeasurement);
@@ -191,15 +207,19 @@ public class ServerTask extends Thread {
     }
 
     private  void processInput(float data){
-        // If it's temperature ID then check 20% offset
-        // else append data to backlog
+        // If not temp, append to history
+        if(currentMeasurement != temp_id){
+            stationData[currentStation][currentMeasurement][currentBacklog] = data;
+        }else{
+            // Valide with 20% offset
+            stationData[currentStation][currentMeasurement][currentBacklog] = data;
+        }
 
-        stationData[currentStation][currentMeasurement][currentBacklog] = data;
-
+        //System.out.println(currentMeasurement);
         currentMeasurement++;
     }
 
-    public String ParseData(String input){
+    private String ParseData(String input){
 
         Matcher m = regex.matcher(input);
 
@@ -207,10 +227,16 @@ public class ServerTask extends Thread {
         {
             // Prepare result
             //result[0] = m.group("tag");     // Assign tag
+            //System.out.println(input);
             return m.group("value");   // Assign value
 
         }
         // Missing
         return "";
+    }
+
+
+    private void exportData(){
+        writeData = false;
     }
 }
