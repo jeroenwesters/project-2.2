@@ -92,7 +92,9 @@ public class ServerTask extends Thread {
                 input = reader.readLine();
 
                 // If there is no input, cancel
-                if(input == null){
+                if(input != null){
+                    timeout = 0;
+
                     // Remove spaces from the input
                     input = input.replaceAll("\\s","");
 
@@ -141,7 +143,7 @@ public class ServerTask extends Thread {
                                 currentSecond = measurement.getTime().getSeconds();
                             }
                             if(currentSecond % savePerSecond == 0) {
-                                this.writer.addMeasurement(measurement);
+                                //this.writer.addMeasurement(measurement);
                             }
                         }else{
                             // Convert string (to get variable)
@@ -174,14 +176,14 @@ public class ServerTask extends Thread {
                                     // Assign the data from the backlog
                                     data = stationData[currentStation][currentMeasurement][backlog];
                                     // Debug
-                                    System.out.println("New data: " + input + "  " + data);
+                                    //System.out.println("New data: " + input + "  " + data);
 
 
 
 
                                 }else{
                                     // Todo: EXTRAPOLATE!
-                                    System.out.println("EXTRAPOLATE data: " + input + "  -  " + data);
+                                    //System.out.println("EXTRAPOLATE data: " + input + "  -  " + data);
 
 
                                     //data = CorrectMissingData(stationData, currentStation, currentMeasurement, currentBacklog);
@@ -225,8 +227,7 @@ public class ServerTask extends Thread {
                         }
                     }
                     input = "";
-                    timeout = 0;
-                    
+
                 }else{
                     timeout++;
 
