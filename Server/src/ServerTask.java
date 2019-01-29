@@ -16,7 +16,7 @@ public class ServerTask extends Thread {
 
     // Generator settings (amount of stations and measurements)
     private final int amount_stations = 10;         // in each <weatherdata>
-    private  final int amount_measurements = 14;    // in each <measurement>
+    private  final int amount_measurements = 18;    // in each <measurement>
     private  final int max_backlog = 30;            // Amount of saved values (for calculations and corrections)
 
     private Socket socket = null;;
@@ -39,7 +39,7 @@ public class ServerTask extends Thread {
     };
 
     // Temperature index, (To know if we need to calculate average or extrapolate)
-    private final int temp_id = 3;
+    private final int temp_id = 7;
 
 
     private int timeout = 0;
@@ -191,11 +191,15 @@ public class ServerTask extends Thread {
     }
 
     private  void processInput(float data){
-        // If it's temperature ID then check 20% offset
-        // else append data to backlog
+        // If not temp, append to history
+        if(currentMeasurement != temp_id){
+            stationData[currentStation][currentMeasurement][currentBacklog] = data;
+        }else{
+            // Valide with 20% offset
+            stationData[currentStation][currentMeasurement][currentBacklog] = data;
+        }
 
-        stationData[currentStation][currentMeasurement][currentBacklog] = data;
-
+        //System.out.println(currentMeasurement);
         currentMeasurement++;
     }
 
@@ -207,6 +211,7 @@ public class ServerTask extends Thread {
         {
             // Prepare result
             //result[0] = m.group("tag");     // Assign tag
+            //System.out.println(input);
             return m.group("value");   // Assign value
 
         }
