@@ -83,8 +83,8 @@ class FilePusher implements Runnable {
     public void run() {
         try {
 //          String filePath = "/mnt/private/Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/";
-            String filePath = "Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/";
-            File measurementFile = new File(filePath + "measurement_" + (int)measurement[6] + ".bin");
+            String filePath = "Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/" + (int)measurement[6] + "/";
+            File measurementFile = new File(filePath + "measurements.bin");
             measurementFile.getParentFile().mkdirs();
             // TODO: reenable appending once issue is fixed to check if issue is really fixed.
             FileOutputStream fos = new FileOutputStream(measurementFile, false);
