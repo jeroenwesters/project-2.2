@@ -38,7 +38,7 @@ Create a new account:
 <br>
 <br>
 <br>
-  <table width="80%" border="1" align="center">
+  <table width="80%" border="1">
     <thead>
       <tr>
         <th><strong>Number</strong></th>
