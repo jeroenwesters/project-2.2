@@ -7,3 +7,4 @@ Server/Server\.iml
 out/
 .idea/
 *.bin
+/Client/include/settings.php
