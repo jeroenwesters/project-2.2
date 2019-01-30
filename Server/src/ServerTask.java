@@ -1,13 +1,10 @@
 import filesystem.FileWriter;
-import model.Measurement;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,8 +16,7 @@ public class ServerTask extends Thread {
     private  final int amount_measurements = 18;    // in each <measurement>
     private  final int max_backlog = 30;            // Amount of saved values (for calculations and corrections)
 
-    private Socket socket = null;;
-    private XMLParser parser = null;
+    private Socket socket = null;
     Pattern regex = Pattern.compile("(>)(?<value>.*)(<)", Pattern.MULTILINE);
 
     // Multidimensional array containing stations, measurements and data
@@ -50,13 +46,13 @@ public class ServerTask extends Thread {
     private int writeSec = 10;
 
     private int writeBacklog = 0;
+    String input = "";
 
     /**
      * Constructor
      * @param socket
      */
     public ServerTask(Socket socket) {
-        parser = new XMLParser();
         this.socket = socket;
 
         // Fill array
@@ -75,15 +71,6 @@ public class ServerTask extends Thread {
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            // Create data container
-            List<String> measurementData = new ArrayList<>();
-
-            boolean isReading = false;
-
-            String input = "";
-            int currentSecond = -1;
-            int savePerSecond = 10;
 
 
             // Infinite loop to prevent thread from stopping
