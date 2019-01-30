@@ -1,13 +1,17 @@
 div.footer {
   width:100%;
-  position:absolute;
+  position:relative;
   bottom:0;
 }
 
 div.body {
   width: 80%;;
-  margin-left: 12%;
-  border:1px solid black;
+  margin-left: 10%;
+  margin-top: 48px;
+  background-color: #f2f2f2;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #333;
 }
 
 div.center {
@@ -54,8 +58,9 @@ ul{
   padding: 0;
   overflow: hidden;
   background-color: #333;
-  /* height: 50px; */
-
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 li{

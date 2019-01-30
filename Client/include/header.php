@@ -13,8 +13,8 @@
 </head>
 <body>
   <ul>
-    <li><a href='webpage.php'><img src='pictures/vectorpaint2.svg' width="80px"></a></li> 
-    <li><a href='webpage.php'>Home</a></li>
+    <li><a href='webpage.php'><img src='pictures/vectorpaint2.svg' width="70px"></a></li>
+    <!-- <li><a href='webpage.php'>Home</a></li> -->
     <li><a href='view1.php'>View 1</a></li>
     <li><a href='view2.php'>View 2</a></li>
     <li><a href='view3.php'>View 3</a></li>

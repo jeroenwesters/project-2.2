@@ -38,7 +38,7 @@
     if (count($result) > 0) //Check if the username is stored in the database
     {
       $hash = $result[0]["password"]; //puts the password in a hash
-      if($password == $hash) //if the password is correct
+      if(password_verify($password, $hash) == true) //if the password is correct
       {
         //Set the session variables
         $_SESSION['loggedIn'] = true;
