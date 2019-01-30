@@ -22,8 +22,9 @@
       echo $error;
     }
     else{
+      $hashedPassword = password_hash($password0, PASSWORD_BCRYPT);
       $query = "INSERT INTO `users` (`userid`, `username`, `password`, `admin`)
-              VALUES (NULL, '$username', '$password0', '$admin')";
+              VALUES (NULL, '$username', '$hashedPassword', '$admin')";
       $result = doQuery($conn, $query);
       $sqlerror = $conn->error;
       if(strlen($sqlerror) < 1){

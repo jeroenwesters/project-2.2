@@ -48,7 +48,7 @@
         header("Location: webpage.php");  //redirect the user to the webpage
       }
       else {
-      echo "<script>alert('Wachtwoord incorrect')</script>";
+      echo "<br>Wachtwoord incorrect<br>";
       }
     }
     else{
