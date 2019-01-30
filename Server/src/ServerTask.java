@@ -28,9 +28,7 @@ public class ServerTask extends Thread {
     // Use previous data if no data is avaible. (Can't be calculated!)
     private final int use_previous[] = {
             0,  // Station number
-            1,  // Date
-            2,  // Time
-            11, // FRSHTT (events, binary)
+            15  // FRSHTT (events, binary)
     };
 
     // Temperature index, (To know if we need to calculate average or extrapolate)
@@ -155,6 +153,7 @@ public class ServerTask extends Thread {
     }
 
     private void handleInput(String input){
+        String desc = input;
         input = ParseData(input);
 
         if(!input.equals("")){
@@ -184,9 +183,49 @@ public class ServerTask extends Thread {
 
 
         }else{
-            //System.out.println("Null data, check old values / extrapolate!");
+            // Recover missing value
+            boolean usePrevious = false;
+            float newVariable = 0;
+
+            // No data, check if we can use previous data:
+            for(int d = 0; d < use_previous.length; d++){
+                if(currentMeasurement == use_previous[d]){
+                    // use previous data
+                    usePrevious = true;
+                    newVariable = getPreviousData();
+                    break;
+                }
+            }
+
+            // Extrapolate Variable!
+            if(!usePrevious){
+                newVariable = extrapolateCurrentValue();
+            }
+
+            processInput(newVariable);
         }
     }
+
+    /**
+     * Extrapolates current value based on previous measurements.
+     */
+    private float extrapolateCurrentValue() {
+        System.out.println("This value needs to be extrapolated, not implemented!");
+        return 0.0f;
+    }
+
+    private float getPreviousData(){
+        int backlogToUse = currentBacklog - 1;
+
+        if(backlogToUse < 0){
+            backlogToUse = max_backlog - 1;
+        }
+
+        // Return the most recent value!
+        return stationData[backlogToUse][currentStation][currentMeasurement];
+
+    }
+
 
     private void processArray(String data[]){
         for(int x = 0; x < data.length; x++){
@@ -199,11 +238,16 @@ public class ServerTask extends Thread {
         if(currentMeasurement != temp_id){
             stationData[currentBacklog][currentStation][currentMeasurement] = data;
         }else{
-            // Valide with 20% offset
+            // TODO: Valide with 20% offset
+            System.out.println("Validate 20% offset of temperature! (Keep in mind the ranges for the 20%)");
+
+            //if NOT within range
+            // data = extrapolateCurrentValue();
+
             stationData[currentBacklog][currentStation][currentMeasurement] = data;
         }
 
-        //System.out.println(currentMeasurement);
+        // Increment current measure index
         currentMeasurement++;
     }
 
@@ -222,7 +266,6 @@ public class ServerTask extends Thread {
         // Missing
         return "";
     }
-
 
     private void exportData(){
         //TODO: De data word niet 1x verzonden, maar bij bijv 100x, worden alle 1000 metingen verstuurd x 100x.. verder werkt het prima
