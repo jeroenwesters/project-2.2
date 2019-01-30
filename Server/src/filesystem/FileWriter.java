@@ -33,7 +33,6 @@ public class FileWriter {
             // Start thread to proccess the buffer!
 
 
-
             FilePusher fp = new FilePusher((ArrayList)dataBuffer.clone(), new int[]{(int)measurement[1], (int)measurement[2],
                     (int)measurement[3], (int)measurement[4], (int)measurement[5], (int)measurement[6]});
 
@@ -96,18 +95,10 @@ class FilePusher implements Runnable {
         }
 
         try {
-//          String filePath = "/mnt/private/Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/";
-
-            // Final use!
-            //String filePath = "Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/" + (int)measurement[6] + "/";
-            //File measurementFile = new File(filePath + "measurements.bin");
-
-
             String filePath = "Measurements/" + (int)datetime[0] + "/" + (int)datetime[1] +  "/" + (int)datetime[2] + "/" + (int)datetime[3] + "/" + (int)datetime[4] + "/";
             File measurementFile = new File(filePath + "measurement_" +  (int)datetime[5] + ".bin");
             measurementFile.getParentFile().mkdirs();
 
-            // TODO: reenable appending once issue is fixed to check if issue is really fixed.
             FileOutputStream fos = new FileOutputStream(measurementFile, true);
             fos.write(stream.toByteArray());
             fos.flush();

@@ -210,6 +210,7 @@ public class ServerTask extends Thread {
      * Extrapolates current value based on previous measurements.
      */
     private float extrapolateCurrentValue() {
+        // Todo:
         System.out.println("This value needs to be extrapolated, not implemented!");
         return 0.0f;
     }
@@ -268,10 +269,8 @@ public class ServerTask extends Thread {
     }
 
     private void exportData(){
-        //TODO: De data word niet 1x verzonden, maar bij bijv 100x, worden alle 1000 metingen verstuurd x 100x.. verder werkt het prima
         writeData = false;
         FileWriter.addMeasurements(stationData[writeBacklog]);
-
         //FileWriter.addMeasurements(stationData[writeBacklog].clone());
     }
 }
