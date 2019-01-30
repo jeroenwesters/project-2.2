@@ -1,4 +1,5 @@
 import filesystem.FileWriter;
+import model.Measurement;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,15 +13,17 @@ import java.util.regex.Pattern;
 public class ServerTask extends Thread {
 
     // Generator settings (amount of stations and measurements)
-    private final int amount_stations = 10;         // in each <weatherdata>
-    private  final int amount_measurements = 18;    // in each <measurement>
-    private  final int max_backlog = 30;            // Amount of saved values (for calculations and corrections)
+    private final int AMOUNT_STATIONS = 10;         // in each <weatherdata>
+    private final int AMOUNT_MEASUREMENTS = 18;    // in each <measurement>
+    private final int MAX_BACKLOG = 30;            // Amount of saved values (for calculations and corrections)
+    private final int MAX_TEMP_DIFFERENCE = 20;
+    private final int TEMP_DIFFERENCE_OFFSET = 2;
 
     private Socket socket = null;
     Pattern regex = Pattern.compile("(>)(?<value>.*)(<)", Pattern.MULTILINE);
 
     // Multidimensional array containing stations, measurements and data
-    float stationData[][][] = new float[max_backlog][amount_stations][amount_measurements];
+    float stationData[][][] = new float[MAX_BACKLOG][AMOUNT_STATIONS][AMOUNT_MEASUREMENTS];
     int currentStation = 0;
     int currentMeasurement = 0;
     int currentBacklog = 0;
@@ -138,7 +141,7 @@ public class ServerTask extends Thread {
                 }
 
                 // Reset backlog index
-                if(currentBacklog >= max_backlog){
+                if(currentBacklog >= MAX_BACKLOG){
                     currentBacklog = 0;
                 }
             }else{
@@ -210,21 +213,33 @@ public class ServerTask extends Thread {
      * Extrapolates current value based on previous measurements.
      */
     private float extrapolateCurrentValue() {
-        // Todo:
-        System.out.println("This value needs to be extrapolated, not implemented!");
-        return 0.0f;
+        // TODO:
+        float temp = stationData[currentBacklog][currentStation][currentMeasurement];
+        if(stationData.length > 1) {
+            float bT = stationData[currentBacklog][currentStation][currentMeasurement];
+            float eT = stationData[currentBacklog - MAX_BACKLOG][currentStation][currentMeasurement];
+
+            float x = eT - bT;
+            temp = (x / (stationData.length - 1) + eT);
+            System.out.println(String.format("begin: %.1f   -----   end: %.1f     extra: %.3f", bT, eT, temp));
+        }
+        else {
+            System.out.println(String.format("begin: %.1f   -----   end: %.1f     extra: %.1f", temp, temp, temp));
+        }
+        return temp;
+        //System.out.println("This value needs to be extrapolated, not implemented!");
+        //return 0.0f;
     }
 
     private float getPreviousData(){
         int backlogToUse = currentBacklog - 1;
 
         if(backlogToUse < 0){
-            backlogToUse = max_backlog - 1;
+            backlogToUse = MAX_BACKLOG - 1;
         }
 
         // Return the most recent value!
         return stationData[backlogToUse][currentStation][currentMeasurement];
-
     }
 
 
@@ -240,12 +255,21 @@ public class ServerTask extends Thread {
             stationData[currentBacklog][currentStation][currentMeasurement] = data;
         }else{
             // TODO: Valide with 20% offset
+
             System.out.println("Validate 20% offset of temperature! (Keep in mind the ranges for the 20%)");
 
             //if NOT within range
             // data = extrapolateCurrentValue();
-
-            stationData[currentBacklog][currentStation][currentMeasurement] = data;
+            float diff = Math.abs(data - stationData[currentBacklog-1][currentStation][currentMeasurement]);
+            if(diff > TEMP_DIFFERENCE_OFFSET) {
+                if((stationData[currentBacklog-1][currentStation][currentMeasurement] / data) * 100 <= MAX_TEMP_DIFFERENCE) {
+                    stationData[currentBacklog][currentStation][currentMeasurement] = data;
+                }
+                else
+                {
+                    stationData[currentBacklog][currentStation][currentMeasurement] = extrapolateCurrentValue();
+                }
+            }
         }
 
         // Increment current measure index
