@@ -17,8 +17,9 @@ public class FileWriter {
      * Amount of measurements/stations per measurement file.
      */
     private static ByteArrayOutputStream stream;
+    private static ByteArrayOutputStream oldStream = null;
+
     private static int currentMeasurementCollection = -1;
-    private static int currentJob = 0;
 
     /**
      * Adds measurement to file system.
@@ -27,29 +28,37 @@ public class FileWriter {
      *
      * @param measurement The measurement to be added.
      */
-    private static synchronized void addMeasurement(float[] measurement) {
+    private static synchronized boolean addMeasurement(float[] measurement) {
         if(currentMeasurementCollection != (int)measurement[6]) {
             currentMeasurementCollection = (int)measurement[6];
             addToByteArray(measurement, true);
+            return true;
         }
         else {
             addToByteArray(measurement, false);
         }
+
+        return  false;
     }
 
     public static synchronized void addMeasurements(float[][] measurements) {
+
         for (float[] measurement : measurements) {
             addMeasurement(measurement);
         }
-        if (stream != null) {
-            FilePusher fp = new FilePusher(stream, measurements[0]);
+
+        if (oldStream != null) {
+            FilePusher fp = new FilePusher(oldStream, measurements[0]);
             fp.start();
+            oldStream = null;
         }
     }
 
     private static void addToByteArray(float[] measurement, boolean newCollection) {
         if(stream == null || newCollection) {
+            oldStream = stream;
             stream = new ByteArrayOutputStream();
+
         }
         try {
             for (int i = 0; i < measurement.length; i++) {
@@ -83,14 +92,23 @@ class FilePusher implements Runnable {
     public void run() {
         try {
 //          String filePath = "/mnt/private/Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/";
-            String filePath = "Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/" + (int)measurement[6] + "/";
-            File measurementFile = new File(filePath + "measurements.bin");
+
+            // Final use!
+            //String filePath = "Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/" + (int)measurement[6] + "/";
+            //File measurementFile = new File(filePath + "measurements.bin");
+
+
+            String filePath = "Measurements/" + (int)measurement[1] + "/" + (int)measurement[2] +  "/" + (int)measurement[3] + "/" + (int)measurement[4] + "/" + (int)measurement[5] + "/";
+            File measurementFile = new File(filePath + "measurement_" +  (int)measurement[6] + ".bin");
             measurementFile.getParentFile().mkdirs();
+
             // TODO: reenable appending once issue is fixed to check if issue is really fixed.
-            FileOutputStream fos = new FileOutputStream(measurementFile, false);
+            FileOutputStream fos = new FileOutputStream(measurementFile, true);
             fos.write(stream.toByteArray());
-            fos.close();
             fos.flush();
+            fos.close();
+            System.out.println("File writen!");
+
         }
         catch (IOException e) {
             e.printStackTrace();
