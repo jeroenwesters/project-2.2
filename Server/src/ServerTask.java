@@ -228,5 +228,7 @@ public class ServerTask extends Thread {
         //TODO: De data word niet 1x verzonden, maar bij bijv 100x, worden alle 1000 metingen verstuurd x 100x.. verder werkt het prima
         writeData = false;
         FileWriter.addMeasurements(stationData[writeBacklog]);
+
+        //FileWriter.addMeasurements(stationData[writeBacklog].clone());
     }
 }
