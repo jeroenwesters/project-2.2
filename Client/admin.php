@@ -54,31 +54,25 @@ Create a new account:
 <?php
 
       $result = getAccounts();
-
       // Check for error
       if($result->error == false){
         // below line for data debug
         var_dump($result->data);
-
-
+        echo "<br><br>";
+        print_r($result);
       }else{
         // echo the error!
         echo $result->message;
       }
-
       $count=0;
-      $query="SELECT * FROM users;";
-      $result = $conn->query($query);
-      if($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
+      // $query="SELECT * FROM users;";
+      // $result = $conn->query($query);
+        foreach ($result as $row){
           $count += 1;
-
-
           // Same as below, maybe this is a bit easier to use?
           // echo '<tr>';
           // echo '<td align="center">' . $count . '</td>';
-?>
-
+          ?>
         <tr>
           <td align="center"><?php echo $count; ?></td>
           <td align="center"><?php echo $row["userid"]; ?></td>
@@ -95,8 +89,6 @@ Create a new account:
 
 <?php
       }
-
-    }
     ?>
   </tbody>
 </table>
