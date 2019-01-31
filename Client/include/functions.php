@@ -154,7 +154,7 @@ function updateAccount($userid, $username, $password, $admin){
     $msg->error = false;
     $msg->message = 'Updated user: ' . $username;
   }else{
-    $msg->message = 'Failed!'. $result;
+    $msg->message = 'Failed updating data from ' . $username;
   }
 
   return $msg;
