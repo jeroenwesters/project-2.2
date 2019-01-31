@@ -62,8 +62,17 @@ foreach ($result->data as $row) {
       $userid = $_SESSION['userid'];
 
       $result = updateAccount($userid, $username, $password0, $admin);
-      echo "Update complete";
-      header("Location: admin.php");
+
+      // If failed
+      if($result->error){
+        echo $result->message . "   ";
+        echo "<button onclick='history.go(-2);'>Go back</button>";
+        echo "<button onclick='history.go(-1);'>Try again</button>";
+      }else{
+        echo $result->message . "   ";
+        echo "<button onclick='history.go(-2);'>Back </button>";
+      }
+      //header("Location: admin.php");
 
   }
 }

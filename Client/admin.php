@@ -52,6 +52,9 @@ Create a new account:
     </thead>
     <tbody>
 <?php
+      if(isset($_POST['result'])){
+        var_dump($_POST['result']);
+      }
 
       $result = getAccounts();
       // Check for error

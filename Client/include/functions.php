@@ -142,10 +142,22 @@ function updateAccount($userid, $username, $password, $admin){
     'password' => $password,
     'admin' => $admin,
   ];
+
   $stmt = $PDO->prepare(" UPDATE users
                           SET username =:username, password =:password, admin=:admin
                           WHERE userid =:userid;");
   $stmt->execute($data);
+
+  $result = $stmt->rowCount();
+
+  if($result){
+    $msg->error = false;
+    $msg->message = 'Updated user: ' . $username;
+  }else{
+    $msg->message = 'Failed!'. $result;
+  }
+
+  return $msg;
 
 }
 
