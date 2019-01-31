@@ -30,7 +30,6 @@ function handleDataRequest($msg){
 
 function handleMultipleData($msg){
   if(isset($_GET["var"]) && isset($_GET["date"]) && isset($_GET["time"])){
-    $stn = $_GET["stn"];
     $date = $_GET["date"];
     $time = $_GET["time"];
     $var = $_GET["var"];
