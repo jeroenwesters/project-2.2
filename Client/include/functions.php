@@ -3,12 +3,20 @@ require 'message.php';
 require 'settings.php';
 
 
-
-userlogin('free', 'test');
-userlogin('free', 'admin');
+//
+// userlogin('free', 'test');
+// userlogin('free', 'admin');
 
 function userlogin($username, $password){
   $msg = new Message();
+
+  if($username == ""){
+    $msg->message = 'No username given!';
+    return $msg;
+  }else if($password == ""){
+      $msg->message = 'No password given!';
+      return $msg;
+  }
 
   $PDO = getPDO();
   $stmt = $PDO->prepare('SELECT username, password, admin FROM users where username = ?;');
@@ -20,18 +28,20 @@ function userlogin($username, $password){
       $msg->error = false;
       $msg->data = array('username' => $result['username'], 'admin' => $result['admin']);
 
-      echo $msg->getJson() . '<br>';
-      var_dump($msg->getArray());
-      //echo "<br>password matches<br>";
+      return $msg;
+      // echo $msg->getJson() . '<br>';
+      // var_dump($msg->getArray());
+      // //echo "<br>password matches<br>";
   }else{
-    echo "<br>password invalid!<br>";
+    $msg->message = 'Invalid username or password!';
+    return $msg;
   }
 }
-
-echo "<br>";
-// By uncommenting this, its easy to make accounts locally
-createAccount('admina', 'adminaaa', 'adminaaa', 1);
-echo "<br>";
+//
+// echo "<br>";
+// // By uncommenting this, its easy to make accounts locally
+// createAccount('admina', 'adminaaa', 'adminaaa', 1);
+// echo "<br>";
 
 function createAccount($username, $password, $confirmpassword, $admin){
   $minLength = 8;
@@ -88,17 +98,17 @@ function validateUsername($username){
 
 
 
-
-
-
-
-$key = '!V@TADR#@#FHT#SRGDSC@$';
-$key2 = '?V@TADR#@#FHT#SRGDSC@$';
-
-echo '<br> ApiKey ' . $key . ' is: '. testKey($key);
-
-
-echo '<br> ApiKey ' . $key2 . ' is: ' . testKey($key2);
+//
+//
+//
+//
+// $key = '!V@TADR#@#FHT#SRGDSC@$';
+// $key2 = '?V@TADR#@#FHT#SRGDSC@$';
+//
+// echo '<br> ApiKey ' . $key . ' is: '. testKey($key);
+//
+//
+// echo '<br> ApiKey ' . $key2 . ' is: ' . testKey($key2);
 
 function testKey($key){
   if(validateAPI($key)){

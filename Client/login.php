@@ -1,4 +1,5 @@
-<?php require "include/config.php"?>
+<?php require "include/functions.php"?>
+
 <link rel="stylesheet" type="text/css" href="style/style.css">
 </div>
 <div class="center">
@@ -26,33 +27,22 @@
   session_start();
   if(isset($_POST['password']))
   {
-    $username = escapeTrimString($conn, $_POST['username']); //make a string of the username
+    $username = $_POST['username']; //make a string of the username
   	$password = $_POST['password']; //make a string of the password
 
-    $query = "SELECT username, password, admin
-  				    FROM users
-  				    WHERE username = '$username'"; //put the sql query in a string
 
-  	$result = getData($conn,$query); //put the result of the query in a variable
+  	$result = userlogin($username, $password); //put the result of the query in a variable
 
-    if (count($result) > 0) //Check if the username is stored in the database
-    {
-      $hash = $result[0]["password"]; //puts the password in a hash
-      if(password_verify($password, $hash) == true) //if the password is correct
-      {
-        //Set the session variables
-        $_SESSION['loggedIn'] = true;
-        $_SESSION['currentuser'] = $result[0]["username"];
-        $_SESSION['admin'] = $result[0]["admin"];
+    if($result->error == false){
+      //Set the session variables
+      $_SESSION['loggedIn'] = true;
+      $_SESSION['currentuser'] = $result->data['username'];
+      $_SESSION['admin'] = $result->data["admin"];
 
-        header("Location: webpage.php");  //redirect the user to the webpage
-      }
-      else {
-      echo "<br>Wachtwoord incorrect<br>";
-      }
-    }
-    else{
-      echo "<br>Gebruikersnaam incorrect<br>";
+      header("Location: webpage.php");  //redirect the user to the webpage
+    }else{
+      // TODO:
+      echo $result->message;
     }
   }
   require 'include/footer.php';

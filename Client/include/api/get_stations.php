@@ -24,6 +24,43 @@ $conn = connect(); // Makes connection to databas
 
 // Returns all station (id's) from given country!
 function retrieveStations($country){
+  $msg = new Message();
+  $country = strtolower($country);
+
+  $file = 'stations.csv';
+  $url = realpath(dirname(__FILE__) . '/../../api/data/' . $file);
+  var_dump($url);
+
+  if(file_exists($url)){
+    // Parse CSV to array!
+    $csv = array_map('str_getcsv', file($url));
+
+    if($csv){
+      // Loop through all stations
+      // 0 = station ID, 1 = name, 2 = country, 3 = latitude, 4 = longitude, 5 = elevator
+      $stations = array();
+
+      for($i = 0; $i < count($csv); $i++){
+        if(strtolower($csv[$i][2]) == $country){
+          $stations[$csv[i][0] => array("name", "lat", "lon")];
+          var_dump($csv[$i]);
+        }
+      }
+
+    }else{
+      $msg->message = 'Error occured. Please contact the administrator!';
+      $msg->error = true;
+    }
+
+  }else{
+    $msg->message = 'File not found!';
+    $msg->error = true;
+  }
+
+
+  return $msg;
+
+
   $query = "	SELECT stn, name, latitude, longitude, elevation
             FROM stations
             WHERE country = '$country'"; //put the sql query in a string
