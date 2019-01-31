@@ -1,12 +1,11 @@
 <?php require "include/functions.php"?>
 
 <link rel="stylesheet" type="text/css" href="style/style.css">
-</div>
 <div class="center">
 <html>
 <body>
-  <form action = "login.php" method = "POST">
-      <table>
+  <form action = "login.php" method = "POST" >
+      <table border="0" align="center">
         <tr>
           <td>Gebruikersnaam:</td>
           <td><input type ="text" name="username"/></td>
@@ -45,7 +44,5 @@
       echo $result->message;
     }
   }
-  require 'include/footer.php';
  ?>
 </div>
-<div class="body">
