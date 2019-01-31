@@ -4,6 +4,8 @@
 include '../include/api/data_handler.php';
 include '../include/api/get_stations.php';
 include '../include/message.php';
+include 'datarequest.php';
+include 'stationinfo.php';
 
 // Calls the API if get is used.
 $msg = new Message();
@@ -44,6 +46,8 @@ function filterRequest($msg){
     // Verify data type
     if($type == 'data'){
       handleDataRequest($msg);
+    }else if($type == 'multiple'){
+      handleMultipleData($msg);
     }else if($type == 'station'){
       handleStationsRequest($msg);
     }else{
@@ -55,78 +59,5 @@ function filterRequest($msg){
     $msg->toJson();
   }
 }
-
-function handleDataRequest($msg){
-  if(isset($_GET["stn"]) && isset($_GET["var"]) && isset($_GET["date"]) && isset($_GET["time"])){
-    $stn = $_GET["stn"];
-    $date = $_GET["date"];
-    $time = $_GET["time"];
-    $var = $_GET["var"];
-
-    $date = explode('-', $date);
-    $time = explode(':', $time);
-
-
-    // Get station data based on year-month-day-hour-minute-second
-    $info = getStationData($stn, $var, $date[2], $date[1], $date[0], $time[0], $time[1], $time[2]);
-
-    if($info->error == false){
-      $msg->error = false;
-      $msg->data = $info->data;
-      $msg->toJson();
-    }else{
-      $msg->message = 'Couldn\'t find station or data';
-      $msg->toJson();
-    }
-  }else{
-    $msg->message = 'Parameters aren´t complete!';
-    $msg->toJson();
-  }
-}
-
-
-function handleStationsRequest($msg){
-  if(isset($_GET["country"])){
-    $country = $_GET["country"];
-
-    $info = retrieveStations($country);
-
-    if($info){
-      $msg->error = false;
-      $msg->data = $info->data;
-      $msg->toJson();
-    }else{
-      $msg->message = 'Couldn\'t find station or data';
-      $msg->toJson();
-    }
-  }else{
-    $msg->message = 'Parameters aren´t complete!';
-    $msg->toJson();
-  }
-}
-
-
-
-function handleTopRequest($msg){
-  if(isset($_GET["stn"]) && isset($_GET["var"])){
-    $stn = $_GET["stn"];
-    $var = $_GET["var"];
-
-    $info = getStationInformation($stn, $var);
-
-    if($info['error'] == false){
-      $msg->error = false;
-      $msg->data = $info['data'];
-      $msg->toJson();
-    }else{
-      $msg->message = 'Couldn\'t find station or data';
-      $msg->toJson();
-    }
-  }else{
-    $msg->message = 'Parameters aren´t complete!';
-    $msg->toJson();
-  }
-}
-
 
 ?>
