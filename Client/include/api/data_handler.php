@@ -4,7 +4,7 @@ include 'types.php';
 
 // Gets specified data variable based on station id, date and time
 function getStationData($station, $dataType, $year, $month, $day, $hour, $minute, $second){
-  $result = ['error' => true];
+  $result = new Message();
   $dataIndex = '';
 
 
@@ -16,7 +16,7 @@ function getStationData($station, $dataType, $year, $month, $day, $hour, $minute
   if($type['error'] == false){
     $dataIndex = $type['data'];
   }else{
-    $result['error'] = true;
+    $result->error = true;
     return $result;
   }
 
@@ -27,8 +27,8 @@ function getStationData($station, $dataType, $year, $month, $day, $hour, $minute
       $data = searchData($station, $dataIndex, $url['data']);
       // Check for error (no matching station)
       if($data['error'] == false){
-        $result['error'] = false;
-        $result['data'] = array('stn' => $station, 'value' => $data['data']);
+        $result->error = false;
+        $result->data = array('stn' => $station, 'value' => $data['data']);
         return $result;
       }
     }

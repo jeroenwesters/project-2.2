@@ -70,9 +70,9 @@ function handleDataRequest($msg){
     // Get station data based on year-month-day-hour-minute-second
     $info = getStationData($stn, $var, $date[2], $date[1], $date[0], $time[0], $time[1], $time[2]);
 
-    if($info['error'] == false){
+    if($info->error == false){
       $msg->error = false;
-      $msg->data = $info['data'];
+      $msg->data = $info->data;
       $msg->toJson();
     }else{
       $msg->message = 'Couldn\'t find station or data';
@@ -93,7 +93,7 @@ function handleStationsRequest($msg){
 
     if($info){
       $msg->error = false;
-      $msg->data = $info;
+      $msg->data = $info->data;
       $msg->toJson();
     }else{
       $msg->message = 'Couldn\'t find station or data';
