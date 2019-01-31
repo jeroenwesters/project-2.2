@@ -24,7 +24,6 @@
 </body>
 </html>
 <?php
-  session_start();
   if(isset($_POST['password']))
   {
     $username = $_POST['username']; //make a string of the username
@@ -35,6 +34,7 @@
 
     if($result->error == false){
       //Set the session variables
+      session_start();
       $_SESSION['loggedIn'] = true;
       $_SESSION['currentuser'] = $result->data['username'];
       $_SESSION['admin'] = $result->data["admin"];

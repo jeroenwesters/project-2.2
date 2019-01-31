@@ -1,7 +1,7 @@
 <!doctype html> <!-- open html-->
 <?php
   // require all necessary files
-  require "config.php";
+  require "functions.php";
   // require 'menu.php';
   require 'session.php';
   // require 'right.php';

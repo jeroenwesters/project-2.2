@@ -94,6 +94,31 @@ function validateUsername($username){
 
 
 
+function getAccounts(){
+  $msg = new Message();
+
+  $PDO = getPDO();
+  $stmt = $PDO->prepare('SELECT * FROM users;');
+  $stmt->execute();
+  $result = $stmt->fetchAll();
+
+
+  if($result){
+      $msg->error = false;
+      $msg->data = $result;
+
+      return $msg;
+      // echo $msg->getJson() . '<br>';
+      // var_dump($msg->getArray());
+      // //echo "<br>password matches<br>";
+  }else{
+    $msg->message = 'No users found!';
+    return $msg;
+  }
+}
+
+
+
 
 
 
