@@ -41,7 +41,7 @@ Create a new account:
   <table width="80%" border="1">
     <thead>
       <tr>
-        <th><strong>Number</strong></th>
+        <th><strong>ID</strong></th>
         <th><strong>UserID</strong></th>
         <th><strong>Username</strong></th>
         <th><strong>password</strong></th>
@@ -57,41 +57,30 @@ Create a new account:
       // Check for error
       if($result->error == false){
         // below line for data debug
-        var_dump($result->data);
-        echo "<br><br>";
-        print_r($result);
+        $count=0;
+        foreach ($result->data as $row){
+          $count += 1;
+          echo "<tr>";
+            echo"<td align='center'>".$count."</td>";
+            echo"<td align='center'>".$row["userid"]."</td>";
+            echo"<td align='center'>".$row["username"]."</td>";
+            echo"<td align='center'>".$row["password"]."</td>";
+            echo"<td align='center'>".$row["admin"]."</td>";
+            echo"<td align='center'>
+                  <a href='edit.php?id=".$row["userid"]."'>Edit</a>
+                  </td>";
+            echo"<td align='center'>
+                  <a href='delete.php?id=".$row["userid"]."'>Delete</a>
+                  </td>";
+          echo "</tr>";
+      }
       }else{
         // echo the error!
         echo $result->message;
       }
-      $count=0;
-      // $query="SELECT * FROM users;";
-      // $result = $conn->query($query);
-        foreach ($result as $row){
-          $count += 1;
-          // Same as below, maybe this is a bit easier to use?
-          // echo '<tr>';
-          // echo '<td align="center">' . $count . '</td>';
-          ?>
-        <tr>
-          <td align="center"><?php echo $count; ?></td>
-          <td align="center"><?php echo $row["userid"]; ?></td>
-          <td align="center"><?php echo $row["username"]; ?></td>
-          <td align="center"><?php echo $row["password"]; ?></td>
-          <td align="center"><?php echo $row["admin"]; ?></td>
-          <td align="center">
-          <a href='edit.php?id="<?php echo $row["userid"];?>"'>Edit</a>
-          </td>
-          <td align="center">
-          <a href='delete.php?id="<?php echo $row["userid"];?>"'>Delete</a>
-          </td>
-        </tr>
 
-<?php
-      }
-    ?>
-  </tbody>
-</table>
-<?php
+      echo "</tbody>";
+      echo "</table>";
+
     require 'include/footer.php';
 ?>
