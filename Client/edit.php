@@ -7,12 +7,14 @@
     header("Location: webpage.php");
   }
   if(isset($_GET['id'])){
-    $_SESSION['userid'] = substr($_GET['id'],1,-1);
+    $_SESSION['userid'] = $_GET['id'];
     $userid = $_SESSION['userid'];
-    $query = "SELECT * FROM users WHERE `userid` = '$userid'";
-    $result = $conn->query($query);
-    $row = $result-> fetch_assoc();
-}
+    // $query = "SELECT * FROM users WHERE `userid` = '$userid'";
+    // $result = $conn->query($query);
+    // $row = $result-> fetch_assoc();
+    $result = getAccountDetails($userid);
+
+foreach ($result->data as $row) {
 ?>
 
 <form action = "edit.php" method ="POST">
@@ -38,6 +40,8 @@
 </form>
 
 <?php
+}
+}
   if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)){
     $username = $_POST['username'];
     $password0 = $_POST['password0'];
@@ -56,21 +60,20 @@
     }
     else{
       $userid = $_SESSION['userid'];
-      $query = "UPDATE `users` SET `username`= '$username', `password`='$password0', `admin`='$admin'
-                WHERE `userid` = '$userid'";
-      $result = doQuery($conn, $query);
-      $sqlerror = $conn->error;
-      if(strlen($sqlerror) < 1){
-        echo "Update complete";
-        header("Location: admin.php");
+
+      $result = updateAccount($userid, $username, $password0, $admin);
+
+      // If failed
+      if($result->error){
+        echo $result->message . "   ";
+        echo "<button onclick='history.go(-2);'>Go back</button>";
+        echo "<button onclick='history.go(-1);'>Try again</button>";
+      }else{
+        echo $result->message . "   ";
+        echo "<button onclick='history.go(-2);'>Back </button>";
       }
-      else if(strtok($sqlerror, " ") == "Duplicate"){
-        echo "This username has already been taken";
-      }
-      else{
-        echo "An sql error has occured:";
-        echo $sqlerror;
-      }
-    }
+      //header("Location: admin.php");
+
   }
+}
  ?>
