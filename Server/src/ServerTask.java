@@ -221,10 +221,7 @@ public class ServerTask extends Thread {
 
             float x = eT - bT;
             temp = (x / (stationData.length > MAX_BACKLOG ? MAX_BACKLOG - 1 : stationData.length -1) + eT);
-            System.out.println(String.format("begin: %.1f   -----   end: %.1f     extra: %.3f", bT, eT, temp));
-        }
-        else {
-            System.out.println(String.format("begin: %.1f   -----   end: %.1f     extra: %.1f", temp, temp, temp));
+            //System.out.println(String.format("begin: %.1f   -----   end: %.1f     extra: %.3f", bT, eT, temp));
         }
         return temp;
         //System.out.println("This value needs to be extrapolated, not implemented!");
@@ -256,7 +253,7 @@ public class ServerTask extends Thread {
         }else{
             // TODO: Valide with 20% offset
 
-            System.out.println("Validate 20% offset of temperature! (Keep in mind the ranges for the 20%)");
+            //System.out.println("Validate 20% offset of temperature! (Keep in mind the ranges for the 20%)");
 
             //if NOT within range
             // data = extrapolateCurrentValue();

@@ -103,7 +103,7 @@ class FilePusher implements Runnable {
             fos.write(stream.toByteArray());
             fos.flush();
             fos.close();
-            System.out.println("File writen!");
+            //System.out.println("File writen!");
             stream = null;
 
         }
