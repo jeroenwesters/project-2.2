@@ -16,7 +16,7 @@
     <li><a id="a01"href='webpage.php'><img src='pictures/vectorpaint2.svg' width="73px"></a></li>
     <!-- <li><a href='webpage.php'>Home</a></li> -->
     <li><a href='view1.php'>View 1</a></li>
-    <li><a href='view2.php'>View 2</a></li>
+    <li><a href='view2.php'>Scandinavia snowfall</a></li>
     <li><a href='view3.php'>View 3</a></li>
     <li style="float:right"><a class="active" href="logout.php">Logout</a></li>
     <li style="float:right"><a href="account.php">Account</a></li>
