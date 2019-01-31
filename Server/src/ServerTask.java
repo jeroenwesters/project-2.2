@@ -216,11 +216,11 @@ public class ServerTask extends Thread {
         // TODO:
         float temp = stationData[currentBacklog][currentStation][currentMeasurement];
         if(stationData.length > 1) {
-            float bT = stationData[currentBacklog][currentStation][currentMeasurement];
-            float eT = stationData[currentBacklog - (stationData.length > MAX_BACKLOG ? MAX_BACKLOG : stationData.length -1)][currentStation][currentMeasurement];
+            float bT = stationData[stationData.length > MAX_BACKLOG ? MAX_BACKLOG - 1 : stationData.length -1][currentStation][currentMeasurement];
+            float eT = stationData[currentBacklog][currentStation][currentMeasurement];
 
             float x = eT - bT;
-            temp = (x / (stationData.length - 1) + eT);
+            temp = (x / (stationData.length > MAX_BACKLOG ? MAX_BACKLOG - 1 : stationData.length -1) + eT);
             System.out.println(String.format("begin: %.1f   -----   end: %.1f     extra: %.3f", bT, eT, temp));
         }
         else {
@@ -261,9 +261,9 @@ public class ServerTask extends Thread {
             //if NOT within range
             // data = extrapolateCurrentValue();
             if(stationData.length > 1) {
-                float diff = Math.abs(data - stationData[currentBacklog-1][currentStation][currentMeasurement]);
+                float diff = Math.abs(data - stationData[currentBacklog][currentStation][currentMeasurement]);
                 if(diff > TEMP_DIFFERENCE_OFFSET) {
-                    if ((stationData[currentBacklog - 1][currentStation][currentMeasurement] / data) * 100 <= MAX_TEMP_DIFFERENCE) {
+                    if ((stationData[currentBacklog][currentStation][currentMeasurement] / data) * 100 <= MAX_TEMP_DIFFERENCE) {
                         stationData[currentBacklog][currentStation][currentMeasurement] = data;
                     }
                     else {
