@@ -18,7 +18,7 @@ function retrieveStations($country){
 
       for($i = 0; $i < count($csv); $i++){
         if(strtolower($csv[$i][2]) == $country){
-          $stations[] = array("stn" => $csv[$i][0], "name" => $csv[$i][1], "latitude" => $csv[$i][3], "longitude" => $csv[$i][5], "elevation" => $csv[$i][4]);
+          $stations[] = array("stn" => $csv[$i][0], "name" => $csv[$i][1], "latitude" => $csv[$i][3], "longitude" => $csv[$i][4], "elevation" => $csv[$i][5]);
         }
       }
 
