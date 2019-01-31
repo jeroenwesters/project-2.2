@@ -217,7 +217,7 @@ public class ServerTask extends Thread {
         float temp = stationData[currentBacklog][currentStation][currentMeasurement];
         if(stationData.length > 1) {
             float bT = stationData[currentBacklog][currentStation][currentMeasurement];
-            float eT = stationData[currentBacklog - MAX_BACKLOG][currentStation][currentMeasurement];
+            float eT = stationData[currentBacklog - (stationData.length > MAX_BACKLOG ? MAX_BACKLOG : stationData.length -1)][currentStation][currentMeasurement];
 
             float x = eT - bT;
             temp = (x / (stationData.length - 1) + eT);
@@ -260,15 +260,22 @@ public class ServerTask extends Thread {
 
             //if NOT within range
             // data = extrapolateCurrentValue();
-            float diff = Math.abs(data - stationData[currentBacklog-1][currentStation][currentMeasurement]);
-            if(diff > TEMP_DIFFERENCE_OFFSET) {
-                if((stationData[currentBacklog-1][currentStation][currentMeasurement] / data) * 100 <= MAX_TEMP_DIFFERENCE) {
+            if(stationData.length > 1) {
+                float diff = Math.abs(data - stationData[currentBacklog-1][currentStation][currentMeasurement]);
+                if(diff > TEMP_DIFFERENCE_OFFSET) {
+                    if ((stationData[currentBacklog - 1][currentStation][currentMeasurement] / data) * 100 <= MAX_TEMP_DIFFERENCE) {
+                        stationData[currentBacklog][currentStation][currentMeasurement] = data;
+                    }
+                    else {
+                        stationData[currentBacklog][currentStation][currentMeasurement] = extrapolateCurrentValue();
+                    }
+                }
+                else {
                     stationData[currentBacklog][currentStation][currentMeasurement] = data;
                 }
-                else
-                {
-                    stationData[currentBacklog][currentStation][currentMeasurement] = extrapolateCurrentValue();
-                }
+            }
+            else {
+                stationData[currentBacklog][currentStation][currentMeasurement] = data;
             }
         }
 
