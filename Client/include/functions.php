@@ -92,8 +92,6 @@ function validateUsername($username){
 }
 
 
-
-
 function getAccounts(){
   $msg = new Message();
 
@@ -117,6 +115,39 @@ function getAccounts(){
   }
 }
 
+function getAccountDetails($userid){
+  $msg = new Message();
+
+  $PDO = getPDO();
+  $stmt = $PDO->prepare('SELECT * FROM users WHERE userid = ?;');
+  $stmt->execute([$userid]);
+  //$result = $stmt->fetchAll();
+  $result = $stmt->fetchAll();
+
+  if($result){
+      $msg->error = false;
+      $msg->data = $result;
+
+      return $msg;
+    }
+}
+
+function updateAccount($userid, $username, $password, $admin){
+  $msg = new Message();
+
+  $PDO = getPDO();
+  $data = [
+    'userid' => $userid,
+    'username' => $username,
+    'password' => $password,
+    'admin' => $admin,
+  ];
+  $stmt = $PDO->prepare(" UPDATE users
+                          SET username =:username, password =:password, admin=:admin
+                          WHERE userid =:userid;");
+  $stmt->execute($data);
+
+}
 
 
 

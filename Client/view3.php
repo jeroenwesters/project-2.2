@@ -4,7 +4,7 @@
     echo "These are the top 10 stations with the most rainfall<br><br>";
 
 ?>
-<table id="t01">
+<table id="t01" border="1px">
   <tr>
     <td>Station</td>
     <td>Rainfall</td>
