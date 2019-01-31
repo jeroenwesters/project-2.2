@@ -6,12 +6,19 @@
       // if he is not an admin, redirect him to the webpage
     header("Location: webpage.php");
   }
+
   if(isset($_GET['id'])){
-    $_SESSION['userid'] = substr($_GET['id'],1,-1);
+    $_SESSION['userid'] = $_GET['id'];
     $userid = $_SESSION['userid'];
-    $query = "SELECT `username` FROM users WHERE `userid` = '$userid'";
-    $result = getData($conn,$query); //put the result of the query in a
-    $username = $result[0]["username"]; //puts the password in a hash
+
+    // $query = "SELECT `username` FROM users WHERE `userid` = '$userid'";
+    // $result = getData($conn,$query); //put the result of the query in a
+    // $username = $result[0]["username"];
+
+    $result = getAccountDetails($userid);
+
+    $username = $result->data[0]['username'];
+    // $username = $result[0]['username'];
 }
 
   echo "Are you sure you want to delete $username?";?>

@@ -156,12 +156,26 @@ function updateAccount($userid, $username, $password, $admin){
   }else{
     $msg->message = 'Failed updating data from ' . $username;
   }
-
   return $msg;
-
 }
 
+function deleteAccount($userid){
+  $msg = new Message();
 
+  $PDO = getPDO();
+  $stmt = $PDO->prepare('DELETE from users WHERE userid = ?;');
+  $stmt->execute([$userid]);
+  //$result = $stmt->fetchAll();
+  $result = $stmt->rowCount();
+
+  if($result){
+    $msg->error = false;
+    $msg->message = 'Deleted user: ';
+  }else{
+    $msg->message = 'Failed deleting account from ';
+  }
+  return $msg;
+}
 
 
 
