@@ -1,16 +1,26 @@
 import filesystem.FileWriter;
+import jdk.internal.org.xml.sax.InputSource;
 import model.Measurement;
+import org.xml.sax.SAXException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.*;
+import java.lang.reflect.Executable;
 import java.net.Socket;
-import java.util.Arrays;
+import java.sql.SQLSyntaxErrorException;
+import java.sql.Struct;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.CheckedInputStream;
+
+import static java.lang.System.in;
+import static java.lang.System.out;
 
 // Handles server functions
-public class ServerTask extends Thread {
+public class ServerTask implements Runnable {
 
     // Generator settings (amount of stations and measurements)
     private final int AMOUNT_STATIONS = 10;         // in each <weatherdata>
@@ -49,6 +59,8 @@ public class ServerTask extends Thread {
     private int writeBacklog = 0;
     String input = "";
 
+    Queue<String> waitingQueue = new LinkedList<>();
+
     /**
      * Constructor
      * @param socket
@@ -70,9 +82,70 @@ public class ServerTask extends Thread {
      */
     public void run() {
 
+        //BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+//
+//        byte[] buffer = new byte[2048*4];
+//        int read;
+//        boolean run = true;
+//
+//            try {
+//                InputStream is = socket.getInputStream();
+//
+//                String output = "";
+//                int i =0;
+//
+//                while((read = is.read(buffer)) != -1) {
+//                    String newString = new String(buffer, 0, read);
+//
+//                    if(newString.contains("</WEATHERDATA>")){
+//                        // Process the string!
+//
+//                        String data[] = newString.split("\n");
+//                        output = "";
+//
+//                        for (String s : data) {
+//                            if(i == 0){
+//                                i++;
+//                            }else{
+//                                s = s.replaceAll("\\s","");
+//                                //System.out.println(s);
+//                                checkInput(s);
+//
+//                            }
+//                        }
+//                        i=0;
+//
+//
+//                    }else{
+//                        output += newString;
+//                    }
+//
+//
+//                };
+//
+//                out.println("LOST CONNECTON");
+//                socket.close();
+//
+//            } catch(IOException e) {
+//                // if any I/O error occurs
+//                e.printStackTrace();
+//            } finally {
+//                // releases system resources associated with this stream
+//
+//            }
+//
+//
+
+            String input = "";
+
+
+
+
+
+
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
 
             // Infinite loop to prevent thread from stopping
             while(true){
@@ -84,7 +157,16 @@ public class ServerTask extends Thread {
                 if(input != null){
                     // Remove spaces from the input
                     input = input.replaceAll("\\s","");
-                    checkInput(input);
+                    waitingQueue.add(input);
+                    //System.out.println(input);
+
+                    if(input.equals("</WEATHERDATA>")){
+                        while(!waitingQueue.isEmpty()){
+                            checkInput(waitingQueue.poll());
+                        }
+                        //checkInput(input);
+                    }
+
                 }else{
                     timeout++;
                     if(timeout >= maxTimeout){
@@ -92,7 +174,12 @@ public class ServerTask extends Thread {
                         break;
                     }
                 }
+
+
             }
+
+//            checkInput(input);
+
         }
         catch (IOException e) {
             System.out.println("Error handling client ");
@@ -107,6 +194,7 @@ public class ServerTask extends Thread {
             }
         }
     }
+
 
     private void checkInput(String input){
         // Are we started?
@@ -133,12 +221,15 @@ public class ServerTask extends Thread {
             // Stop reading weatherdata / reset
             if(input.equals("</WEATHERDATA>")){
                 isStarted = false;
-                currentMeasurement = 0;
-                currentBacklog++;
 
                 if(writeData){
                     exportData();
                 }
+
+                currentMeasurement = 0;
+                currentBacklog++;
+
+
 
                 // Reset backlog index
                 if(currentBacklog >= MAX_BACKLOG){
@@ -213,6 +304,10 @@ public class ServerTask extends Thread {
      * Extrapolates current value based on previous measurements.
      */
     private float extrapolateCurrentValue() {
+        if(true){
+
+            return 0.0f;
+        }
         // TODO:
         float temp = stationData[currentBacklog][currentStation][currentMeasurement];
         if(stationData.length > 1) {
@@ -241,6 +336,7 @@ public class ServerTask extends Thread {
 
 
     private void processArray(String data[]){
+
         for(int x = 0; x < data.length; x++){
             processInput(Float.parseFloat(data[x]));
         }
@@ -298,7 +394,9 @@ public class ServerTask extends Thread {
 
     private void exportData(){
         writeData = false;
-        FileWriter.addMeasurements(stationData[writeBacklog]);
+
+        //System.out.println(stationData[currentBacklog-1][currentStation-1][6]);
+        FileWriter.addMeasurements(stationData[currentBacklog]);
         //FileWriter.addMeasurements(stationData[writeBacklog].clone());
     }
 }

@@ -3,7 +3,8 @@ import filesystem.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 // Server code itself (Setting up connections and threads)
@@ -51,24 +52,30 @@ public class Server {
         // Create listener on port X
         ServerSocket listener = new ServerSocket(socket_port);
 
+        // Pool with 800 threads for the sockets
+        ExecutorService executorService = Executors.newFixedThreadPool(800);
 
         try {
             // Keep searching!
             while (true) {
+                try {
+                    final Socket connection = listener.accept();
+                    //System.err.println("SERVER - connection from: " + connection.getInetAddress());
+                    executorService.execute(new ServerTask(connection));
 
-            // Check if we have reached the maximum amount of clients.
-                Socket socket = listener.accept();
 
-                AddClient();
-                // Debug line, to see how many clients there are
-                if(clientCount % 100 == 0){
-                    System.out.println(String.format("Client count: >= %d", clientCount));
+                    AddClient();
+                    // Debug line, to see how many clients there are
+//                    if(clientCount % 100 == 0){
+//                        System.out.println(String.format("Client count: >= %d", clientCount));
+//                    }
+
+
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
 
-                // Create thread with it's socket as parameter!
-                ServerTask s_task = new ServerTask(socket);
-                // Run thread
-                s_task.start();
 
             }
         }

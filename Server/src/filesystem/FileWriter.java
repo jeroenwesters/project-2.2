@@ -66,10 +66,6 @@ public class FileWriter {
             addMeasurement(measurement);
         }
     }
-
-
-
-
 }
 
 class FilePusher implements Runnable {
