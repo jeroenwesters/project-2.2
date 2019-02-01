@@ -13,6 +13,8 @@ export const mapConfig = {
 
 export class WorldMap extends Component {
     displayname = WorldMap.name;
+    dataArray = [];
+    newDate = new Date();
 
     constructor(props){
         super(props);
@@ -27,6 +29,7 @@ export class WorldMap extends Component {
             .then(response => response.json())
             .then(data => this.setState({ dataStations: data }));
 
+        this.getOneHour = this.getOneHour.bind(this);
         this.onClickStation = this.onClickStation.bind(this);
         this.keepCallingDetails = this.keepCallingDetails.bind(this);
     }
@@ -38,19 +41,17 @@ export class WorldMap extends Component {
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
         var newDate = day + "-" + month + "-" + year;
-        var hours = date.setHours(14);
+        var hours = date.setHours(15);
         var minutes = date.setMinutes(10);
         var seconds = date.setSeconds(0);
         var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
+        this.dataArray = [];
         //todo kijk de seconden en minuten na op 2x 0
         let url = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + stn + '&var=dewp&date=31-1-2019&time=14:10:0';
 
         // var newdate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
-        var newdate = new Date(2019, 0, 31, 14, 10, 0);
-        this.setState({
-            callDate: newdate
-        });
+        this.newDate = new Date(2019, 0, 31, 14, 10, 0);
+
 
         let array = this.state.dataDetails;
         fetch(url)
@@ -59,18 +60,62 @@ export class WorldMap extends Component {
                 this.setState({
                 stationNr: stationNumber
                 });
-                array.push({ x: this.state.callDate, y: data.data.value });
-        });
-        this.setState({
-            dataDetails: array
         });
 
-        setInterval(this.keepCallingDetails, 10000);
+        // Fill graph!
+        this.getOneHour(stationNumber);
+
+        // //setInterval(this.keepCallingDetails, 10000);
+        setInterval(this.keepCallingDetails, 1000);
     }
 
+    getOneHour(stationNr){
+      // Get reference of old date
+      let oldData = new Date(this.newDate.getTime());
+
+      var hour = oldData.getHours();
+      var minute = oldData.getMinutes();
+      var second = oldData.getSeconds();
+
+
+
+      var baseUrl = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + stationNr;
+
+      // Use current time - 60 minutes
+      // use current seconds - 60 seconds
+
+      for(var m = 0; m < 60; m++){
+        for(var s = 0; s < 6; s++){
+          var dateUrl = '&var=dewp&date=31-1-2019' + '&time=' + hour + ":"+m+":"+ s*10;
+          let myDate = new Date(oldData.getTime());
+          myDate.setMinutes(m);
+          myDate.setSeconds(s*10);
+          var url = baseUrl + dateUrl;
+
+          fetch(url)
+              .then(response => response.json())
+              .then(data =>{
+                  this.dataArray.push({ x: myDate, y: data.data.value });
+          });
+
+        }
+      }
+
+      this.setState({
+          dataDetails: this.dataArray
+      });
+
+      // For loop 60 minutes
+      // for loop 6 (*10) seconds
+      // create url
+      //
+    }
+
+
     keepCallingDetails(){
-        console.log(this.state.dataDetails)
-        let date = this.state.callDate;
+        let date = this.newDate;
+
+        //console.log(date)
 
         date.setSeconds(date.getSeconds() + 10);
 
@@ -83,36 +128,57 @@ export class WorldMap extends Component {
             date.setMinutes(0);
         }
 
-        this.setState({
-            callDate: date
-        });
+        // this.setState({
+        //     callDate: date
+        // });
 
-        let postDate = this.state.callDate.getDate() + "-" + (this.state.callDate.getMonth() + 1) + "-" + this.state.callDate.getFullYear();
+        //let postDate = this.state.callDate.getDate() + "-" + (this.state.callDate.getMonth() + 1) + "-" + this.state.callDate.getFullYear();
 
         let url = '';
-        if (this.state.callDate.getSeconds().toString() === '00' && this.state.callDate.getMinutes().toString() === '00') {
-            url = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + this.state.stationNr + '&var=dewp&date=31-1-2019'
-                + '&time=' + this.state.callDate.getHours() + ":0:0";
-        } else if (this.state.callDate.getSeconds().toString() === '00'){
-            url = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + this.state.stationNr + '&var=dewp&date=31-1-2019'
-                + '&time=' + this.state.callDate.getHours() + ":" + this.state.callDate.getMinutes() + ":0";
-        } else if (this.state.callDate.getMinutes().toString() === '00') {
-            url = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + this.state.stationNr + '&var=dewp&date=31-1-2019'
-                + '&time=' + this.state.callDate.getHours() + ':0:' + this.state.callDate.getSeconds();
-        } else {
-            url = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + this.state.stationNr + '&var=dewp&date=31-1-2019'
-                + '&time=' + this.state.callDate.getHours() + ':' + this.state.callDate.getMinutes() + ':' + this.state.callDate.getSeconds();
-        }
+        // if (this.state.callDate.getSeconds().toString() === '00' && this.state.callDate.getMinutes().toString() === '00') {
+        //     url = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + this.state.stationNr + '&var=dewp&date=31-1-2019'
+        //         + '&time=' + this.state.callDate.getHours() + ":0:0";
+        // } else if (this.state.callDate.getSeconds().toString() === '00'){
+        //     url = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + this.state.stationNr + '&var=dewp&date=31-1-2019'
+        //         + '&time=' + this.state.callDate.getHours() + ":" + this.state.callDate.getMinutes() + ":0";
+        // } else if (this.state.callDate.getMinutes().toString() === '00') {
+        //     url = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + this.state.stationNr + '&var=dewp&date=31-1-2019'
+        //         + '&time=' + this.state.callDate.getHours() + ':0:' + this.state.callDate.getSeconds();
+        // } else {
+        //     url = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + this.state.stationNr + '&var=dewp&date=31-1-2019'
+        //         + '&time=' + this.state.callDate.getHours() + ':' + this.state.callDate.getMinutes() + ':' + this.state.callDate.getSeconds();
+        // }
 
-        let array = this.state.dataDetails;
-        // fetch(url)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         array.push({ x: this.state.callDate, y: data.data.value });
-        //         this.setState({
-        //             dataDetails: array
-        //         })
-        //     });
+        // url = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + this.state.stationNr +
+        // '&var=dewp&date=31-1-2019' + '&time=' + this.date.getHours() + ":0:0";
+
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+
+        var baseUrl = 'https://tester-site.nl/api/?key=asf756saf5asf75a7s6f&type=data&stn=' + this.state.stationNr;
+        var dateUrl = '&var=dewp&date=31-1-2019' + '&time=' + hour + ":"+minute+":"+second;
+
+        url = baseUrl + dateUrl;
+        // console.log(url);
+        // console.log(hour + '-' + minute +'-'+second);
+
+
+        var array = this.state.dataDetails;
+
+        var yAxis = null;
+
+        date = new Date(date.getTime());
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data =>{
+                this.dataArray.push({ x: date, y: data.data.value });
+        });
+
+        this.setState({
+            dataDetails: this.dataArray
+        });
     }
 
     renderHomePage(){
@@ -134,7 +200,7 @@ export class WorldMap extends Component {
                     yValueFormatString: "#.#",
                     xValueFormatString: "hh:mm:ss",
                     type: "spline",
-                    dataPoints: this.state.dataDetails
+                    dataPoints: this.dataArray
                 }]
             }
             return (
