@@ -63,7 +63,7 @@ export class WorldMap extends Component {
         });
 
         // Fill graph!
-        this.getOneHour(stationNumber);
+        // this.getOneHour(stationNumber);
 
         // //setInterval(this.keepCallingDetails, 10000);
         setInterval(this.keepCallingDetails, 1000);
