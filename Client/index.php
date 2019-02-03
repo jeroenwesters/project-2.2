@@ -7,7 +7,7 @@ require 'include/layout/headersettings.php';
 // Create settings
 $headerSettings = new HeaderSettings();
 $headerSettings->AddStyle("style/main.css");
-
+$headerSettings->title = 'Home';
 
 require 'include/layout/header.php';
 require 'include/layout/navbar.php';

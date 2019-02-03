@@ -8,6 +8,7 @@ require 'include/layout/headersettings.php';
 $headerSettings = new HeaderSettings();
 $headerSettings->AddStyle("style/main.css");
 $headerSettings->redirect = false;
+$headerSettings->title = 'Login';
 
 // Include header
 require 'include/layout/header.php';

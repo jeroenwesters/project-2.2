@@ -1,5 +1,7 @@
 <?php
 // Made by Jeroen & Jarco - © 2019
+$companyName = 'DEOL partners';
+
 session_start();
 
 include_once 'headersettings.php';
@@ -32,6 +34,6 @@ if(isset($_SESSION['loggedIn'])){
 
     ?>
     <meta charset="utf-8">
-    <title><?php echo $headerSettings->title; ?></title>
+    <title><?php echo $headerSettings->title . ' - ' . $companyName; ?></title>
   </head>
   <body>
