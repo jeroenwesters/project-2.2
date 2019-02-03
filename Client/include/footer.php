@@ -2,7 +2,7 @@
 <div class="footer">
 
 <!-- Show copyright icon and php for the year-->
-  <p align="center"> &copy;
+  <p> &copy;
     <?php
   if(Date("Y") == 2019) {
     echo "2019 ";

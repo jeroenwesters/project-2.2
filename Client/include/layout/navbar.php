@@ -1,8 +1,8 @@
 <header>
   <?php
   $url1 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'index.php';
-  $url2 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'view1.php';
-  $url3 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'view2.php';
+  $url2 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'scandinavia-overview.php';
+  $url3 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'scandinavia-top.php';
   $url4 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'view3.php';
   $url5 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'account.php';
   $url6 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'admin.php';
@@ -12,9 +12,9 @@
   ?>
 
   <li class="comp_logo"><a href="<?php echo $url1;  ?>"><img src='<?php echo $img ?>' alt="Home"></a></li>
-  <li class="hover_effect"><a href="<?php echo $url2;  ?>">Ukraine</a></li>
-  <li class="hover_effect"><a href="<?php echo $url3;  ?>">Scandinavia </a></li>
-  <li class="hover_effect"><a href="<?php echo $url4;  ?>">Top 10</a></li>
+  <li class="hover_effect"><a href="<?php echo $url2;  ?>">Scandinavia overview</a></li>
+  <li class="hover_effect"><a href="<?php echo $url3;  ?>">Scandinavia top 10</a></li>
+  <li class="hover_effect"><a href="<?php echo $url4;  ?>">Ukraine real-time</a></li>
   <li class="hover_effect" style="float:right"><a href="<?php echo $url5;  ?>">Logout</a></li>
   <li class="hover_effect" style="float:right"><a href="<?php echo $url6;  ?>">Admin Panel</a></li>
   <li class="hover_effect" style="float:right"><a href="<?php echo $url7;  ?>">Account</a></li>

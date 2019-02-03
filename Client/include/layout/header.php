@@ -23,13 +23,24 @@ if(isset($_SESSION['loggedIn'])){
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <?php
-    foreach ($headerSettings->styles as $value){
-      echo '<link href="'.$value.'" rel="stylesheet">';
+    foreach ($headerSettings->styles as $css){
+      echo '<link href="'.$css.'" rel="stylesheet">';
+    }
+
+    foreach ($headerSettings->externalCss as $ecss){
+      echo $ecss;
+    }
+
+    foreach ($headerSettings->js as $js){
+      echo '<script src="'.$js.'"></script>';
+    }
+
+    foreach ($headerSettings->externalJs as $ejs){
+      echo $ejs;
     }
 
     ?>
