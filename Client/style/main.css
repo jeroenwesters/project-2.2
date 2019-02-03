@@ -1,0 +1,54 @@
+/* Mady by Emiel */
+
+body {
+  background: #2b2b2b;
+  margin: 0;
+  /* display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center; */
+  font-family: 'Roboto', sans-serif;
+}
+
+.maindiv {
+  /* background: #2b2b2b; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  color: #bdbdbd;
+  font-weight: 100;
+}
+
+header {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #039be5;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #2b2b2b;
+}
+
+.active {
+  background-color: #2b2b2b;
+}

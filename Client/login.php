@@ -1,4 +1,20 @@
+<?php
+// Jarco - 2019
+
+// Load settings!
+require 'include/layout/headersettings.php';
+
+// Create settings
+$headerSettings = new HeaderSettings();
+$headerSettings->AddStyle("style/main.css");
+$headerSettings->redirect = false;
+
+// Include header
+require 'include/layout/header.php';
+?>
+
 <?php require "include/functions.php"?>
+
 
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <div class="center">
@@ -28,17 +44,17 @@
     $username = $_POST['username']; //make a string of the username
   	$password = $_POST['password']; //make a string of the password
 
-
   	$result = userlogin($username, $password); //put the result of the query in a variable
 
     if($result->error == false){
       //Set the session variables
       session_start();
+
       $_SESSION['loggedIn'] = true;
       $_SESSION['currentuser'] = $result->data['username'];
       $_SESSION['admin'] = $result->data["admin"];
 
-      header("Location: webpage.php");  //redirect the user to the webpage
+      header("Location: index.php");  //redirect the user to the webpage
     }else{
       // TODO:
       echo $result->message;

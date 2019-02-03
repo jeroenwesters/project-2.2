@@ -31,7 +31,7 @@
 <?php
 // check if the user is logged in
 if($_SESSION['loggedIn'] != true){
-  header("Location: login.php");//if the user is not logged in, redirect the user to the login page
+  header("Location: index.php");//if the user is not logged in, redirect the user to the login page
 }
  ?>
 

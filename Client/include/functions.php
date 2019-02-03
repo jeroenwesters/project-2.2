@@ -5,7 +5,7 @@ require 'settings.php';
 
 //
 // userlogin('free', 'test');
-// userlogin('free', 'admin');
+// createAccount('free', 'password', 'password', false);
 
 function userlogin($username, $password){
   $msg = new Message();
