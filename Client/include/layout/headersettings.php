@@ -25,7 +25,8 @@ class HeaderSettings {
   // Add javascript links
   function AddJs($jsURL, $external = false){
     if(!$external){
-      $this->js[] = $this->GetType() . $_SERVER['SERVER_NAME'] .'/'. $jsURL;
+      //$this->js[] = $this->GetType() . $_SERVER['SERVER_NAME'] .'/'. $jsURL;
+      $this->js[] = $jsURL;
     }else{
       $this->externalJs[] = $jsURL;
     }
