@@ -15,7 +15,8 @@ class HeaderSettings {
   function AddStyle($styleURL, $external = false){
 
     if(!$external){
-      $this->styles[] = $this->GetType() . $_SERVER['SERVER_NAME'] .'/'. $styleURL;
+      $this->styles[] = $styleURL;
+      //$this->styles[] = $this->GetType() . $_SERVER['SERVER_NAME'] .'/'. $styleURL;
     }else{
       $this->externalCss[] = $styleURL;
     }

@@ -10,6 +10,8 @@ $headerSettings->title = 'Scandinavia Top 10 precipitation';
 $headerSettings->AddStyle("style/main.css");
 // $headerSettings->AddStyle("style/style.css");
 
+// Top 10 JS
+$headerSettings->AddJs('js/YOURJS.js');
 
 
 
