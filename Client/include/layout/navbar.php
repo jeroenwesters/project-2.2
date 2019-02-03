@@ -12,10 +12,10 @@
   ?>
 
   <li class="comp_logo"><a href="<?php echo $url1;  ?>"><img src='<?php echo $img ?>' alt="Home"></a></li>
-  <li><a href="<?php echo $url2;  ?>">Ukraine</a></li>
-  <li><a href="<?php echo $url3;  ?>">Scandinavia</a></li>
-  <li><a href="<?php echo $url4;  ?>">Top 10</a></li>
-  <li style="float:right"><a href="<?php echo $url5;  ?>">Logout</a></li>
-  <li style="float:right"><a href="<?php echo $url6;  ?>">Admin Panel</a></li>
-  <li style="float:right"><a href="<?php echo $url7;  ?>">Account</a></li>
+  <li class="hover_effect"><a href="<?php echo $url2;  ?>">Ukraine</a></li>
+  <li class="hover_effect"><a href="<?php echo $url3;  ?>">Scandinavia </a></li>
+  <li class="hover_effect"><a href="<?php echo $url4;  ?>">Top 10</a></li>
+  <li class="hover_effect" style="float:right"><a href="<?php echo $url5;  ?>">Logout</a></li>
+  <li class="hover_effect" style="float:right"><a href="<?php echo $url6;  ?>">Admin Panel</a></li>
+  <li class="hover_effect" style="float:right"><a href="<?php echo $url7;  ?>">Account</a></li>
 </header>

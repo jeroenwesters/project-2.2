@@ -38,17 +38,19 @@ li {
   float: left;
 }
 
+
 li a {
   display: block;
   color: white;
   text-align: center;
-  padding: 20px;
-  width: 100px;
+  padding: 30px;
   font-weight: 500;
   text-decoration: none;
 }
 
-li a:hover:not(.active) {
+
+
+.hover_effect a:hover:not(.active) {
   background-color: #2b2b2b;
 }
 
@@ -56,6 +58,14 @@ li a:hover:not(.active) {
   background-color: #2b2b2b;
 }
 
-.comp_logo {
-  height: 50px;
+.comp_logo a{
+  padding-top: 4%;
+  padding-bottom: : 4%;
+  padding-right: 5%;
+  padding-left: 0;
+  height: 20px;
+}
+
+.comp_logo img{
+    height: 50px;
 }
