@@ -46,5 +46,7 @@ if(isset($_SESSION['loggedIn'])){
     ?>
     <meta charset="utf-8">
     <title><?php echo $headerSettings->title . ' - ' . $companyName; ?></title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" rel="stylesheet">
   </head>
   <body>
+    <div class="wrapper">

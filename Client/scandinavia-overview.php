@@ -33,7 +33,8 @@ require 'include/layout/navbar.php';
 <!-- Content  -->
 <div class="maindiv">
   <h1>Scandinavia Overview</h1>
-
+  <br/>
+  <br/>
  <div id="mapid"></div>
  <script>createMap('mapid')</script>
 </div>

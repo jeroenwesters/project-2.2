@@ -1,3 +1,9 @@
+*{
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Roboto', sans-serif;
+}
+
 /* Mady by Emiel, Jarco, Jeroen */
 html, body {
   height: 100%;
@@ -7,7 +13,6 @@ html, body {
   align-items: center;
   justify-content: center;
   text-align: center; */
-  font-family: 'Roboto', sans-serif;
 }
 
 .maindiv {
@@ -16,14 +21,14 @@ html, body {
 
   margin: auto;
   width: 1200px;
-  padding: 10px;
-  font-weight: 700;
+
+  padding: 20px;
+  padding-bottom: 50px;
 }
 
 h1 {
-  font-family: 'Roboto', sans-serif;
   color: black;
-  font-weight: 100;
+  font-weight: 300;
 }
 
 header {
@@ -81,12 +86,50 @@ li a {
 }
 
 .footer{
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+  background-color: #333;
+}
+
+.wrapper {
+  min-height: 100%;
+}
+
+.footer {
+  /* height: 50px; */
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: -50px;
+  text-align: center;
+  color: white;
+}
+
+.footer p{
+  height: 30px;
+  font-weight: 300;
+}
+
+
+
+#topten {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-weight: 300;
+}
+
+#topten td, #topten th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#topten tr:nth-child(even){background-color: #f2f2f2;}
+
+#topten tr:hover {background-color: #ddd;}
+
+#topten th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
   background-color: #333;
   color: white;
-  text-align: center;
-  height: 100px;
-  margin-top: 100px;
+  font-weight: 300;
 }
