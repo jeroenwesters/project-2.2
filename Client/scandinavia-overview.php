@@ -42,7 +42,7 @@ require 'include/layout/navbar.php';
  <?php
  // Test
  echo '<script>';
-
+ 
  for($y = 0; $y < 10; $y++){
    echo "createMarker(60, ". (17 + $y) . ", 'test', 5125);";
 
