@@ -1,12 +1,20 @@
 <header>
   <?php
-  $url1 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'index.php';
-  $url2 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'scandinavia-overview.php';
-  $url3 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'scandinavia-top.php';
-  $url4 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'view3.php';
-  $url5 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'account.php';
-  $url6 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'admin.php';
-  $url7 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'logout.php';
+  // $url1 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'index.php';
+  // $url2 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'scandinavia-overview.php';
+  // $url3 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'scandinavia-top.php';
+  // $url4 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'view3.php';
+  // $url5 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'account.php';
+  // $url6 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'admin.php';
+  // $url7 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'logout.php';
+
+  $url1 = 'index.php';
+  $url2 = 'scandinavia-overview.php';
+  $url3 = 'scandinavia-top.php';
+  $url4 = 'view3.php';
+  $url5 = 'account.php';
+  $url6 = 'admin.php';
+  $url7 = 'logout.php';
 
   $img = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'pictures/vectorpaint2.svg';
   ?>
