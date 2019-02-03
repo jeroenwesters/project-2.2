@@ -36,7 +36,7 @@ if(isset($_SESSION['loggedIn'])){
     }
 
     foreach ($headerSettings->js as $js){
-      echo '<script src="'.$js.'"></script>';
+      echo '<script src="'.$js.'" crossorigin=""></script>';
     }
 
     foreach ($headerSettings->externalJs as $ejs){

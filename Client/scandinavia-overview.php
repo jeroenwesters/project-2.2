@@ -36,20 +36,8 @@ require 'include/layout/navbar.php';
   <br/>
   <br/>
  <div id="mapid"></div>
- <script>createMap('mapid')</script>
+ <script>createMap('mapid','asf756saf5asf75a7s6f')</script>
 </div>
-
- <?php
- // Test
- echo '<script>';
-
- for($y = 0; $y < 10; $y++){
-   echo "createMarker(60, ". (17 + $y) . ", 'test', 5125);";
-
- }
- echo '</script>';
-?>
-
 
 
 <!-- End of content  -->
