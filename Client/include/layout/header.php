@@ -1,6 +1,7 @@
 <?php
 // Made by Jeroen & Jarco - © 2019
 $companyName = 'DEOL partners';
+$isAdmin = 0;
 
 session_start();
 
@@ -14,12 +15,24 @@ if(isset($headerSettings)){
 $loggedIn = false;
 if(isset($_SESSION['loggedIn'])){
   $loggedIn = true;
+
+  $isAdmin = $_SESSION['admin'];
+
+  if($headerSettings->requireAdmin){
+    if($isAdmin != 1){ //check if the user is an admin
+      // if he is not an admin, redirect him to the webpage
+      header("Location: index.php");
+    }
+  }
 }else{
   if($headerSettings->redirect){
     header("Location:Login.php");
     exit;
   }
 }
+
+
+
 
 ?>
 
