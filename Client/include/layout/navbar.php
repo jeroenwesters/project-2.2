@@ -25,14 +25,14 @@
   $img = 'pictures/vectorpaint2.svg';
   ?>
 
-  <li class="comp_logo"><a href="<?php echo $url1;  ?>"><img src='<?php echo $img ?>' alt="Home"></a></li>
+  <li class="comp_logo"><a class="comp_logo" href="<?php echo $url1;  ?>"><img src='<?php echo $img ?>' alt="Home"></a></li>
   <?php
 
   if(!$onlyIcon){
     echo '<li class="hover_effect"><a href="' . $url2 . '">Scandinavia overview</a></li>';
     echo '<li class="hover_effect"><a href="' . $url3 . '">Scandinavia top 10</a></li>';
     echo '<li class="hover_effect"><a href="' . $url4 . '">Ukraine real-time</a></li>';
-    
+
     if($isAdmin){
       echo '<li class="hover_effect" style="float:right"><a href="' . $url6 . '">Admin Panel</a></li>';
     }
