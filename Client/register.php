@@ -1,5 +1,6 @@
 <?php
-  require "include/header.php";
+  require 'include/layout/headersettings.php';
+  require 'include/functions.php';
   if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST))
   {
     $username = $_POST['username'];
@@ -11,33 +12,37 @@
     else{
       $admin = 0;
     }
-    $error = "";
-    if(strlen($password0) < 5){
-      $error = "The password should have at least 5 characters.";
-    }
-    if($password0 != $password1){
-      $error = "The passwords do not match.";
-    }
-    if(strlen($error) > 0){
-      echo $error;
-    }
-    else{
-      $hashedPassword = password_hash($password0, PASSWORD_BCRYPT);
-      $query = "INSERT INTO `users` (`userid`, `username`, `password`, `admin`)
-              VALUES (NULL, '$username', '$hashedPassword', '$admin')";
-      $result = doQuery($conn, $query);
-      $sqlerror = $conn->error;
-      if(strlen($sqlerror) < 1){
-        echo "Registration complete";
-      }
-      else if(strtok($sqlerror, " ") == "Duplicate"){
-        echo "This username has already been taken";
-      }
-      else{
-        echo "An sql error has occured:";
-        echo $sqlerror;
-      }
-    }
+
+    $result = createAccount($username, $password0, $password1, $admin);
+
+    echo $result->message;
+    // $error = "";
+    // if(strlen($password0) < 5){
+    //   $error = "The password should have at least 5 characters.";
+    // }
+    // if($password0 != $password1){
+    //   $error = "The passwords do not match.";
+    // }
+    // if(strlen($error) > 0){
+    //   echo $error;
+    // }
+    // else{
+    //   $hashedPassword = password_hash($password0, PASSWORD_BCRYPT);
+    //   $query = "INSERT INTO `users` (`userid`, `username`, `password`, `admin`)
+    //           VALUES (NULL, '$username', '$hashedPassword', '$admin')";
+    //   $result = doQuery($conn, $query);
+    //   $sqlerror = $conn->error;
+    //   if(strlen($sqlerror) < 1){
+    //     echo "Registration complete";
+    //   }
+    //   else if(strtok($sqlerror, " ") == "Duplicate"){
+    //     echo "This username has already been taken";
+    //   }
+    //   else{
+    //     echo "An sql error has occured:";
+    //     echo $sqlerror;
+    //   }
+    // }
   }
   echo "<br><a href='admin.php'>Back to the admin panel";
  ?>
