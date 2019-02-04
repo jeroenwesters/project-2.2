@@ -37,6 +37,7 @@ require 'include/layout/navbar.php';
 
 
 <!-- 2 decimals -->
+
   <table id="topten">
     <tr>
       <th>Index</th>
@@ -46,6 +47,9 @@ require 'include/layout/navbar.php';
     </tr>
   </table>
 
+  <div class="center-box" id="loading">
+    <div class="loader"></div>
+  </div>
 
 </div>
 

@@ -133,7 +133,6 @@ function order(){
 
   // Not working!
   stationData.sort(function(a,b) {
-    console.log('order');
     return b.value - a.value;
   });
 
@@ -162,16 +161,22 @@ function createData(top){
     appendCell(data.value, row);
 
     //row added to end of table body
+
+
     table.appendChild(row);
 
+
     if(j == 9){
-      return;
+      break;
     }
   }
 
-}
+  var el = document.getElementById("loading");
+    el.style.visibility = "hidden";
+  }
 
 function appendCell(content, parent){
+
   var id = document.createElement("td");
   var idContent = document.createTextNode(content);
   id.appendChild(idContent);
