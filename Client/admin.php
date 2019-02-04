@@ -18,34 +18,22 @@ require 'include/layout/navbar.php';
 <!-- Content  -->
 <div class="maindiv">
   <h1>Admin panel</h1>
-<div class="center-box">
+<div class="center-box admin-register">
 
 <p>Create a new account:</p>
 <br>
 
-<form class="center-item" action = "register.php" method ="POST">
-    <table>
-      <tr>
-        <td>Username:</td>
-        <td><input type ="text" name="username" size ="20" maxlength="50" required/></td>
-      </tr>
-      <tr>
-        <td>Password:</td>
-        <td><input type = "password" name="password0" size ="20" maxlength="100" required/></td>
-      </tr>
-      <tr>
-        <td>Repeat password:</td>
-        <td><input type = "password" name="password1" size ="20" maxlength="100" required/></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td><label for="admin">Admin rights?</label><input type = "checkbox" id="admin" name = "admin" value = "yes"></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td><input type = "submit" value = "register"></td>
-      </tr>
-    </table>
+<form class="login-form" action = "register.php" method ="POST">
+  <label for="username" class="tl">Username:</label>
+  <input type="text" placeholder="Username" name="username" size ="20" maxlength="50" required>
+
+  <label for="password" class="tl">Password:</label>
+  <input type="password" placeholder="password" name="password0" size ="20" maxlength="100" required>
+
+  <label for="password" class="tl">Repeat Password:</label>
+  <input type="password" placeholder="password" name="password1" size ="20" maxlength="100" required>
+
+  <button type="submit">Register</button>
 </form>
 </div>
 
@@ -77,12 +65,19 @@ require 'include/layout/navbar.php';
         // below line for data debug
         $count=0;
         foreach ($result->data as $row){
+          $admin = "";
+          if($row['admin'] == 1){
+            $admin = "Yes";
+          }else{
+            $admin = "No";
+          }
+
           $count += 1;
           echo "<tr>";
             echo"<td align='center'>".$count."</td>";
             echo"<td align='center'>".$row["userid"]."</td>";
             echo"<td align='center'>".$row["username"]."</td>";
-            echo"<td align='center'>".$row["admin"]."</td>";
+            echo"<td align='center'>".$admin."</td>";
             echo"<td align='center'>".$row["api_key"]."</td>";
             echo"<td align='center'>
                   <a href='edit.php?id=".$row["userid"]."'>Edit</a>

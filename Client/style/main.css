@@ -167,11 +167,19 @@ li a {
     color: red;
 }
 
+.admin-center{
+  margin: 0 auto;
+}
+
+.admin-register{
+  margin: auto 30%;
+}
+
 
 .tl{
   text-align: left;
   float: left;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .login-form input {
