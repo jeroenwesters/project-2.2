@@ -32,7 +32,7 @@ function getTimeDate(){
 
   dateTime = document.getElementById("currentDateTime");
 
-  dateTime.innerHTML = 'Measurement on: ' + formatNumber(day) + '-' + formatNumber(month) + '-' + formatNumber(year) + ' @ ' + formatNumber(hour) + ':' + formatNumber(min) + ':' + formatNumber(sec * 10);
+  dateTime.innerHTML = 'Measurement on: ' + formatNumber(day) + '-' + formatNumber(month) + '-' + formatNumber(year) + ' --- ' + formatNumber(hour) + ':' + formatNumber(min) + ':' + formatNumber(sec * 10);
 
 }
 
