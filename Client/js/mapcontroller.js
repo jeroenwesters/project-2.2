@@ -71,8 +71,9 @@ function placeMarker(type, data){
 
 function getStationData(data, type, popup, callback){
   //var url = 'https://tester-site.nl/api/?key='+ apikey+ '&type=data&stn='+ data.stn + '&var='+ type + '&date=31-1-2019&time=14:0:0';
-  var time = (hour + ':' + min + ':' + sec);
+  var time = (hour + ':' + min + ':' + sec * 10);
   var date = (day + '-' + month + '-' + year);
+
   var url = 'https://tester-site.nl/api/?key='+ apikey+ '&type=data&stn='+ data.stn + '&var='+ type + '&date=' + date + '&time='+time;
 
   var xmlhttp = new XMLHttpRequest();
@@ -96,11 +97,9 @@ function updateMarker(data, popup, resp){
   }
 }
 
-
 function getTimeDate(){
   var d = new Date();
   d.setSeconds(d.getSeconds() - 20);
-
   year = d.getFullYear();
   month = d.getMonth();
   day = d.getDate();
