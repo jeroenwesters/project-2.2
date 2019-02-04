@@ -71,9 +71,9 @@ function createAccount($username, $password, $confirmpassword, $admin){
   }else{
     $msg->message = "Passwords didn't match!";
   }
-
+  return $msg;
   // DEBUG
-  echo $msg->message;
+  // echo $msg->message;
 }
 
 function validateUsername($username){
@@ -136,17 +136,29 @@ function updateAccount($userid, $username, $password, $admin){
   $msg = new Message();
 
   $PDO = getPDO();
-  $data = [
-    'userid' => $userid,
-    'username' => $username,
-    'password' => $password,
-    'admin' => $admin,
-  ];
 
-  $stmt = $PDO->prepare(" UPDATE users
-                          SET username =:username, password =:password, admin=:admin
-                          WHERE userid =:userid;");
-  $stmt->execute($data);
+  if ($password == 1) {
+    $password = "Welcome123*";
+    $password = password_hash($password, PASSWORD_BCRYPT);
+
+    $data = [
+      'userid' => $userid,
+      'username' => $username,
+      'password' => $password,
+      'admin' => $admin,
+    ];
+
+    $stmt = $PDO->prepare(" UPDATE users
+                            SET username =:username, password =:password, admin=:admin
+                            WHERE userid =:userid;");
+    $stmt->execute($data);
+  }
+  else {
+    $stmt = $PDO->prepare(" UPDATE users
+                            SET username = ?, admin= ?
+                            WHERE userid = ?");
+    $stmt->execute([$username, $admin, $userid]);
+  }
 
   $result = $stmt->rowCount();
 
