@@ -114,11 +114,9 @@ function getTimeDate(){
   // Get per 10 seconds
   sec = Math.floor(sec/10);
 
-  date = document.getElementById("currentDate");
-  time = document.getElementById("currentTime");
+  dateTime = document.getElementById("currentDateTime");
 
-  date.innerHTML = 'Date: ' + formatNumber(day) + '-' + formatNumber(month) + '-' + formatNumber(year);
-  time.innerHTML = 'Time: ' + formatNumber(hour) + ':' + formatNumber(min) + ':' + formatNumber(sec * 10);
+  dateTime.innerHTML = 'Measurement on: ' + formatNumber(day) + '-' + formatNumber(month) + '-' + formatNumber(year) + ' @ ' + formatNumber(hour) + ':' + formatNumber(min) + ':' + formatNumber(sec * 10);
 }
 
 function formatNumber(number){

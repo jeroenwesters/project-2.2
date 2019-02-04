@@ -28,6 +28,7 @@ html, body {
 
 h1 {
   color: black;
+  padding: 16px;
   font-weight: 300;
 }
 
@@ -136,14 +137,15 @@ li a {
 
 .dateTime{
   display: block;
-  margin: 0 38%;
-  text-align: left;
+  padding: 16px;
+  text-align: center;
 }
 
 .center-box{
   display: block;
-  margin: 0 40%;
-  width: auto;
+  margin: 0;
+  /* width: 100%; */
+  text-align: center;
 }
 
 .center-box p{
@@ -191,7 +193,6 @@ li a {
   box-sizing: border-box;
 }
 
-
 button {
   background-color: #333;
   color: white;
@@ -202,17 +203,15 @@ button {
   width: 100%;
 }
 
-.login-form {
-}
-
 .loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #333; /* Blue */
-    margin-top: 40px;
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #333; /* Blue */
     border-radius: 50%;
-    width: 75px;
-    height: 75px;
+    width: 32px;
+    height: 32px;
+    margin-top: 40px;
     animation: spin 2s linear infinite;
+    display: inline-block;
 }
 
 @keyframes spin {

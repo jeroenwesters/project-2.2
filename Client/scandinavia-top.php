@@ -24,9 +24,7 @@ require 'include/layout/navbar.php';
   <h1>Scaninavia Top 10 precipitation</h1>
 
   <div class="dateTime">
-    <p>Measurement on:</p>
-    <p id="currentDate">Date: 01-01-2019</p>
-    <p id="currentTime">Time: 00:00:00</p>
+    <p id="currentDateTime">Measurement on: 01-01-2019 @ 00:00:00 a.m.</p>
   </div>
 
   <br/>
