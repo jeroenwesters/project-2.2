@@ -53,7 +53,7 @@ function handleCountryStations(stations){
 
 // lon, lat, desc, id
 function handleStation(data){
-    var type = 'PRCP';
+    var type = 'SNDP';
     placeMarker(type, data)
 }
 
@@ -91,7 +91,7 @@ function updateMarker(data, popup, resp){
   if(resp.error){
     popup.setContent('Name: ' + data.name + '<br>ID: ' + data.stn + '<br> Snowfall: ' + 'NOT FOUND');
   }else{
-    popup.setContent('Name: ' + data.name + '<br>ID: ' + data.stn + '<br> Snowfall: ' + resp.data.value);
+    popup.setContent('Name: ' + data.name + '<br>ID: ' + data.stn + '<br> Snowfall: ' + resp.data.value + ' cm');
   }
 }
 
