@@ -8,7 +8,7 @@ require 'include/functions.php';
 // Create settings
 $headerSettings = new HeaderSettings();
 $headerSettings->AddStyle("style/main.css");
-$headerSettings->title = 'Home';
+$headerSettings->title = 'Adminpanel';
 $headerSettings->requireAdmin = true;
 
 require 'include/layout/header.php';
@@ -94,6 +94,8 @@ require 'include/layout/navbar.php';
 
       echo "</tbody>";
       echo "</table>";
+      echo "<br>";
+      echo "<br>";
 
 ?>
 
