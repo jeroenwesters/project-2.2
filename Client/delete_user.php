@@ -24,11 +24,11 @@
   <?php
   // If failed
   if($result->error){
-    echo $result->message . "   ";
+    echo '<p>'.$result->message.'<p>';
     echo "<button onclick='history.go(-2);'>Go back</button>";
     echo "<button onclick='history.go(-1);'>Try again</button>";
   }else{
-    echo $result->message . "   ";
+    echo '<p>'.$result->message.'<p>';
     echo "<button onclick='history.go(-2);'>Back </button>";
   }
   echo "</div>";
