@@ -52,15 +52,19 @@ function createAccount($username, $password, $confirmpassword, $admin){
   if($password == $confirmpassword){
     if(strlen($password) >= $minLength){
       if(validateUsername($username)){
+        $key = base64_encode(md5(uniqid(rand(), true)));
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
         if($hashedPassword){
           $PDO = getPDO();
-          $stmt = $PDO->prepare('INSERT into users(username, password, admin) VALUES(?, ?, ?);');
-          $stmt->execute([$username, $hashedPassword, $admin]);
+          $stmt = $PDO->prepare('INSERT into users(username, password, admin, api_key) VALUES(:username, :password, :admin, :apikey)');
+          $stmt->bindValue(':username', $username);
+          $stmt->bindValue(':password', $hashedPassword);
+          $stmt->bindValue(':admin', $admin);
+          $stmt->bindValue(':apikey', $key);
+          $stmt->execute();
           $msg->error = false;
           $msg->message = 'Acount has been made!';
-
         }else{
           $msg->message = 'Error occured! Contact the supportdesk!';
         }

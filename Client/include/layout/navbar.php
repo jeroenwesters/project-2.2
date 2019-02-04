@@ -27,7 +27,7 @@
   $img = 'pictures/vectorpaint2.svg';
   ?>
 
-  <li class="comp_logo"><a href="<?php echo $url1;  ?>"><img src='<?php echo $img ?>' alt="Home"></a></li>
+  <li class="comp_logo"><a class="comp_logo" href="<?php echo $url1;  ?>"><img src='<?php echo $img ?>' alt="Home"></a></li>
   <?php
 
   if(!$onlyIcon){

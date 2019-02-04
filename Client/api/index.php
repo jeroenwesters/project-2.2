@@ -15,7 +15,6 @@ $msg = new Message();
 if($_GET){
   verifyKey($msg);
 }else{
-
   $msg->message = 'Use $_GET to get acces to the API!';
   $msg->toJson();
 }
