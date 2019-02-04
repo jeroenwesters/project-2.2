@@ -29,14 +29,24 @@ $headerSettings->AddJs($mapJs, true);
 require 'include/layout/header.php';
 require 'include/layout/navbar.php';
 ?>
+<script>setInterval(getTimeDate,1000);</script>
 
 <!-- Content  -->
 <div class="maindiv">
   <h1>Scandinavia Overview</h1>
+
+  <div class="dateTime">
+    <p>Measurement of:</p>
+    <p id="currentDate">Date: 01-01-2019</p>
+    <p id="currentTime">Time: 00:00:00</p>
+  </div>
+
   <br/>
   <br/>
  <div id="mapid"></div>
  <script>createMap('mapid','asf756saf5asf75a7s6f')</script>
+
+
 </div>
 
 

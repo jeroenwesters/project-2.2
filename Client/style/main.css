@@ -133,3 +133,9 @@ li a {
   color: white;
   font-weight: 300;
 }
+
+.dateTime{
+  display: block;
+  margin: 0 38%;
+  text-align: left;
+}

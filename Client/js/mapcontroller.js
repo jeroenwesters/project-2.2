@@ -1,6 +1,13 @@
 var map = null;
 var apikey = "";
 
+var year = 2019;
+var month = 1;
+var day = 1;
+var sec = 0;
+var min = 0;
+var hour = 0;
+
 function createMap(divid, key){
   map = L.map(divid).setView([64,11], 4);
   apikey = key;
@@ -46,34 +53,78 @@ function handleCountryStations(stations){
 
 // lon, lat, desc, id
 function handleStation(data){
-  var type = 'PRCP';
-  var stn = data.stn;
-
-  getStationData(data, type, placeMarker);
-
-
-
+    var type = 'PRCP';
+    placeMarker(type, data)
 }
 
+function placeMarker(type, data){
 
-function getStationData(data, type, callback){
-  var url = 'https://tester-site.nl/api/?key='+ apikey+ '&type=data&stn='+ data.stn + '&var='+ type + '&date=31-1-2019&time=14:0:0';
+    L.marker([data.latitude, data.longitude]).addTo(map)
+    .bindPopup('').on("click", function(e){
+
+      var popup = e.target.getPopup();
+      getStationData(data, type, popup,updateMarker);
+    });
+  }
+
+
+function getStationData(data, type, popup, callback){
+  //var url = 'https://tester-site.nl/api/?key='+ apikey+ '&type=data&stn='+ data.stn + '&var='+ type + '&date=31-1-2019&time=14:0:0';
+  var time = (hour + ':' + min + ':' + sec);
+  var date = (day + '-' + month + '-' + year);
+  var url = 'https://tester-site.nl/api/?key='+ apikey+ '&type=data&stn='+ data.stn + '&var='+ type + '&date=' + date + '&time='+time;
 
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
-      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          callback(xmlhttp.responseText, data);
-      }
+     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+         callback(data, popup, xmlhttp.responseText);
+     }
   };
 
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 }
 
-function placeMarker(value, data){
-    resp = JSON.parse(value);
+function updateMarker(data, popup, resp){
+  resp = JSON.parse(resp);
 
-    L.marker([data.latitude, data.longitude]).addTo(map)
-    .bindPopup('Name: ' + data.name + '<br>ID: ' + data.stn + '<br> Snowfall: ' + resp.data.value);
+  if(resp.error){
+    popup.setContent('Name: ' + data.name + '<br>ID: ' + data.stn + '<br> Snowfall: ' + 'NOT FOUND');
+  }else{
+    popup.setContent('Name: ' + data.name + '<br>ID: ' + data.stn + '<br> Snowfall: ' + resp.data.value);
+  }
+}
+
+
+function getTimeDate(){
+  var d = new Date();
+  d.setSeconds(d.getSeconds() - 20);
+
+  year = d.getFullYear();
+  month = d.getMonth();
+  day = d.getDate();
+  hour = d.getHours();
+  min = d.getMinutes();
+  sec = d.getSeconds()
+
+  // Add delay for file system
+  var timeString = 'Time: ';
+
+  // Get per 10 seconds
+  sec = Math.floor(sec/10);
+
+  date = document.getElementById("currentDate");
+  time = document.getElementById("currentTime");
+
+  date.innerHTML = 'Date: ' + formatNumber(day) + '-' + formatNumber(month) + '-' + formatNumber(year);
+  time.innerHTML = 'Time: ' + formatNumber(hour) + ':' + formatNumber(min) + ':' + formatNumber(sec * 10);
+}
+
+function formatNumber(number){
+  if(number < 10){
+    return '0' + number;
+  }else{
+    return number;
+  }
 
 }
