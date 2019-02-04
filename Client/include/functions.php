@@ -19,14 +19,14 @@ function userlogin($username, $password){
   }
 
   $PDO = getPDO();
-  $stmt = $PDO->prepare('SELECT username, password, admin FROM users where username = ?;');
+  $stmt = $PDO->prepare('SELECT username, password, admin, api_key FROM users where username = ?;');
   $stmt->execute([$username]);
   //$result = $stmt->fetchAll();
   $result = $stmt->fetch();
 
   if(password_verify($password, $result['password'])){
       $msg->error = false;
-      $msg->data = array('username' => $result['username'], 'admin' => $result['admin']);
+      $msg->data = array('username' => $result['username'], 'admin' => $result['admin'], 'apikey' => $result['api_key']);
 
       return $msg;
       // echo $msg->getJson() . '<br>';

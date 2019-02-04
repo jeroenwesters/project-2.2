@@ -1,3 +1,4 @@
+// Created by Jeroen - © 2019
 var map = null;
 var apikey = "";
 

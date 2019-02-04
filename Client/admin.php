@@ -53,7 +53,7 @@ require 'include/layout/navbar.php';
 <br>
 <br>
 <br>
-  <table class="center-item" width="80%" border="1">
+  <table id="topten" class="center-item" width="80%" border="1">
     <thead>
       <tr>
         <th><strong>ID</strong></th>

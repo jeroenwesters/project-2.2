@@ -29,7 +29,7 @@ $headerSettings->AddJs($mapJs, true);
 require 'include/layout/header.php';
 require 'include/layout/navbar.php';
 ?>
-<script>setInterval(getTimeDate,1000);</script>
+
 
 <!-- Content  -->
 <div class="maindiv">
@@ -44,9 +44,13 @@ require 'include/layout/navbar.php';
   <br/>
   <br/>
  <div id="mapid"></div>
- <script>createMap('mapid','asf756saf5asf75a7s6f')</script>
+ <script>getTimeDate();</script>
+ <script>setInterval(getTimeDate,1000);</script>
 
-
+ <?php
+    // Echo the script with API key
+    echo   "<script>createMap('mapid', '". $apikey ."')</script>"
+  ?>
 </div>
 
 

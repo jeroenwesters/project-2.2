@@ -1,3 +1,4 @@
+// Created by Jeroen - © 2019
 var apikey = "";
 
 var year = 2019;
@@ -123,13 +124,11 @@ function onComplete(data, country, type, resp){
 
   if(counterComplete == counter){
     // Then we can calculate
-    console.log("DONE");
     order();
   }
 }
 
 function order(){
-  console.log(stationData);
 
   // Not working!
   stationData.sort(function(a,b) {
@@ -142,8 +141,6 @@ function order(){
 
 function createData(top){
   // get top (for now removed)
-
-
   table = document.getElementById("topten");
 
   var row = ''

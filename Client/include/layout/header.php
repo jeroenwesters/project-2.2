@@ -2,7 +2,6 @@
 // Made by Jeroen & Jarco - © 2019
 $companyName = 'DEOL partners';
 $isAdmin = 0;
-
 session_start();
 
 include_once 'headersettings.php';
@@ -17,6 +16,7 @@ if(isset($_SESSION['loggedIn'])){
   $loggedIn = true;
 
   $isAdmin = $_SESSION['admin'];
+  $apikey = $_SESSION['apikey'];
 
   if($headerSettings->requireAdmin){
     if($isAdmin != 1){ //check if the user is an admin

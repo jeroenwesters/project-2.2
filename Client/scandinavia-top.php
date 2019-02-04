@@ -31,9 +31,13 @@ require 'include/layout/navbar.php';
 
   <br/>
   <br/>
-  <script>setInterval(getTimeDate, 1000);</script>
-  <script>loadData('asf756saf5asf75a7s6f')</script>
+  <script>getTimeDate();</script>
+  <script>setInterval(getTimeDate,1000);</script>
 
+  <?php
+  // Call script with api key
+  echo   "<script>loadData('". $apikey ."')</script>"
+ ?>
 
 
 <!-- 2 decimals -->

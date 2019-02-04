@@ -58,6 +58,7 @@ require 'include/layout/navbar.php';
             $_SESSION['loggedIn'] = true;
             $_SESSION['currentuser'] = $result->data['username'];
             $_SESSION['admin'] = $result->data["admin"];
+            $_SESSION['apikey'] = $result->data["apikey"];
 
             header("Location: index.php");  //redirect the user to the webpage
           }else{
