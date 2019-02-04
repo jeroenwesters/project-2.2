@@ -1,5 +1,10 @@
 <header>
   <?php
+
+  if(!isset($onlyIcon))
+  {
+    $onlyIcon = false;
+  }
   // $url1 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'index.php';
   // $url2 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'scandinavia-overview.php';
   // $url3 = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'scandinavia-top.php';
@@ -20,10 +25,18 @@
   ?>
 
   <li class="comp_logo"><a href="<?php echo $url1;  ?>"><img src='<?php echo $img ?>' alt="Home"></a></li>
-  <li class="hover_effect"><a href="<?php echo $url2;  ?>">Scandinavia overview</a></li>
-  <li class="hover_effect"><a href="<?php echo $url3;  ?>">Scandinavia top 10</a></li>
-  <li class="hover_effect"><a href="<?php echo $url4;  ?>">Ukraine real-time</a></li>
-  <li class="hover_effect" style="float:right"><a href="<?php echo $url6;  ?>">Admin Panel</a></li>
-  <li class="hover_effect" style="float:right"><a href="<?php echo $url7;  ?>">Logout</a></li>
-  <li class="hover_effect" style="float:right"><a href="<?php echo $url5;  ?>">Account</a></li>
+  <?php
+
+  if(!$onlyIcon){
+    echo '<li class="hover_effect"><a href="' . $url2 . '">Scandinavia overview</a></li>';
+    echo '<li class="hover_effect"><a href="' . $url3 . '">Scandinavia top 10</a></li>';
+    echo '<li class="hover_effect"><a href="' . $url4 . '">Ukraine real-time</a></li>';
+
+    echo '<li class="hover_effect" style="float:right"><a href="' . $url6 . '">Admin Panel</a></li>';
+    echo '<li class="hover_effect" style="float:right"><a href="' . $url7 . '">Logout</a></li>';
+    echo '<li class="hover_effect" style="float:right"><a href="' . $url5 . '">Account</a></li>';
+
+  }
+
+  ?>
 </header>

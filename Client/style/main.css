@@ -154,3 +154,46 @@ li a {
 .center-item{
   margin: 0 auto;
 }
+
+.login-div{
+  margin: auto 20%;
+  margin-top: 80px;
+  padding: 8% 5%;
+  background-color: #eaeaea;
+  width: auto;
+}
+
+.error{
+    color: red;
+}
+
+
+.tl{
+  text-align: left;
+  float: left;
+  font-weight: 700;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+
+.login-form button {
+  background-color: #333;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.login-form {
+  border: 3px solid #f1f1f1;
+}
