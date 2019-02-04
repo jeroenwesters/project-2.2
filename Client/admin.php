@@ -1,17 +1,29 @@
 <?php
-    require 'include/header.php';
+// Made by Jeroen & Emiel - © 2019
 
-    echo "you are in an admin panel right now";
-    if($_SESSION['admin'] != 1){ //check if the user is an admin
-      // if he is not an admin, redirect him to the webpage
-      header("Location: webpage.php");
-    }
+// Load settings!
+require 'include/layout/headersettings.php';
+require 'include/functions.php';
+
+// Create settings
+$headerSettings = new HeaderSettings();
+$headerSettings->AddStyle("style/main.css");
+$headerSettings->title = 'Home';
+$headerSettings->requireAdmin = true;
+
+require 'include/layout/header.php';
+require 'include/layout/navbar.php';
 ?>
 
-<br><br>
-Create a new account:
+<!-- Content  -->
+<div class="maindiv">
+  <h1>Admin panel</h1>
+<div class="center-box">
+
+<p>Create a new account:</p>
 <br>
-<form action = "register.php" method ="POST">
+
+<form class="center-item" action = "register.php" method ="POST">
     <table>
       <tr>
         <td>Username:</td>
@@ -35,10 +47,13 @@ Create a new account:
       </tr>
     </table>
 </form>
+</div>
+
+
 <br>
 <br>
 <br>
-  <table width="80%" border="1">
+  <table class="center-item" width="80%" border="1">
     <thead>
       <tr>
         <th><strong>ID</strong></th>
@@ -85,5 +100,11 @@ Create a new account:
       echo "</tbody>";
       echo "</table>";
 
-    require 'include/footer.php';
 ?>
+
+
+
+  </div>
+</div>
+
+<?php include 'include/layout/footer.php';  ?>

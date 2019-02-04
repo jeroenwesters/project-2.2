@@ -139,3 +139,18 @@ li a {
   margin: 0 38%;
   text-align: left;
 }
+
+.center-box{
+  display: block;
+  margin: 0 40%;
+  width: auto;
+}
+
+.center-box p{
+  text-align: left;
+  width: 500px;
+}
+
+.center-item{
+  margin: 0 auto;
+}

@@ -29,10 +29,21 @@
 </body>
 
 <?php
+
+
 // check if the user is logged in
 if($_SESSION['loggedIn'] != true){
   header("Location: index.php");//if the user is not logged in, redirect the user to the login page
+}else{
+  if($headerSettings->requireAdmin){
+    if($_SESSION['admin'] != 1){ //check if the user is an admin
+      // if he is not an admin, redirect him to the webpage
+      header("Location: index.php");
+    }
+  }
 }
+
+
  ?>
 
 <div class="body">

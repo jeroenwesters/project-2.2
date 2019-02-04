@@ -10,6 +10,7 @@ class HeaderSettings {
   public $externalJs = array();
   public $js = array();
   public $redirect = true;
+  public $requireAdmin = false;
 
   // Add CSS links
   function AddStyle($styleURL, $external = false){
