@@ -1,4 +1,5 @@
 <?php
+// Made by Jeroen - © 2019
 
 $type_conversion = [
   "STN" => 0,

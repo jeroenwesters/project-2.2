@@ -1,4 +1,5 @@
 <?php
+// Made by Jeroen - © 2019
 
 // Handles specific station/data requests
 include '../include/api/data_handler.php';

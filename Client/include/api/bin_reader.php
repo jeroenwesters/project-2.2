@@ -1,4 +1,6 @@
 <?php
+// Made by Jeroen - © 2019
+
 // Length of values inside the file
 $offset = 4;
 $amount_values = 18;    // Todo: test this value

@@ -1,4 +1,6 @@
 <?php
+// Made by Jeroen - © 2019
+
 function handleDataRequest($msg){
   if(isset($_GET["stn"]) && isset($_GET["var"]) && isset($_GET["date"]) && isset($_GET["time"])){
     $stn = $_GET["stn"];

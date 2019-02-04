@@ -1,4 +1,6 @@
 <?php
+// Made by Jarco - © 2019
+
   require 'include/layout/headersettings.php';
   require 'include/functions.php';
 

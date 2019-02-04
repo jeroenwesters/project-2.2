@@ -32,8 +32,6 @@ if(isset($_SESSION['loggedIn'])){
 }
 
 
-
-
 ?>
 
 <!DOCTYPE html>

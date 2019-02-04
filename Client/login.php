@@ -1,5 +1,5 @@
 <?php
-// Jarco - 2019
+// Made by Jarco - © 2019
 
 // Load settings!
 require 'include/layout/headersettings.php';
@@ -19,10 +19,6 @@ require 'include/layout/navbar.php';
 ?>
 
 <?php require "include/functions.php"?>
-
-
-
-
 
 
 

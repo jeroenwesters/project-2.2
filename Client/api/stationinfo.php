@@ -1,4 +1,6 @@
 <?php
+// Made by Jeroen - © 2019
+
 function handleStationsRequest($msg){
   if(isset($_GET["country"])){
     $country = $_GET["country"];

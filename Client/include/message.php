@@ -1,8 +1,5 @@
 <?php
-/*
-© J. Westers - 2019
-*/
-
+// Made by Jeroen - © 2019
 
 // Message object to return
 class Message {

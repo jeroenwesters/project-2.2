@@ -1,4 +1,6 @@
 <?php
+// Made by Jeroen, Jarco and Emiel - © 2019
+
 require 'message.php';
 require 'settings.php';
 

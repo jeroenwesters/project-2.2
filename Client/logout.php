@@ -1,4 +1,6 @@
 <?php
+// Made by Jarco - © 2019
+
   session_start(); //start a new session
 
   //reset all session variables

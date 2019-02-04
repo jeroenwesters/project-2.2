@@ -1,4 +1,6 @@
 <?php
+// Made by Jeroen - © 2019
+
 // Returns all station (id's) from given country!
 function retrieveStations($country){
   $msg = new Message();

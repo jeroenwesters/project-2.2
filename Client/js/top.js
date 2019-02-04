@@ -1,4 +1,5 @@
-// Created by Jeroen - © 2019
+// Made by Jeroen - © 2019
+
 var apikey = "";
 
 var year = 2019;

@@ -1,4 +1,6 @@
 <?php
+// Made by Jeroen - © 2019
+
 include 'bin_reader.php';
 include 'types.php';
 

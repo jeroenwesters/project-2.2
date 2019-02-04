@@ -1,5 +1,5 @@
 <?php
-// Made by Jeroen & Emiel - © 2019
+// Made by Jeroen - © 2019
 
 // Load settings!
 require 'include/layout/headersettings.php';
