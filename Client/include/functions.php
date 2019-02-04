@@ -96,7 +96,7 @@ function getAccounts(){
   $msg = new Message();
 
   $PDO = getPDO();
-  $stmt = $PDO->prepare('SELECT * FROM users;');
+  $stmt = $PDO->prepare('SELECT userid, username, password, admin, api_key  FROM users;');
   $stmt->execute();
   $result = $stmt->fetchAll();
 
@@ -106,9 +106,6 @@ function getAccounts(){
       $msg->data = $result;
 
       return $msg;
-      // echo $msg->getJson() . '<br>';
-      // var_dump($msg->getArray());
-      // //echo "<br>password matches<br>";
   }else{
     $msg->message = 'No users found!';
     return $msg;
@@ -216,7 +213,7 @@ function testKey($key){
 function validateAPI($key){
   $PDO = getPDO();
 
-  $stmt = $PDO->prepare('SELECT apikey FROM apikeys WHERE apikey = ?;');
+  $stmt = $PDO->prepare('SELECT api_key FROM users WHERE api_key = ?;');
   $stmt->execute([$key]);
   $res = $stmt->fetch();
   if (!$res) {

@@ -59,8 +59,8 @@ require 'include/layout/navbar.php';
         <th><strong>ID</strong></th>
         <th><strong>UserID</strong></th>
         <th><strong>Username</strong></th>
-        <th><strong>password</strong></th>
         <th><strong>Admin</strong></th>
+        <th><strong>Api Key</strong></th>
         <th><strong>Edit</strong></th>
         <th><strong>Delete</strong></th>
       </tr>
@@ -82,8 +82,8 @@ require 'include/layout/navbar.php';
             echo"<td align='center'>".$count."</td>";
             echo"<td align='center'>".$row["userid"]."</td>";
             echo"<td align='center'>".$row["username"]."</td>";
-            echo"<td align='center'>".$row["password"]."</td>";
             echo"<td align='center'>".$row["admin"]."</td>";
+            echo"<td align='center'>".$row["api_key"]."</td>";
             echo"<td align='center'>
                   <a href='edit.php?id=".$row["userid"]."'>Edit</a>
                   </td>";
