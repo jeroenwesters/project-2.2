@@ -1,55 +1,52 @@
 <?php
-  require 'include/layout/headersettings.php';
-  require 'include/functions.php';
+// Made by Jarco - © 2019
 
-  // Create settings
-  $headerSettings = new HeaderSettings();
-  $headerSettings->AddStyle("style/main.css");
-  $headerSettings->title = 'Home';
-  $headerSettings->requireAdmin = true;
+// Load settings!
+require 'include/layout/headersettings.php';
+require 'include/functions.php';
 
-  require 'include/layout/header.php';
-  require 'include/layout/navbar.php';
-  if(isset($_GET['id'])){
-    $_SESSION['userid'] = $_GET['id'];
-    $userid = $_SESSION['userid'];
-    // $query = "SELECT * FROM users WHERE `userid` = '$userid'";
-    // $result = $conn->query($query);
-    // $row = $result-> fetch_assoc();
-    $result = getAccountDetails($userid);
+// Create settings
+$headerSettings = new HeaderSettings();
+$headerSettings->AddStyle("style/main.css");
+$headerSettings->title = 'Edit';
+$headerSettings->requireAdmin = true;
 
-foreach ($result->data as $row) {
+require 'include/layout/header.php';
+require 'include/layout/navbar.php';
+
+
+if(isset($_GET['id'])){
+  $_SESSION['userid'] = $_GET['id'];
+  $userid = $_SESSION['userid'];
+  // $query = "SELECT * FROM users WHERE `userid` = '$userid'";
+  // $result = $conn->query($query);
+  // $row = $result-> fetch_assoc();
+  $result = getAccountDetails($userid);
+
+  foreach ($result->data as $row) {
 ?>
+
+ <!-- Content  -->
 <div class="maindiv">
-  <h1>Edit account</h1>
 <div class="center-box">
 <br>
-<form class="center-item" action = "edit.php" method ="POST">
-    <table>
-      <tr>
-        <td>Username:</td>
-        <td><input type ="text" name="username" size ="20" maxlength="50" required value="<?php echo $row["username"];?>"/></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td><label for="password0">Reset to standard password?</label>
-          <input type = "checkbox" id = "password0" name="password0"></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td><label for="admin">Admin rights?</label>
-            <input type = "checkbox" id="admin" name = "admin" value = "yes" <?php if($row["admin"] == "1"){echo "checked";}?>></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <button type="button" onclick='location.href="admin.php";'>Cancel </button>
-          <input type = "submit" value = "Edit">
-        </td>
-      </tr>
-    </table>
+<h1>Edit user</h1>
+
+<form class="login-form" action = "edit.php" method ="POST">
+  <label for="username" class="tl">Username:</label>
+  <input type="text" placeholder="Username" name="username" size ="20" maxlength="50" value="<?php echo $row["username"];?>" required>
+
+  <label for="password0">Reset to standard password?</label>
+  <input type = "checkbox" id = "password0" name="password0">
+
+  <label for="admin">Admin rights?</label>
+  <input type = "checkbox" id="admin" name = "admin" value = "yes" <?php if($row["admin"] == "1"){echo "checked";}?>></td>
+
+  <button type="submit" value="Submit">Submit</button>
+  <br>
+  <button type="button" onclick='location.href="admin.php";'>Cancel</button>
 </form>
-</div>
+
 <?php
 }
 }
@@ -71,16 +68,24 @@ foreach ($result->data as $row) {
 
     $result = updateAccount($userid, $username, $password0, $admin);
 
+    echo '<div class="maindiv"><div class="center-box">';
     // If failed
     if($result->error){
-      echo $result->message . "   ";
+      echo '<h1>Failed!</h1><br><br>';
+      echo  '<p>' . $result->message . "</p>";
       echo "<button onclick='history.go(-2);'>Go back</button>";
       echo "<button onclick='history.go(-1);'>Try again</button>";
     }else{
-      echo $result->message . "   ";
+      echo '<h1>Succeed!</h1><br><br>';
+      echo  '<p>' . $result->message . "</p>";
       echo "<button onclick='history.go(-2);'>Back </button>";
     }
-      //header("Location: admin.php");
-
+    echo '</div></div>';
 }
  ?>
+</div>
+
+
+</div>
+
+<?php include 'include/layout/footer.php';  ?>

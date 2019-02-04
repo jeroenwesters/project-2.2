@@ -8,7 +8,8 @@ require 'include/functions.php';
 // Create settings
 $headerSettings = new HeaderSettings();
 $headerSettings->AddStyle("style/main.css");
-$headerSettings->title = 'Succesfully registerd!';
+$headerSettings->title = 'Register';
+$headerSettings->requireAdmin = true;
 
 require 'include/layout/header.php';
 require 'include/layout/navbar.php';
