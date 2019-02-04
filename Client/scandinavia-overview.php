@@ -36,7 +36,7 @@ require 'include/layout/navbar.php';
   <h1>Scandinavia Overview</h1>
 
   <div class="dateTime">
-    <p>Measurement of:</p>
+    <p>Measurement on:</p>
     <p id="currentDate">Date: 01-01-2019</p>
     <p id="currentTime">Time: 00:00:00</p>
   </div>
