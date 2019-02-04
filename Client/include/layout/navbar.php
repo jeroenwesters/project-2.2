@@ -21,7 +21,8 @@
   $url6 = 'admin.php';
   $url7 = 'logout.php';
 
-  $img = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'pictures/vectorpaint2.svg';
+  // $img = "http://" . $_SERVER['SERVER_NAME'] .'/'. 'pictures/vectorpaint2.svg';
+  $img = 'pictures/vectorpaint2.svg';
   ?>
 
   <li class="comp_logo"><a href="<?php echo $url1;  ?>"><img src='<?php echo $img ?>' alt="Home"></a></li>
