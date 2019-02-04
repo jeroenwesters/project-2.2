@@ -199,7 +199,7 @@ function deleteAccount($userid){
 
   if($result){
     $msg->error = false;
-    $msg->message = 'Deleted user: ';
+    $msg->message = 'Deleted user: ' . $userid . ' successfully.';
   }else{
     $msg->message = 'Failed deleting account from ';
   }
