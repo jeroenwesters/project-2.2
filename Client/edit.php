@@ -1,5 +1,5 @@
 <?php
-// Made by Jarco - © 2019
+// Made by Jarco, Emiel - © 2019
 
 // Load settings!
 require 'include/layout/headersettings.php';
@@ -42,9 +42,9 @@ if(isset($_GET['id'])){
   <label for="admin">Admin rights?</label>
   <input type = "checkbox" id="admin" name = "admin" value = "yes" <?php if($row["admin"] == "1"){echo "checked";}?>></td>
 
-  <button type="submit" value="Submit">Submit</button>
+  <button class='ripple' type="submit" value="Submit">Submit</button>
   <br>
-  <button type="button" onclick='location.href="admin.php";'>Cancel</button>
+  <button class='ripple' type="button" onclick='location.href="admin.php";'>Cancel</button>
 </form>
 
 <?php
@@ -73,12 +73,12 @@ if(isset($_GET['id'])){
     if($result->error){
       echo '<h1>Failed!</h1><br><br>';
       echo  '<p>' . $result->message . "</p>";
-      echo "<button onclick='history.go(-2);'>Go back</button>";
-      echo "<button onclick='history.go(-1);'>Try again</button>";
+      echo "<button class='ripple' onclick='history.go(-2);'>Go back</button>";
+      echo "<button class='ripple' onclick='history.go(-1);'>Try again</button>";
     }else{
       echo '<h1>Succeed!</h1><br><br>';
       echo  '<p>' . $result->message . "</p>";
-      echo "<button onclick='history.go(-2);'>Back </button>";
+      echo "<button class='ripple' onclick='history.go(-2);'>Back </button>";
     }
     echo '</div></div>';
 }

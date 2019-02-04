@@ -33,7 +33,7 @@ require 'include/layout/navbar.php';
   <label for="password" class="tl">Repeat Password:</label>
   <input type="password" placeholder="password" name="password1" size ="20" maxlength="100" required>
 
-  <button type="submit">Register</button>
+  <button class='ripple' type="submit">Register</button>
 </form>
 </div>
 

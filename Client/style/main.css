@@ -204,13 +204,39 @@ td a:hover {
 }
 
 button {
-  background-color: #333;
+  /* background-color: #333;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
   cursor: pointer;
+  width: 100%; */
+
+  border: none;
+  border-radius: 2px;
+  padding: 14px 20px;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: white;
   width: 100%;
+  margin: 8px 0;
+  background-color: #333;
+  box-shadow: 0 0 4px #999;
+  outline: none;
+}
+
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: #444 radial-gradient(circle, transparent 1%, #444 1%) center/15000%;
+}
+.ripple:active {
+  background-color: #666;
+  background-size: 100%;
+  transition: background 0s;
 }
 
 .loader {

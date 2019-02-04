@@ -1,5 +1,5 @@
 <?php
-// Made by Jarco - © 2019
+// Made by Jarco, Emiel - © 2019
 
   require 'include/layout/headersettings.php';
   require 'include/functions.php';
@@ -25,11 +25,11 @@
   // If failed
   if($result->error){
     echo $result->message . "   ";
-    echo "<button onclick='history.go(-2);'>Go back</button>";
-    echo "<button onclick='history.go(-1);'>Try again</button>";
+    echo "<button class='ripple' onclick='history.go(-2);'>Go back</button>";
+    echo "<button class='ripple' onclick='history.go(-1);'>Try again</button>";
   }else{
     echo $result->message . "   ";
-    echo "<button onclick='history.go(-2);'>Back </button>";
+    echo "<button class='ripple' onclick='history.go(-2);'>Back </button>";
   }
   echo "</div>";
  ?>
