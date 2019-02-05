@@ -52,6 +52,7 @@ require 'include/layout/navbar.php';
             session_start();
 
             $_SESSION['loggedIn'] = true;
+            $_SESSION['currentuserid'] = $result->data['userid'];
             $_SESSION['currentuser'] = $result->data['username'];
             $_SESSION['admin'] = $result->data["admin"];
             $_SESSION['apikey'] = $result->data["apikey"];
