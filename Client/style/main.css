@@ -203,6 +203,12 @@ td a:hover {
   box-sizing: border-box;
 }
 
+.login-form .cb{
+  display: inline-block;
+  float: left;
+  width: 40px;
+}
+
 button {
   /* background-color: #333;
   color: white;

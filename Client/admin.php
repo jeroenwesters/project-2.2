@@ -33,6 +33,9 @@ require 'include/layout/navbar.php';
   <label for="password" class="tl">Repeat Password:</label>
   <input type="password" placeholder="password" name="password1" size ="20" maxlength="100" required>
 
+  <label for="admin" class="tl">Admin: </label>
+  <input class="cb" type="checkbox" id="admin" name = "admin" value = "yes">
+
   <button class='ripple' type="submit">Register</button>
 </form>
 </div>
