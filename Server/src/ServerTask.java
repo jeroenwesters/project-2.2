@@ -1,23 +1,14 @@
 import filesystem.FileWriter;
-import jdk.internal.org.xml.sax.InputSource;
-import model.Measurement;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import java.io.*;
-import java.lang.reflect.Executable;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
-import java.sql.SQLSyntaxErrorException;
-import java.sql.Struct;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.CheckedInputStream;
-
-import static java.lang.System.in;
-import static java.lang.System.out;
 
 // Handles server functions
 public class ServerTask implements Runnable {
@@ -82,67 +73,7 @@ public class ServerTask implements Runnable {
      */
     public void run() {
 
-        //BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-//
-//        byte[] buffer = new byte[2048*4];
-//        int read;
-//        boolean run = true;
-//
-//            try {
-//                InputStream is = socket.getInputStream();
-//
-//                String output = "";
-//                int i =0;
-//
-//                while((read = is.read(buffer)) != -1) {
-//                    String newString = new String(buffer, 0, read);
-//
-//                    if(newString.contains("</WEATHERDATA>")){
-//                        // Process the string!
-//
-//                        String data[] = newString.split("\n");
-//                        output = "";
-//
-//                        for (String s : data) {
-//                            if(i == 0){
-//                                i++;
-//                            }else{
-//                                s = s.replaceAll("\\s","");
-//                                //System.out.println(s);
-//                                checkInput(s);
-//
-//                            }
-//                        }
-//                        i=0;
-//
-//
-//                    }else{
-//                        output += newString;
-//                    }
-//
-//
-//                };
-//
-//                out.println("LOST CONNECTON");
-//                socket.close();
-//
-//            } catch(IOException e) {
-//                // if any I/O error occurs
-//                e.printStackTrace();
-//            } finally {
-//                // releases system resources associated with this stream
-//
-//            }
-//
-//
-
-            String input = "";
-
-
-
-
-
+        String input = "";
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -153,43 +84,35 @@ public class ServerTask implements Runnable {
                 // Read line (input)
                 input = reader.readLine();
 
-
                 if(input != null){
                     // Remove spaces from the input
                     input = input.replaceAll("\\s","");
                     waitingQueue.add(input);
-                    //System.out.println(input);
 
                     if(input.equals("</WEATHERDATA>")){
                         while(!waitingQueue.isEmpty()){
                             checkInput(waitingQueue.poll());
                         }
-                        //checkInput(input);
                     }
-
-                }else{
+                }
+                else{
                     timeout++;
                     if(timeout >= maxTimeout){
                         System.out.println("Received no weatherdata for more then 100 times");
                         break;
                     }
                 }
-
-
             }
-
-//            checkInput(input);
-
         }
         catch (IOException e) {
             System.out.println("Error handling client ");
         }
         finally {
             try {
-                //System.out.println("Closing socket");
-
+                // Close socket
                 socket.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 System.out.println("Couldn't close socket");
             }
         }
@@ -246,23 +169,24 @@ public class ServerTask implements Runnable {
         }
     }
 
-    private void handleInput(String input){
+    private void handleInput(String input) {
         String desc = input;
         input = ParseData(input);
 
-        if(!input.equals("")){
-            if(currentMeasurement == 1 || currentMeasurement == 4){
-                if(input.contains("-")){
+        if(!input.equals("")) {
+            if(currentMeasurement == 1 || currentMeasurement == 4) {
+                if(input.contains("-")) {
                     String res[] = input.split("-");
                     processArray(res);
-                }else if(input.contains(":")){
+                }
+                else if(input.contains(":")) {
                     String res[] = input.split(":");
                     processArray(res);
 
-                    if(!writeData){
+                    if(!writeData) {
                         int time =(int)stationData[currentBacklog][currentStation][currentMeasurement-1];
 
-                        if(time % writeSec == 0){
+                        if(time % writeSec == 0) {
                             writeData = true;
                             writeBacklog = currentBacklog;
                             //System.out.println("SAVING ON TIME: " + time);
@@ -274,16 +198,15 @@ public class ServerTask implements Runnable {
                 // Parse value
                 processInput(Float.parseFloat(input));
             }
-
-
-        }else{
+        }
+        else{
             // Recover missing value
             boolean usePrevious = false;
             float newVariable = 0;
 
             // No data, check if we can use previous data:
-            for(int d = 0; d < use_previous.length; d++){
-                if(currentMeasurement == use_previous[d]){
+            for(int d = 0; d < use_previous.length; d++) {
+                if(currentMeasurement == use_previous[d]) {
                     // use previous data
                     usePrevious = true;
                     newVariable = getPreviousData();
@@ -292,7 +215,7 @@ public class ServerTask implements Runnable {
             }
 
             // Extrapolate Variable!
-            if(!usePrevious){
+            if(!usePrevious) {
                 newVariable = extrapolateCurrentValue();
             }
 
@@ -305,7 +228,6 @@ public class ServerTask implements Runnable {
      */
     private float extrapolateCurrentValue() {
         if(true){
-
             return 0.0f;
         }
         // TODO:

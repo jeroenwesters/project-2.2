@@ -1,5 +1,3 @@
-import filesystem.FileWriter;
-
 /**
  * @author      Emiel van Essen <emiel@teaspoongames.com>
  * @version     1.1
