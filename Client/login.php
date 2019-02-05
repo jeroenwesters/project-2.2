@@ -35,7 +35,7 @@ require 'include/layout/navbar.php';
         <label for="password" class="tl">Password:</label>
         <input type="password" placeholder="Password" name="password" required>
 
-        <button type="submit">Login</button>
+        <button class='ripple' type="submit">Login</button>
       </form>
 
 

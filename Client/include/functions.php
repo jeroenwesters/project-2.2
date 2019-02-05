@@ -39,6 +39,20 @@ function userlogin($username, $password){
     return $msg;
   }
 }
+
+function getApiKey($userid) {
+    if($userid == 0) {
+        return 'asf756saf5asf75a7s6f';
+    }
+    else {
+      $PDO = getPDO();
+      $stmt = $PDO->prepare('SELECT api_key FROM users WHERE userid = :userid');
+      $stmt->bindValue(':userid', $userid);
+      $stmt->execute();
+      return $stmt->fetchAll();
+    }
+}
+
 //
 // echo "<br>";
 // // By uncommenting this, its easy to make accounts locally

@@ -1,10 +1,11 @@
 <?php
-// Made by Jeroen - © 2019
+// Made by Jeroen, Emiel - © 2019
 
 // Handles specific station/data requests
 include '../include/api/data_handler.php';
 include '../include/api/get_stations.php';
 include '../include/message.php';
+include '../include/functions.php';
 include 'datarequest.php';
 include 'stationinfo.php';
 
@@ -25,8 +26,9 @@ function verifyKey($msg){
   // TODO: check if this key is in the database!
   if(isset($_GET['key'])){
     $apiKey = $_GET['key'];
+    $userid = $_GET['userid'];
 
-    if($apiKey == 'asf756saf5asf75a7s6f'){
+    if($apiKey == getApiKey($userid)){
         // Fillter on datatype
         filterRequest($msg);
     }else{

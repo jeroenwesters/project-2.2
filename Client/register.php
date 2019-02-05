@@ -49,7 +49,7 @@ require 'include/layout/navbar.php';
     }
 
     echo '<div class="center-box" id="loading">';
-    echo '<br><button class="button" onclick="goBack()">Go Back</button>';
+    echo '<br><button class="ripple" class="button" onclick="goBack()">Go Back</button>';
     echo '<script>function goBack() { window.history.back(); }</script>';
 
 

@@ -1,5 +1,5 @@
 <?php
-// Made by Jarco - © 2019
+// Made by Jarco , Emiel - © 2019
 
   require 'include/layout/headersettings.php';
   require 'include/functions.php';
@@ -36,7 +36,7 @@
   <br>
 
   <form class="center-item" action="delete_user.php">
-  <button type="submit">Yes</button>
-  <button type="button" onclick='location.href="admin.php";'>Cancel </button>
+  <button class='ripple' type="submit">Yes</button>
+  <button class='ripple' type="button" onclick='location.href="admin.php";'>Cancel </button>
   </form>
 </div>
