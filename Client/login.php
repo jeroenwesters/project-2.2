@@ -47,6 +47,7 @@ require 'include/layout/navbar.php';
 
         	$result = userlogin($username, $password); //put the result of the query in a variable
 
+          // If login is succesfull
           if($result->error == false){
             //Set the session variables
             session_start();
@@ -58,14 +59,13 @@ require 'include/layout/navbar.php';
             $_SESSION['apikey'] = $result->data["apikey"];
 
             header("Location: index.php");  //redirect the user to the webpage
-          }else{
-            // TODO:
+          }
+          else{
+            // Display error
             echo '<p class="error">' . $result->message . '</p>';
           }
         }
        ?>
-
-
   </div>
 </div>
 

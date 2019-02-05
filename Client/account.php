@@ -1,5 +1,5 @@
 <?php
-// Made by Jarco & Jeroen - © 2019
+// Made by Jarco - © 2019
 
 // Load settings!
 require 'include/layout/headersettings.php';
@@ -21,6 +21,7 @@ require 'include/layout/navbar.php';
 <div class="center-box admin-register">
 
 <?php
+// Get username of the current user
 $userid = $_SESSION['currentuserid'];
 $result = getAccountDetails($userid);
 $username = $result->data[0]["username"];
@@ -45,11 +46,13 @@ echo "<br>";
 
 <?php
 
+// Check if the data is submitted
 if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)){
   $oldPass = $_POST['password0'];
   $newPass = $_POST['password1'];
   $repeatNewPass = $_POST['password2'];
 
+  // Change the password
   $result = changePassword($userid, $oldPass, $newPass, $repeatNewPass);
   echo "<div class='center-box admin-register'>";
 
@@ -58,6 +61,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)){
     echo '<h1>Failed!</h1><br>';
     echo  $result->message;
   }
+  
   // if Succeeded
   else{
     echo '<h1>Succeed!</h1><br>';

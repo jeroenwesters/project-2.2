@@ -1,4 +1,4 @@
-<?php // Made by Emiel & Jeroen - © 2019 ?>
+<?php // Made by Emiel, Jarco & Jeroen - © 2019 ?>
 
 <header>
   <?php
