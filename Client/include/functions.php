@@ -21,15 +21,14 @@ function userlogin($username, $password){
   }
 
   $PDO = getPDO();
-  $stmt = $PDO->prepare('SELECT username, password, admin, api_key FROM users where username = :username');
-  $stmt->bindValue(':username', $username);
-  $stmt->execute();
+  $stmt = $PDO->prepare('SELECT username, password, admin, api_key, userid FROM users where username = ?;');
+  $stmt->execute([$username]);
   //$result = $stmt->fetchAll();
   $result = $stmt->fetch();
 
   if(password_verify($password, $result['password'])){
       $msg->error = false;
-      $msg->data = array('username' => $result['username'], 'admin' => $result['admin'], 'apikey' => $result['api_key']);
+      $msg->data = array('username' => $result['username'], 'admin' => $result['admin'], 'apikey' => $result['api_key'], 'userid' => $result['userid']);
 
       return $msg;
       // echo $msg->getJson() . '<br>';
@@ -96,53 +95,6 @@ function createAccount($username, $password, $confirmpassword, $admin){
   // DEBUG
   // echo $msg->message;
 }
-
-function changePassword($userid, $oldPass, $newPass, $repeatNewPass){
-  $minLength = 8;
-  $msg = new Message();
-
-  if($newPass == $repeatNewPass){
-      if(strlen($newPass) >= $minLength){
-          if(validateUserID($userid)){
-            $key = base64_encode(md5(uniqid(rand(), true)));
-            $hashedPassword = password_hash($newPass, PASSWORD_BCRYPT);
-            $hashedOldPassword = password_hash($oldPass, PASSWORD_BCRYPT);
-
-              if($hashedPassword){
-                  $PDO = getPDO();
-                  $stmt = $PDO->prepare('UPDATE user SET user_password = :password WHERE userid = :userid AND user_password = :oldpass');
-                  $stmt->bindValue(':password', $hashedPassword);
-                  $stmt->bindValue(':userid', $userid);
-                  $stmt->bindValue(':oldpass', $hashedOldPassword);
-                  $stmt->execute();
-                  if($stmt->rowCount() > 0) {
-                      $msg->error = false;
-                      $msg->message = 'Succesfully changed password!';
-                  }
-                  else {
-                      $msg->message = 'Current password incorrect.';
-                  }
-              }
-              else{
-                $msg->message = 'Error occured! Contact the supportdesk!';
-              }
-          }
-          else{
-            $msg->message = 'User does not exist.';
-          }
-      }
-      else{
-        $msg->message = 'The password should have atleast: ' . $minLength . ' characters!';
-      }
-  }
-  else{
-    $msg->message = "Passwords didn't match!";
-  }
-  return $msg;
-  // DEBUG
-  // echo $msg->message;
-}
-
 
 function validateUsername($username){
   $PDO = getPDO();
