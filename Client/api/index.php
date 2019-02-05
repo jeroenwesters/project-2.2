@@ -4,7 +4,6 @@
 // Handles specific station/data requests
 include '../include/api/data_handler.php';
 include '../include/api/get_stations.php';
-include '../include/message.php';
 include '../include/functions.php';
 include 'datarequest.php';
 include 'stationinfo.php';

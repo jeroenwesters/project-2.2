@@ -21,12 +21,12 @@ if(isset($_SESSION['loggedIn'])){
   if($headerSettings->requireAdmin){
     if($isAdmin != 1){ //check if the user is an admin
       // if he is not an admin, redirect him to the webpage
-      header("Location: index.php");
+      header("Location:index.php");
     }
   }
 }else{
   if($headerSettings->redirect){
-    header("Location:Login.php");
+    header("Location:login.php");
     exit;
   }
 }
