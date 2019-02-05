@@ -1,5 +1,5 @@
 <?php
-// Made by Jeroen, Jarco and Emiel - © 2019
+// Made by Jeroen, Jarco & Emiel - © 2019
 
 require 'message.php';
 require 'settings.php';
@@ -21,19 +21,19 @@ function userlogin($username, $password){
   }
 
   $PDO = getPDO();
-  $stmt = $PDO->prepare('SELECT username, password, admin, api_key, userid FROM users where username = ?;');
+  $stmt = $PDO->prepare('SELECT username, password, admin, api_key, userid
+                        FROM users
+                        WHERE username = ?;');
   $stmt->execute([$username]);
   //$result = $stmt->fetchAll();
   $result = $stmt->fetch();
 
+  // Verify passwords
   if(password_verify($password, $result['password'])){
       $msg->error = false;
       $msg->data = array('username' => $result['username'], 'admin' => $result['admin'], 'apikey' => $result['api_key'], 'userid' => $result['userid']);
 
       return $msg;
-      // echo $msg->getJson() . '<br>';
-      // var_dump($msg->getArray());
-      // //echo "<br>password matches<br>";
   }else{
     $msg->message = 'Invalid username or password!';
     return $msg;
@@ -43,35 +43,37 @@ function userlogin($username, $password){
 function getApiKey($userid) {
     if($userid == 0) {
         return 'asf756saf5asf75a7s6f';
-    }
-    else {
+    }else {
       $PDO = getPDO();
-      $stmt = $PDO->prepare('SELECT api_key FROM users WHERE userid = :userid');
+      $stmt = $PDO->prepare('SELECT api_key
+                             FROM users
+                             WHERE userid = :userid');
       $stmt->bindValue(':userid', $userid);
       $stmt->execute();
       return $stmt->fetchAll();
     }
 }
 
-//
-// echo "<br>";
-// // By uncommenting this, its easy to make accounts locally
+// By uncommenting this, its easy to make accounts locally
 // createAccount('admina', 'adminaaa', 'adminaaa', 1);
-// echo "<br>";
 
 function createAccount($username, $password, $confirmpassword, $admin){
   $minLength = 8;
   $msg = new Message();
-
+  // Do the passwords match?
   if($password == $confirmpassword){
+    // Is the password longer than the minimal length
     if(strlen($password) >= $minLength){
+      // Is the username valid?
       if(validateUsername($username)){
         $key = base64_encode(md5(uniqid(rand(), true)));
+        // hash password
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
         if($hashedPassword){
           $PDO = getPDO();
-          $stmt = $PDO->prepare('INSERT into users(username, password, admin, api_key) VALUES(:username, :password, :admin, :apikey)');
+          $stmt = $PDO->prepare('INSERT INTO users(username, password, admin, api_key)
+                                 VALUES(:username, :password, :admin, :apikey)');
           $stmt->bindValue(':username', $username);
           $stmt->bindValue(':password', $hashedPassword);
           $stmt->bindValue(':admin', $admin);
@@ -92,17 +94,15 @@ function createAccount($username, $password, $confirmpassword, $admin){
     $msg->message = "Passwords didn't match!";
   }
   return $msg;
-  // DEBUG
-  // echo $msg->message;
 }
 
 function validateUsername($username){
   $PDO = getPDO();
-  $stmt = $PDO->prepare('SELECT username FROM users where username = ?;');
+  $stmt = $PDO->prepare('SELECT username
+                         FROM users
+                         WHERE username = ?;');
   $stmt->execute([$username]);
-  //$result = $stmt->fetchAll();
   $result = $stmt->fetch();
-
   // If no result, username is avaible
   if(!$result){
     return true;
@@ -111,15 +111,14 @@ function validateUsername($username){
   }
 }
 
-
 function getAccounts(){
   $msg = new Message();
 
   $PDO = getPDO();
-  $stmt = $PDO->prepare('SELECT userid, username, password, admin, api_key  FROM users;');
+  $stmt = $PDO->prepare('SELECT userid, username, password, admin, api_key
+                         FROM users;');
   $stmt->execute();
   $result = $stmt->fetchAll();
-
 
   if($result){
       $msg->error = false;
@@ -136,11 +135,12 @@ function getAccountDetails($userid){
   $msg = new Message();
 
   $PDO = getPDO();
-  $stmt = $PDO->prepare('SELECT * FROM users WHERE userid = ?;');
+  // Select all data from the selected user
+  $stmt = $PDO->prepare('SELECT *
+                         FROM users
+                         WHERE userid = ?;');
   $stmt->execute([$userid]);
-  //$result = $stmt->fetchAll();
   $result = $stmt->fetchAll();
-
   if($result){
       $msg->error = false;
       $msg->data = $result;
@@ -155,6 +155,7 @@ function updateAccount($userid, $username, $password, $admin){
   $PDO = getPDO();
 
   if ($password == 1) {
+    // Update user and reset password to standard password
     $password = "Welcome123*";
     $password = password_hash($password, PASSWORD_BCRYPT);
 
@@ -171,18 +172,21 @@ function updateAccount($userid, $username, $password, $admin){
     $stmt->execute($data);
   }
   else {
+    // Update user without updating the password
     $stmt = $PDO->prepare(" UPDATE users
                             SET username = ?, admin= ?
-                            WHERE userid = ?");
+                            WHERE userid = ?;");
     $stmt->execute([$username, $admin, $userid]);
   }
 
   $result = $stmt->rowCount();
 
   if($result){
+    // When the user has been successfully updated
     $msg->error = false;
     $msg->message = 'Updated user: ' . $username;
   }else{
+    // An error has occured
     $msg->message = 'Failed updating data from ' . $username;
   }
   return $msg;
@@ -192,34 +196,98 @@ function deleteAccount($userid){
   $msg = new Message();
 
   $PDO = getPDO();
-  $stmt = $PDO->prepare('DELETE from users WHERE userid = ?;');
+  // Delete user with the specified userid
+  $stmt = $PDO->prepare('DELETE FROM users
+                         WHERE userid = ?;');
   $stmt->execute([$userid]);
-  //$result = $stmt->fetchAll();
   $result = $stmt->rowCount();
 
   if($result){
+    // When the user has been successfully deleted
     $msg->error = false;
     $msg->message = 'Deleted user: ' . $userid . ' successfully.';
   }else{
+    // When an error has occured
     $msg->message = 'Failed deleting account from ';
   }
   return $msg;
 }
 
+function changePassword($userid, $oldPass, $newPass, $repeatNewPass){
+  $minLength = 8;
+  $msg = new Message();
+  // Are the passwords the same?
+  if($newPass == $repeatNewPass){
+      // Is the password longer than the minimal length?
+      if(strlen($newPass) >= $minLength){
+          // Does the user have a valid userid
+          if(validateUserID($userid, $oldPass) == true){
+            $key = base64_encode(md5(uniqid(rand(), true)));
+            // Hash passwords
+            $hashedPassword = password_hash($newPass, PASSWORD_BCRYPT);
+            $hashedOldPassword = password_hash($oldPass, PASSWORD_BCRYPT);
 
+              if($hashedPassword){
+                  $PDO = getPDO();
+                  // Update password of user
+                  $stmt = $PDO->prepare('UPDATE users
+                                         SET password = :password
+                                         WHERE userid = :userid;');
+                  $stmt->bindValue(':password', $hashedPassword);
+                  $stmt->bindValue(':userid', $userid);
+                  $stmt->execute();
+                  if($stmt->rowCount() > 0) {
+                    // When the password has been updated successfully
+                    $msg->error = false;
+                    $msg->message = 'Succesfully changed password!';
+                  }
+                  else {
+                    // When an error has occured
+                    $msg->message = 'Current password incorrect.';
+                  }
+              }
+              else{
+                $msg->message = 'Error occured! Contact the supportdesk!';
+              }
+          }
+          else{
+            $msg->message = 'User does not exist.';
+          }
+      }
+      else{
+        $msg->message = 'The password should have atleast: ' . $minLength . ' characters!';
+      }
+  }
+  else{
+    $msg->message = "Passwords didn't match!";
+  }
+  return $msg;
+}
 
+function validateUserID($userid, $password)
+// Validate the current password of the user
+{
+  $msg = new Message();
 
-//
-//
-//
-//
-// $key = '!V@TADR#@#FHT#SRGDSC@$';
-// $key2 = '?V@TADR#@#FHT#SRGDSC@$';
-//
-// echo '<br> ApiKey ' . $key . ' is: '. testKey($key);
-//
-//
-// echo '<br> ApiKey ' . $key2 . ' is: ' . testKey($key2);
+  $PDO = getPDO();
+  $stmt = $PDO->prepare('SELECT password
+                         FROM users
+                         WHERE userid = :userid;');
+
+  $stmt->bindValue(':userid', $userid);
+  $stmt->execute();
+  // $result = $stmt->fetchAll();
+  $result = $stmt->fetch();
+
+  if(password_verify($password, $result['password'])){
+    // if the password is correct:
+    return true;
+  }
+  else {
+    // if the password is incorrect
+    return false;
+  }
+}
 
 function testKey($key){
   if(validateAPI($key)){

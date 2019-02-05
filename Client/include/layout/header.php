@@ -11,6 +11,7 @@ if(isset($headerSettings)){
   $headerSettings = new HeaderSettings();
 }
 
+// Set loggedIn, apikey and Admin
 $loggedIn = false;
 if(isset($_SESSION['loggedIn'])){
   $loggedIn = true;
@@ -18,20 +19,21 @@ if(isset($_SESSION['loggedIn'])){
   $isAdmin = $_SESSION['admin'];
   $apikey = $_SESSION['apikey'];
 
+  // Redirect for admin only pages
   if($headerSettings->requireAdmin){
     if($isAdmin != 1){ //check if the user is an admin
       // if he is not an admin, redirect him to the webpage
       header("Location:index.php");
     }
   }
-}else{
+}
+// Redirect for when user not logged in
+else{
   if($headerSettings->redirect){
     header("Location:login.php");
     exit;
   }
 }
-
-
 ?>
 
 <!DOCTYPE html>

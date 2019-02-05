@@ -15,6 +15,7 @@
 
   $userid = $_SESSION['userid'];
 
+  // Delete the account
   $result = deleteAccount($userid);
 ?>
   <div class="maindiv">
@@ -27,7 +28,9 @@
     echo '<p>'.$result->message.'<p>';
     echo "<button onclick='history.go(-2);'>Go back</button>";
     echo "<button onclick='history.go(-1);'>Try again</button>";
-  }else{
+  }
+  // If succeeded
+  else{
     echo '<p>'.$result->message.'<p>';
     echo "<button onclick='history.go(-2);'>Back </button>";
   }

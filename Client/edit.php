@@ -14,18 +14,13 @@ $headerSettings->requireAdmin = true;
 require 'include/layout/header.php';
 require 'include/layout/navbar.php';
 
-
+// Get details of the account the admin is trying to edit
 if(isset($_GET['id'])){
   $_SESSION['userid'] = $_GET['id'];
   $userid = $_SESSION['userid'];
-  // $query = "SELECT * FROM users WHERE `userid` = '$userid'";
-  // $result = $conn->query($query);
-  // $row = $result-> fetch_assoc();
   $result = getAccountDetails($userid);
-
   foreach ($result->data as $row) {
 ?>
-
  <!-- Content  -->
 <div class="maindiv">
 <div class="center-box">
@@ -50,7 +45,9 @@ if(isset($_GET['id'])){
 <?php
 }
 }
+  // If the data is submitted
   if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)){
+    // Enter data from form in variables
     $username = $_POST['username'];
     if(isset($_POST['admin'])){
       $admin = 1;
@@ -66,6 +63,7 @@ if(isset($_GET['id'])){
     }
     $userid = $_SESSION['userid'];
 
+    // Update the account with new data
     $result = updateAccount($userid, $username, $password0, $admin);
 
     echo '<div class="maindiv"><div class="center-box">';
@@ -75,7 +73,9 @@ if(isset($_GET['id'])){
       echo  '<p>' . $result->message . "</p>";
       echo "<button class='ripple' onclick='history.go(-2);'>Go back</button>";
       echo "<button class='ripple' onclick='history.go(-1);'>Try again</button>";
-    }else{
+    }
+    // If succeeded
+    else{
       echo '<h1>Succeed!</h1><br><br>';
       echo  '<p>' . $result->message . "</p>";
       echo "<button class='ripple' onclick='history.go(-2);'>Back </button>";
@@ -84,8 +84,5 @@ if(isset($_GET['id'])){
 }
  ?>
 </div>
-
-
 </div>
-
 <?php include 'include/layout/footer.php';  ?>

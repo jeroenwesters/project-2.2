@@ -1,5 +1,5 @@
 <?php
-// Made by Jarco
+// Made by Jarco - © 2019
 
 // Load settings!
 require 'include/layout/headersettings.php';
@@ -20,6 +20,8 @@ require 'include/layout/navbar.php';
   <h1>Admin panel</h1>
 <div class="center-box admin-register">
 
+<!-- Show form for registering new account -->
+
 <p>Create a new account:</p>
 <br>
 
@@ -39,32 +41,27 @@ require 'include/layout/navbar.php';
   <button class='ripple' type="submit">Register</button>
 </form>
 </div>
-
-
 <br>
 <br>
 <br>
-  <table id="topten" class="center-item" width="50%" border="1">
-    <thead>
-      <tr>
-        <th><strong>ID</strong></th>
-        <th><strong>Username</strong></th>
-        <th><strong>Admin</strong></th>
-        <th><strong>Edit</strong></th>
-        <th><strong>Delete</strong></th>
-      </tr>
-    </thead>
-    <tbody>
+<!-- Show table with all accounts -->
+<table id="topten" class="center-item" width="50%" border="1">
+  <thead>
+    <tr>
+      <th><strong>ID</strong></th>
+      <th><strong>Username</strong></th>
+      <th><strong>Admin</strong></th>
+      <th><strong>Edit</strong></th>
+      <th><strong>Delete</strong></th>
+    </tr>
+  </thead>
 <?php
-      if(isset($_POST['result'])){
-        var_dump($_POST['result']);
-      }
-
+      // Get all accounts
       $result = getAccounts();
       // Check for error
       if($result->error == false){
-        // below line for data debug
         $count=0;
+        // For each account:
         foreach ($result->data as $row){
           $admin = "";
           if($row['admin'] == 1){
@@ -74,6 +71,7 @@ require 'include/layout/navbar.php';
           }
 
           $count += 1;
+          // Show data
           echo "<tr>";
             echo"<td align='center'>".$row["userid"]."</td>";
             echo"<td align='center'>".$row["username"]."</td>";
@@ -90,16 +88,11 @@ require 'include/layout/navbar.php';
         // echo the error!
         echo $result->message;
       }
-
       echo "</tbody>";
       echo "</table>";
       echo "<br>";
       echo "<br>";
-
 ?>
-
-
-
   </div>
 </div>
 
