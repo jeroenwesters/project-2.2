@@ -57,7 +57,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)){
   if($result->error){
     echo '<h1>Failed!</h1><br>';
     echo  $result->message;
-  }else{
+  }
+  // if Succeeded
+  else{
     echo '<h1>Succeed!</h1><br>';
     echo  $result->message;
   }

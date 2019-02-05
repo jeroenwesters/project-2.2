@@ -173,7 +173,7 @@ function updateAccount($userid, $username, $password, $admin){
   else {
     $stmt = $PDO->prepare(" UPDATE users
                             SET username = ?, admin= ?
-                            WHERE userid = ?");
+                            WHERE userid = ?;");
     $stmt->execute([$username, $admin, $userid]);
   }
 
@@ -212,17 +212,16 @@ function changePassword($userid, $oldPass, $newPass, $repeatNewPass){
 
   if($newPass == $repeatNewPass){
       if(strlen($newPass) >= $minLength){
-          if(validateUserID($userid)){
+          if(validateUserID($userid, $oldPass) == true){
             $key = base64_encode(md5(uniqid(rand(), true)));
             $hashedPassword = password_hash($newPass, PASSWORD_BCRYPT);
             $hashedOldPassword = password_hash($oldPass, PASSWORD_BCRYPT);
 
               if($hashedPassword){
                   $PDO = getPDO();
-                  $stmt = $PDO->prepare('UPDATE user SET user_password = :password WHERE userid = :userid AND user_password = :oldpass');
+                  $stmt = $PDO->prepare('UPDATE users SET password = :password WHERE userid = :userid;');
                   $stmt->bindValue(':password', $hashedPassword);
                   $stmt->bindValue(':userid', $userid);
-                  $stmt->bindValue(':oldpass', $hashedOldPassword);
                   $stmt->execute();
                   if($stmt->rowCount() > 0) {
                       $msg->error = false;
@@ -252,7 +251,30 @@ function changePassword($userid, $oldPass, $newPass, $repeatNewPass){
   echo $msg->message;
 }
 
+function validateUserID($userid, $password)
+//validate the current password of the user
+{
+  $msg = new Message();
 
+  $PDO = getPDO();
+  $stmt = $PDO->prepare('SELECT password
+                         FROM users
+                         WHERE userid = :userid;');
+
+  $stmt->bindValue(':userid', $userid);
+  $stmt->execute();
+  // $result = $stmt->fetchAll();
+  $result = $stmt->fetch();
+
+  if(password_verify($password, $result['password'])){
+    // if the password is correct:
+    return true;
+  }
+  else {
+    // if the password is incorrect
+    return false;
+  }
+}
 
 
 //
