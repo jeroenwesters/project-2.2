@@ -1,16 +1,37 @@
+var type_conversion = [
+  "STN",
+  "YEAR",
+  "MONTH",
+  "DAY",
+  "HOUR",
+  "MINUTE",
+  "SECOND",
+  "TEMP",
+  "DEWP",
+  "STP",
+  "SLP",
+  "VISIB",
+  "WDSP",
+  "PRCP",
+  "SNDP",
+  "FRSHTT",
+  "CLDC",
+  "WNDDIR"
+];
 
-function getXMLMeasurements() {
+function getXMLMeasurements(measurements) {
     var xml = new XMLSerializer();
     var root = document.createElement("xml");
     root.setAttribute("indent", "yes");
     var measurements = document.createElement("WEATHERDATA");
     var measurement = addElement("MEASUREMENT");
-    measurement.appendChild(addAttribute("STN", "133762"));
-    measurement.appendChild(addAttribute("DATE", "10-10-10"));
-    measurement.appendChild(addAttribute("TIME", "10:10:10"));
-    measurements.appendChild(measurement);
+    for (var x = 0; x < measurements.length; x++) {
+        for (var y = 0; y < measurements[i].length; y++) {
+            measurement.appendChild(addAttribute(type_conversion[y], measurements[x][y]));
+        }
+        measurements.appendChild(measurement);
+    }
     root.appendChild(measurements);
-
     var doc = "<?xml version='1.0' indent='yes'?>";
     doc += xml.serializeToString(root);
     getXML("Measurements.xml", doc);
@@ -24,7 +45,7 @@ function addAttribute(name, value) {
 
 function addElement(name) {
     element = document.createElement(name);
-    return element
+    return element;
 }
 
 function getXML(filename, text) {
