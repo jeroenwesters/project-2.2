@@ -116,8 +116,9 @@ function getAccounts(){
 
   $PDO = getPDO();
   $stmt = $PDO->prepare('SELECT userid, username, password, admin, api_key
-                         FROM users;');
-  $stmt->execute();
+                         FROM users
+                         WHERE admin = ?;');
+  $stmt->execute(['0']);
   $result = $stmt->fetchAll();
 
   if($result){
