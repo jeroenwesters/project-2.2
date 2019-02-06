@@ -13,7 +13,7 @@ if(isset($headerSettings)){
 
 // Set loggedIn, apikey and Admin
 $loggedIn = false;
-if(isset($_SESSION['loggedIn'])){
+if($_SESSION['loggedIn'] == true){
   $loggedIn = true;
 
   $isAdmin = $_SESSION['admin'];

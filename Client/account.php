@@ -61,14 +61,22 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)){
     echo '<h1>Failed!</h1><br>';
     echo  $result->message;
   }
-  
+
   // if Succeeded
   else{
     echo '<h1>Succeed!</h1><br>';
     echo  $result->message;
+    echo "<br><br>You will need to log in  again<br>";
+    $_SESSION['loggedIn'] = false;
+    ?>
+    <button onclick="location.href='logout.php'" type="button">
+         Ok</button>
+    <?php
+    }
   }
+
   echo '</div></div>';
 
-}
+
 
 include 'include/layout/footer.php';  ?>
