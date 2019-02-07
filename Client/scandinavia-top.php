@@ -12,6 +12,7 @@ $headerSettings->AddStyle("style/main.css");
 
 // Top 10 JS
 $headerSettings->AddJs('js/top.js');
+$headerSettings->AddJs('js/xmlparser.js');
 
 
 
@@ -53,6 +54,9 @@ require 'include/layout/navbar.php';
     <div class="loader"></div>
   </div>
 
+  <div class="center-box">
+    <button class='ripple' onclick="getXMLMeasurements()">Export to XML</button>
+  </div>
 </div>
 
 

@@ -5,19 +5,20 @@ var type_conversion = [
   "PRCP"
 ];
 
-function getXMLMeasurements(measurements) {
+function getXMLMeasurements() {
+    var measurements = [{1,1,1,1},{1,1,1,1}];
     var xml = new XMLSerializer();
     var root = document.createElement("xml");
     root.setAttribute("indent", "yes");
-    var measurements = document.createElement("WEATHERDATA");
-    var measurement = addElement("MEASUREMENT");
+    var measurementsNode = document.createElement("WEATHERDATA");
+    var measurementNode = addElement("MEASUREMENT");
     for (var x = 0; x < measurements.length; x++) {
         for (var y = 0; y < measurements[i].length; y++) {
-            measurement.appendChild(addAttribute(type_conversion[y], measurements[x][y]]));
+            measurementNode.appendChild(addAttribute(type_conversion[y], measurements[x][y]]));
         }
-        measurements.appendChild(measurement);
+        measurementsNode.appendChild(measurementNode);
     }
-    root.appendChild(measurements);
+    root.appendChild(measurementsNode);
     var doc = "<?xml version='1.0' indent='yes'?>";
     doc += xml.serializeToString(root);
     getXML("Measurements.xml", doc);
