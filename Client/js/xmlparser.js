@@ -6,15 +6,16 @@ var type_conversion = [
 ];
 
 function getXMLMeasurements() {
-    var measurements = [{1,1,1,1},{1,1,1,1}];
+    var measurements = [[1,1,1,1],[1,1,1,1]];
     var xml = new XMLSerializer();
     var root = document.createElement("xml");
     root.setAttribute("indent", "yes");
     var measurementsNode = document.createElement("WEATHERDATA");
     var measurementNode = addElement("MEASUREMENT");
+
     for (var x = 0; x < measurements.length; x++) {
-        for (var y = 0; y < measurements[i].length; y++) {
-            measurementNode.appendChild(addAttribute(type_conversion[y], measurements[x][y]]));
+        for (var y = 0; y < measurements[x].length; y++) {
+            measurementNode.appendChild(addAttribute(type_conversion[y], measurements[x][y]));
         }
         measurementsNode.appendChild(measurementNode);
     }
