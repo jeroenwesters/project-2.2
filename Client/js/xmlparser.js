@@ -14,10 +14,10 @@ function getXMLMeasurements() {
     var measurementNode = addElement("MEASUREMENT");
 
     for (var x = 0; x < measurements.length; x++) {
-        measurementNode.appendChild(type_conversion[0], measurements[x].stn);
-        measurementNode.appendChild(type_conversion[1], measurements[x].country);
-        measurementNode.appendChild(type_conversion[2], measurements[x].station);
-        measurementNode.appendChild(type_conversion[3], measurements[x].value);
+        measurementNode.appendChild(addAttribute(type_conversion[0], measurements[x].stn));
+        measurementNode.appendChild(addAttribute(type_conversion[1], measurements[x].country));
+        measurementNode.appendChild(addAttribute(type_conversion[2], measurements[x].station));
+        measurementNode.appendChild(addAttribute(type_conversion[3], measurements[x].value));
         measurementsNode.appendChild(measurementNode);
     }
     root.appendChild(measurementsNode);
