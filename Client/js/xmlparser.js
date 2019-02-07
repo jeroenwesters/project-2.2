@@ -21,9 +21,7 @@ function getXMLMeasurements() {
         measurementsNode.appendChild(measurementNode);
     }
     root.appendChild(measurementsNode);
-    var doc = "<?xml version='1.0' indent='yes'?>";
-    doc += xml.serializeToString(root);
-    getXML("Measurements.xml", doc);
+    getXML("Measurements.xml", xml.serializeToString(root));
 }
 
 function addAttribute(name, value) {
