@@ -6,7 +6,7 @@ var type_conversion = [
 ];
 
 function getXMLMeasurements() {
-    var measurements = topTenMeasurements;
+    var measurements = stationData;
     var xml = new XMLSerializer();
     var root = document.createElement("xml");
     root.setAttribute("indent", "yes");
@@ -14,7 +14,13 @@ function getXMLMeasurements() {
     var measurementNode = addElement("MEASUREMENT");
 
     for (var x = 0; x < measurements.length; x++) {
+      console.log(measurements[x].stn)
+      console.log(measurements[x].country)
+      console.log(measurements[x].station)
+      console.log(measurements[x].value)
+
         for (var y = 0; y < measurements[x].length; y++) {
+
             measurementNode.appendChild(addAttribute(type_conversion[y], measurements[x][y]));
         }
         measurementsNode.appendChild(measurementNode);

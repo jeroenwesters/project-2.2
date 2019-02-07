@@ -134,7 +134,7 @@ function order(){
   });
 
   //console.log(stationData);
-  createData(stationData);
+  createData();
 }
 
 function createData(top){
@@ -143,7 +143,6 @@ function createData(top){
 
   var row = ''
 
-  topTenMeasurements = top;
   // cells creation
   for (var j = 0; j <= top.length; j++) {
     // table row creation
