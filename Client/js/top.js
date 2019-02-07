@@ -108,10 +108,12 @@ function getStationData(data, country, type, callback){
 
 function onComplete(data, country, type, resp){
   resp = JSON.parse(resp);
+  var val = 0;
 
   // stationData.push([]);
-
-  var val = parseFloat(Math.round(resp.data.value * 100) / 100).toFixed(2);
+  if(!resp.error){
+    val = parseFloat(Math.round(resp.data.value * 100) / 100).toFixed(2);
+  }
 
   stationData.push({stn: data.stn, country: country, station: data.name, value: val});
 
