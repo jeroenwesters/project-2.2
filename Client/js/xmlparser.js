@@ -11,9 +11,9 @@ function getXMLMeasurements() {
     var root = document.createElement("xml");
     root.setAttribute("indent", "yes");
     var measurementsNode = document.createElement("WEATHERDATA");
-    var measurementNode = addElement("MEASUREMENT");
 
     for (var x = 0; x < measurements.length; x++) {
+        var measurementNode = addElement("MEASUREMENT");
         measurementNode.appendChild(addAttribute(type_conversion[0], measurements[x].stn));
         measurementNode.appendChild(addAttribute(type_conversion[1], measurements[x].country));
         measurementNode.appendChild(addAttribute(type_conversion[2], measurements[x].station));
