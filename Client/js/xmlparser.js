@@ -6,7 +6,7 @@ var type_conversion = [
 ];
 
 function getXMLMeasurements() {
-    var measurements = [[1,1,1,1],[1,1,1,1]];
+    var measurements = topTenMeasurements;
     var xml = new XMLSerializer();
     var root = document.createElement("xml");
     root.setAttribute("indent", "yes");

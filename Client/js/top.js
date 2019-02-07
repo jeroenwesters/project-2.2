@@ -13,6 +13,7 @@ var counter = 0;
 var counterComplete = 0;
 
 var stationData;
+var topTenMeasurements;
 
 function getTimeDate(){
   var d = new Date();
@@ -142,6 +143,7 @@ function createData(top){
 
   var row = ''
 
+  topTenMeasurements = top;
   // cells creation
   for (var j = 0; j <= top.length; j++) {
     // table row creation
