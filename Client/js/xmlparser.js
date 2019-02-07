@@ -1,22 +1,8 @@
 var type_conversion = [
   "STN",
-  "YEAR",
-  "MONTH",
-  "DAY",
-  "HOUR",
-  "MINUTE",
-  "SECOND",
-  "TEMP",
-  "DEWP",
-  "STP",
-  "SLP",
-  "VISIB",
-  "WDSP",
-  "PRCP",
-  "SNDP",
-  "FRSHTT",
-  "CLDC",
-  "WNDDIR"
+  "COUNTRY",
+  "STATION",
+  "PRCP"
 ];
 
 function getXMLMeasurements(measurements) {
@@ -24,10 +10,11 @@ function getXMLMeasurements(measurements) {
     var root = document.createElement("xml");
     root.setAttribute("indent", "yes");
     var measurements = document.createElement("WEATHERDATA");
+    var measurement = addElement("MEASUREMENT");
     for (var x = 0; x < measurements.length; x++) {
-        var measurement = addElement("MEASUREMENT");
-        measurement.appendChild(addAttribute(type_conversion[0], measurements[x][0]]));
-        measurement.appendChild(addAttribute(type_conversion[13], measurements[x][13]]));
+        for (var y = 0; y < measurements[i].length; y++) {
+            measurement.appendChild(addAttribute(type_conversion[y], measurements[x][y]]));
+        }
         measurements.appendChild(measurement);
     }
     root.appendChild(measurements);

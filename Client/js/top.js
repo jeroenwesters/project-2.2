@@ -165,6 +165,7 @@ function createData(top){
 
   var el = document.getElementById("loading");
     el.style.visibility = "hidden";
+
   }
 
 function appendCell(content, parent){
