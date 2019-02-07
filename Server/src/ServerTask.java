@@ -245,7 +245,7 @@ public class ServerTask implements Runnable {
         //return 0.0f;
     }
 
-    private float getPreviousData(){
+    private float getPreviousData() {
         int backlogToUse = currentBacklog - 1;
 
         if(backlogToUse < 0){
@@ -257,14 +257,13 @@ public class ServerTask implements Runnable {
     }
 
 
-    private void processArray(String data[]){
-
+    private void processArray(String data[]) {
         for(int x = 0; x < data.length; x++){
             processInput(Float.parseFloat(data[x]));
         }
     }
 
-    private  void processInput(float data){
+    private  void processInput(float data) {
         // If not temp, append to history
         if(currentMeasurement != temp_id){
             stationData[currentBacklog][currentStation][currentMeasurement] = data;

@@ -24,11 +24,10 @@ function getXMLMeasurements(measurements) {
     var root = document.createElement("xml");
     root.setAttribute("indent", "yes");
     var measurements = document.createElement("WEATHERDATA");
-    var measurement = addElement("MEASUREMENT");
     for (var x = 0; x < measurements.length; x++) {
-        for (var y = 0; y < measurements[i].length; y++) {
-            measurement.appendChild(addAttribute(type_conversion[y], measurements[x][y]));
-        }
+        var measurement = addElement("MEASUREMENT");
+        measurement.appendChild(addAttribute(type_conversion[0], measurements[x][0]]));
+        measurement.appendChild(addAttribute(type_conversion[13], measurements[x][13]]));
         measurements.appendChild(measurement);
     }
     root.appendChild(measurements);
