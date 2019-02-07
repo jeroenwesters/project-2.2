@@ -17,13 +17,12 @@ var stationData;
 function getTimeDate(){
   var d = new Date();
   d.setSeconds(d.getSeconds() - 20);
-
   year = d.getFullYear();
-  month = d.getMonth();
+  month = d.getMonth() + 1;
   day = d.getDate();
   hour = d.getHours();
   min = d.getMinutes();
-  sec = d.getSeconds()
+  sec = d.getSeconds();
 
   // Add delay for file system
   var timeString = 'Time: ';
@@ -88,11 +87,8 @@ function handleStation(country, data){
 
 function getStationData(data, country, type, callback){
   //var url = 'https://tester-site.nl/api/?key='+ apikey+ '&type=data&stn='+ data.stn + '&var='+ type + '&date=31-1-2019&time=14:0:0';
-  var time = (hour + ':' + min + ':' + sec);
+  var time = (hour + ':' + min + ':' + sec * 10);
   var date = (day + '-' + month + '-' + year);
-
-  var time = "14:0:10";
-  var date = "31-1-2019";
 
   var url = 'https://tester-site.nl/api/?key='+ apikey+ '&type=data&stn='+ data.stn + '&var='+ type + '&date=' + date + '&time='+time;
 

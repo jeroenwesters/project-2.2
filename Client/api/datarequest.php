@@ -9,18 +9,18 @@ function handleDataRequest($msg){
     $var = $_GET["var"];
 
     $dateE = explode('-', $date);
-    $time = explode(':', $time);
+    $timeE = explode(':', $time);
 
 
     // Get station data based on year-month-day-hour-minute-second
-    $info = getStationData($stn, $var, $dateE[2], $dateE[1], $dateE[0], $time[0], $time[1], $time[2]);
+    $info = getStationData($stn, $var, $dateE[2], $dateE[1], $dateE[0], $timeE[0], $timeE[1], $timeE[2]);
 
     if($info->error == false){
       $msg->error = false;
       $msg->data = $info->data;
       $msg->toJson();
     }else{
-      $msg->message = 'Couldn\'t find station or data: ' . $date;
+      $msg->message = 'Couldn\'t find station or data: ' . $date . ' - ' . $time;
       $msg->toJson();
     }
   }else{
