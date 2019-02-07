@@ -160,6 +160,8 @@ function createData(top){
     table.appendChild(row);
 
 
+    document.getElementById("export").hidden = false;
+
     if(j == 9){
       break;
     }

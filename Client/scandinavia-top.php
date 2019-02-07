@@ -55,7 +55,7 @@ require 'include/layout/navbar.php';
   </div>
 
   <div class="center-box">
-    <button class='ripple' onclick="getXMLMeasurements()">Export to XML</button>
+    <button id="export" hidden class='ripple' onclick="getXMLMeasurements()">Export to XML</button>
   </div>
 </div>
 
