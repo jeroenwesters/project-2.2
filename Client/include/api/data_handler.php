@@ -44,10 +44,13 @@ function getStationData($station, $dataType, $year, $month, $day, $hour, $minute
 function getFilePath($year, $month, $day, $hour, $minute, $second){
   $result = ['error' => true];
 
-  $fileLocation = $year . '/'. $month . '/'. $day . '/'. $hour . '/'. $minute . '/';
-  $file = 'measurement_' . $second . '.bin';
-  $url = realpath(dirname(__FILE__) . '/../../api/data/' . $fileLocation . $file);
+  $fileLocation = $year . '/'. $month . '/'. $day . '/'. ($hour-1) . '/'. $minute . '/';
 
+  $file = 'measurement_' . $second . '.bin';
+  //$url = realpath(dirname(__FILE__) . '/../../api/data/' . $fileLocation . $file);
+
+  $url = realpath('/private/Measurements/' . $fileLocation . $file);
+  //var_dump($url);
 
   if(file_exists($url)){
     $result['error'] = false;

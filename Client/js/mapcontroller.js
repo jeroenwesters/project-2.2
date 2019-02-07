@@ -102,7 +102,7 @@ function getTimeDate(){
   var d = new Date();
   d.setSeconds(d.getSeconds() - 20);
   year = d.getFullYear();
-  month = d.getMonth();
+  month = d.getMonth() + 1;
   day = d.getDate();
   hour = d.getHours();
   min = d.getMinutes();

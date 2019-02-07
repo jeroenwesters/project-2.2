@@ -8,19 +8,19 @@ function handleDataRequest($msg){
     $time = $_GET["time"];
     $var = $_GET["var"];
 
-    $date = explode('-', $date);
+    $dateE = explode('-', $date);
     $time = explode(':', $time);
 
 
     // Get station data based on year-month-day-hour-minute-second
-    $info = getStationData($stn, $var, $date[2], $date[1], $date[0], $time[0], $time[1], $time[2]);
+    $info = getStationData($stn, $var, $dateE[2], $dateE[1], $dateE[0], $time[0], $time[1], $time[2]);
 
     if($info->error == false){
       $msg->error = false;
       $msg->data = $info->data;
       $msg->toJson();
     }else{
-      $msg->message = 'Couldn\'t find station or data';
+      $msg->message = 'Couldn\'t find station or data: ' . $date;
       $msg->toJson();
     }
   }else{
@@ -36,7 +36,7 @@ function handleMultipleData($msg){
     $time = $_GET["time"];
     $var = $_GET["var"];
 
-    $date = explode('-', $date);
+    $dateE = explode('-', $date);
     $time = explode(':', $time);
 
     $var = explode('|', $var);
@@ -45,14 +45,14 @@ function handleMultipleData($msg){
     return;
 
     // Get station data based on year-month-day-hour-minute-second
-    $info = getStationData($stn, $var, $date[2], $date[1], $date[0], $time[0], $time[1], $time[2]);
+    $info = getStationData($stn, $var, $dateE[2], $dateE[1], $dateE[0], $time[0], $time[1], $time[2]);
 
     if($info->error == false){
       $msg->error = false;
       $msg->data = $info->data;
       $msg->toJson();
     }else{
-      $msg->message = 'Couldn\'t find station or data';
+      $msg->message = 'Couldn\'t find station or data: ' . $date;
       $msg->toJson();
     }
   }else{
