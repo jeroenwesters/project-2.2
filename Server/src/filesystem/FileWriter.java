@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 /**
- * @author      Emiel van Essen <emiel@teaspoongames.com>
+ * @author      Emiel van Essen <emiel@teaspoongames.com>, Jeroen Westers
  * @version     1.4
  * @since       1.0
  */
@@ -51,23 +51,26 @@ public class FileWriter {
         }
     }
 
+    /**
+     * Adds measurements to the buffer.
+     * <p>
+     * Separates each station.
+     *
+     * @param measurements Array containing multiple stations and measurements.
+     */
     public static synchronized void addMeasurements(float[][] measurements) {
         // Add new data to the collection
-
         for (float[] measurement : measurements) {
             addMeasurement(measurement);
         }
 
-    }
-
-    // Processes data further
-    private static void ProcessData(float[][] measurements){
-        for (float[] measurement : measurements) {
-            addMeasurement(measurement);
-        }
     }
 }
 
+
+/**
+ * @author      Emiel van Essen <emiel@teaspoongames.com>, Jeroen Westers
+ */
 class FilePusher implements Runnable {
 
     private ByteArrayOutputStream stream;
@@ -76,6 +79,13 @@ class FilePusher implements Runnable {
     private Thread t;
     private int datetime[];
 
+    /**
+     * Constructor
+     * <p>
+     * Creates FilePusher so write data to the disk
+     * @param dataBuffer Arraylist containing multiple stations and measurements.
+     * @param datetime Array date and timestamp.
+     */
     FilePusher(ArrayList<float[]> dataBuffer, int datetime[]) {
         this.dataBuffer = dataBuffer;
         this.datetime = datetime;
