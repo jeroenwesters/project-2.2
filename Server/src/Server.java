@@ -5,8 +5,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-// Server code itself (Setting up connections and threads)
-
+/**
+ * @author      Jeroen Westers
+ * @version     1
+ */
 public class Server {
 
     // Server settings
@@ -16,14 +18,16 @@ public class Server {
     // Keeping track of the clients
     private static int clientCount = 0;
 
-
+    /**
+     * Constructor to create the server class
+     * @param maxAllowedClients Maxium clients allowed on the server
+     */
     public Server(int maxAllowedClients){
         this.maxAllowedClients = maxAllowedClients;
     }
 
 
     /**
-     * not FINISHED
      * Add a client to the counter!
      */
     synchronized static void AddClient(){
@@ -31,7 +35,6 @@ public class Server {
     }
 
     /**
-     * not FINISHED
      * Remove a client from the counter!
      */
     synchronized static void RemoveClient(){
@@ -40,7 +43,7 @@ public class Server {
     }
 
     /**
-     * Start thread
+     * Keeps listening for new connections
      */
     public void run() throws IOException {
 

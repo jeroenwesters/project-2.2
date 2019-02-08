@@ -1,5 +1,4 @@
 import filesystem.FileWriter;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,7 +9,11 @@ import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// Handles server functions
+/**
+ * @author      Jeroen Westers, Emiel van Essen
+ * @version     1.1
+ * @since       1.0
+ */
 public class ServerTask implements Runnable {
 
     // Generator settings (amount of stations and measurements)
@@ -48,13 +51,12 @@ public class ServerTask implements Runnable {
     private int writeSec = 10;
 
     private int writeBacklog = 0;
-    String input = "";
 
     Queue<String> waitingQueue = new LinkedList<>();
 
     /**
      * Constructor
-     * @param socket
+     * @param socket the socket for this connection
      */
     public ServerTask(Socket socket) {
         this.socket = socket;
@@ -69,7 +71,7 @@ public class ServerTask implements Runnable {
 
 
     /**
-     * Start thread
+     * Thread loop for handling input
      */
     public void run() {
 
@@ -89,8 +91,11 @@ public class ServerTask implements Runnable {
                     input = input.replaceAll("\\s","");
                     waitingQueue.add(input);
 
+                    // If end of the file
                     if(input.equals("</WEATHERDATA>")){
+                        // Loop through the queue
                         while(!waitingQueue.isEmpty()){
+                            // Get value from queue and process it
                             checkInput(waitingQueue.poll());
                         }
                     }
@@ -98,7 +103,7 @@ public class ServerTask implements Runnable {
                 else{
                     timeout++;
                     if(timeout >= maxTimeout){
-                        System.out.println("Received no weatherdata for more then 100 times");
+                        System.out.println("Received no weatherdata for more then 100 times, disconnect");
                         break;
                     }
                 }
@@ -119,6 +124,10 @@ public class ServerTask implements Runnable {
     }
 
 
+    /**
+     * Checks for values or xml part
+     * @param input The XML line containing the data.
+     */
     private void checkInput(String input){
         // Are we started?
         if(isStarted){
@@ -169,6 +178,10 @@ public class ServerTask implements Runnable {
         }
     }
 
+    /**
+     * Filters for type and or missing data
+     * @param input String containg the input.
+     */
     private void handleInput(String input) {
         String desc = input;
         input = ParseData(input);
@@ -257,19 +270,27 @@ public class ServerTask implements Runnable {
     }
 
 
+    /**
+     * Processes an array containing multiple data
+     * @param data Data array containg multiple values at once.
+     */
     private void processArray(String data[]) {
         for(int x = 0; x < data.length; x++){
             processInput(Float.parseFloat(data[x]));
         }
     }
 
+    /**
+     * Adds the current data value to the data array
+     * <p>
+     * In case of a temperature, checked if it is within the range.
+     * @param data The value to store / process
+     */
     private  void processInput(float data) {
         // If not temp, append to history
         if(currentMeasurement != temp_id){
             stationData[currentBacklog][currentStation][currentMeasurement] = data;
         }else{
-            // TODO: Valide with 20% offset
-
             //System.out.println("Validate 20% offset of temperature! (Keep in mind the ranges for the 20%)");
 
             //if NOT within range
@@ -297,13 +318,19 @@ public class ServerTask implements Runnable {
         currentMeasurement++;
     }
 
+    /**
+     * Splits the XML line
+     * <p>
+     * Gets the value between 2 xml tags
+     * @param input XML line
+     */
     private String ParseData(String input){
 
         Matcher m = regex.matcher(input);
 
         if(m.find())
         {
-            // Prepare result
+            //Debugging the result (xml tags)
             //result[0] = m.group("tag");     // Assign tag
             //System.out.println(input);
             return m.group("value");   // Assign value
@@ -313,6 +340,9 @@ public class ServerTask implements Runnable {
         return "";
     }
 
+    /**
+     * Gives the data to the file writer to store it on the file system.
+     */
     private void exportData(){
         writeData = false;
 
