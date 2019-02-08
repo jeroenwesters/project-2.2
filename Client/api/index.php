@@ -19,7 +19,11 @@ if($_GET){
   $msg->toJson();
 }
 
-// Verifies the api key!
+/**
+ * Verifies the API key.
+ *
+ * @param Message $msg The previous message
+ */
 function verifyKey($msg){
 
   // TODO: check if this key is in the database!
@@ -40,6 +44,11 @@ function verifyKey($msg){
   }
 }
 
+/**
+ * Filters the request types
+ *
+ * @param Message $msg The previous message
+ */
 function filterRequest($msg){
   if(isset($_GET['type'])){
     $type = $_GET['type'];

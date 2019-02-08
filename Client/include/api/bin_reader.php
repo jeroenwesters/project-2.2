@@ -8,7 +8,13 @@ $station_amount = 8000; // Todo: Match with java!
 $format = "G";
 
 
-// Reads bytes from given startindex
+/**
+ *  Reads bytes from given startindex
+ *
+ * @param integer $startIndex Index to start reading
+ * @param integer $type Type index to read from file
+ * @return float Rounded number (2 decimals)
+ */
 function readFiles($startIndex, $type){
   global $format, $offset;
 
@@ -37,7 +43,14 @@ function readFiles($startIndex, $type){
 
 
 
-// Searches through the file
+/**
+ *   Searches data from station id through the file
+ *
+ * @param integer $id Station id to search
+ * @param integer $dataType Type index to read from file
+ * @param integer $url The url of the file
+ * @return array Array containing error status and/or data
+ */
 function findInFile($id, $dataType, $url){
   // Global values
   global $offset, $station_amount, $amount_values, $format;
@@ -117,6 +130,12 @@ function getBinary($startIndex){
 }
 
 
+/**
+ *   Searches data from station id through the file
+ *
+ * @param array Array containg the date and time for the file.
+ * @return string Returns full filepath
+ */
 function urlBuilder($date){
   global $defaultUrl;
 

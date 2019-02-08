@@ -1,6 +1,11 @@
 <?php
 // Made by Jeroen - © 2019
 
+/**
+ * Handles request to receive stations from the given country
+ *
+ * @param Message $msg The previous message
+ */
 function handleStationsRequest($msg){
   if(isset($_GET["country"])){
     $country = $_GET["country"];

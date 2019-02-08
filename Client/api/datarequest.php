@@ -1,6 +1,11 @@
 <?php
 // Made by Jeroen - © 2019
 
+/**
+ * Handles requests for specific variables based on station, date and time.
+ *
+ * @param Message $msg The previous message
+ */
 function handleDataRequest($msg){
   if(isset($_GET["stn"]) && isset($_GET["var"]) && isset($_GET["date"]) && isset($_GET["time"])){
     $stn = $_GET["stn"];
@@ -30,7 +35,14 @@ function handleDataRequest($msg){
 }
 
 
+/**
+ * Handles request for multiple data types. From multiple stations
+ *
+ * @param Message $msg The previous message
+ */
 function handleMultipleData($msg){
+  // TODO: Finishing the function if needed!
+
   if(isset($_GET["var"]) && isset($_GET["date"]) && isset($_GET["time"])){
     $date = $_GET["date"];
     $time = $_GET["time"];

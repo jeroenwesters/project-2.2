@@ -1,6 +1,7 @@
 <?php
 // Made by Jeroen - © 2019
 
+// Type with its index position
 $type_conversion = [
   "STN" => 0,
   "YEAR" => 1,
@@ -23,6 +24,12 @@ $type_conversion = [
 ];
 
 // Returns id based on giving type (string)
+/**
+ * Returns an index based on the type.
+ *
+ * @param string $type Type in string format
+ * @return array $result Return a message containing an error status and/or data.
+ */
 function typeToIndex($type){
   $result = ['error' => true, 'data' => ''];
 

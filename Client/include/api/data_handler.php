@@ -4,7 +4,15 @@
 include 'bin_reader.php';
 include 'types.php';
 
-// Gets specified data variable based on station id, date and time
+/**
+ * Gets specified data variable based on station id, date and time
+ *
+ * @param integer $station The station ID to use
+ * @param integer $dataType Which datatype should be used
+ * @param integer $year, $month, $day The date to use for the data
+ * @param integer $hour, $minute, $second The timestamp to use for the data
+ * @return Message Message class containg result (error, data, message)
+ */
 function getStationData($station, $dataType, $year, $month, $day, $hour, $minute, $second){
   $result = new Message();
   $dataIndex = '';
@@ -40,7 +48,13 @@ function getStationData($station, $dataType, $year, $month, $day, $hour, $minute
 }
 
 
-// Creates file string for given time
+/**
+ * Creates a file path to look for the data
+ *
+ * @param integer $year, $month, $day The date used to create the path
+ * @param integer $hour, $minute, $second Timestamp used to find the file
+ * @return string Array containg the result (error, data, message)
+ */
 function getFilePath($year, $month, $day, $hour, $minute, $second){
   $result = ['error' => true];
 
@@ -64,7 +78,14 @@ function getFilePath($year, $month, $day, $hour, $minute, $second){
 }
 
 
-// Searches for the data based on station and filepath
+/**
+ * Gets data based from selected data and file
+ *
+ * @param integer $station The station ID to use
+ * @param integer $dataIndex Position of the datatype within a station its data range
+ * @param string $filePath The path containing the datafile
+ * @return array Array containg error and data.
+ */
 function searchData($station, $dataIndex, $filePath){
   $result = ['error' => true];
 

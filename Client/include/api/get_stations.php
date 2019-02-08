@@ -1,7 +1,11 @@
 <?php
 // Made by Jeroen - © 2019
 
-// Returns all station (id's) from given country!
+/**
+ * Function to retrieve al ID's from the given country
+ *
+ * @param string $country Country to use
+ */
 function retrieveStations($country){
   $msg = new Message();
   $country = strtolower($country);
